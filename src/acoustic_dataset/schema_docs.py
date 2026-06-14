@@ -319,10 +319,115 @@ def render_markdown(model: SchemaModel) -> str:
 # --------------------------------------------------------------------------- entry point
 
 
-def generate(schema_path: Path, out_dir: Path) -> Path:
-    """Write the generated schema reference to ``<out_dir>/index.md`` and return its path."""
+def _render_examples(example_input: Path) -> list[str]:
+    """Worked examples generated from the canonical pipeline run, so they cannot drift:
+
+    a trimmed sample document, typed-object usage, and a field *derived* from elementary physics.
+    """
+    from acoustic_dataset import acoustics, serialize
+    from acoustic_dataset.mapping import to_model
+
+    raw = acoustics.load_input(example_input)
+    platform = to_model(acoustics.calculate(raw))
+    xml = serialize.to_xml(platform)
+
+    characteristics = platform.characteristics
+    radiated = platform.radiated_noise
+    sensors = platform.sensors
+    assert characteristics is not None and radiated is not None and sensors is not None
+    active = sensors.active
+    assert active is not None and active.source_level is not None and active.max_range is not None
+
+    # Trim the document to a compact but representative excerpt (the bulk is radiated noise).
+    ns = serialize.NAMESPACE
+    root = etree.fromstring(xml.encode("utf-8"), etree.XMLParser(remove_blank_text=True))
+    rn = root.find(f"{{{ns}}}RadiatedNoise")
+    if rn is not None:
+        bands = rn.findall(f"{{{ns}}}Band")
+        for extra in bands[1:]:
+            rn.remove(extra)
+        rn.append(etree.Comment(" bands 2-10 omitted for brevity "))
+        directional = bands[0].find(f"{{{ns}}}Directional") if bands else None
+        if directional is not None:
+            for extra in directional.findall(f"{{{ns}}}Sector")[2:]:
+                directional.remove(extra)
+            directional.append(etree.Comment(" sectors 3-12 omitted for brevity "))
+    excerpt = etree.tostring(root, pretty_print=True, encoding="unicode").rstrip()
+
+    sl = float(active.source_level)
+    dt = float(raw["sensors"]["active"]["detectionThresholdDb"])
+    derived = acoustics.active_max_range_m(sl, dt)
+
+    return [
+        "## Example document",
+        "",
+        "A validated document produced by `make pipeline` from "
+        "`examples/calculation_input.json` (most radiated-noise detail elided):",
+        "",
+        "```xml",
+        excerpt,
+        "```",
+        "",
+        "## Working with the typed objects",
+        "",
+        "The pipeline maps calculation output **once** onto the generated dataclasses; tests "
+        "assert on those typed objects (the testable boundary) and they serialise straight to XML:",
+        "",
+        "```python",
+        "from acoustic_dataset import acoustics, serialize",
+        "from acoustic_dataset.mapping import to_model",
+        "",
+        'result = acoustics.calculate_from_file("examples/calculation_input.json")',
+        "platform = to_model(result)            # a generated Platform object",
+        "",
+        f"platform.name                          # {platform.name!r}",
+        f"platform.characteristics.draft         # Decimal('{characteristics.draft}')",
+        f"len(platform.radiated_noise.band)      # {len(radiated.band)}",
+        f"platform.sensors.active.max_range      # Decimal('{active.max_range}')",
+        "",
+        "xml = serialize.to_xml(platform)       # -> the validated document shown above",
+        "```",
+        "",
+        "## Worked example: deriving a value from elementary physics",
+        "",
+        "Not every element is copied from the input — some are **computed** from typed inputs. "
+        "The active sonar's maximum echo range is one: it falls out of the sonar equation under "
+        "two-way spherical spreading.",
+        "",
+        "An echo travels out *and back*, so transmission loss is `TL = 40 * log10(r)` dB at "
+        "range `r` metres. The platform can just detect the returning echo when its source level, "
+        "less that loss, reaches the detection threshold — solve for `r`:",
+        "",
+        "```text",
+        "SL - 40*log10(r) = DT     =>     r = 10 ** ((SL - DT) / 40)",
+        "```",
+        "",
+        f"This platform's active sonar transmits at `SL = {sl:g}` dB with a detection threshold "
+        f"`DT = {dt:g}` dB, so:",
+        "",
+        "```python",
+        "from acoustic_dataset.acoustics import active_max_range_m",
+        f"active_max_range_m({sl:g}, {dt:g})   # => {derived:.3f}  (metres)",
+        "```",
+        "",
+        f"That typed result is exactly what serialises into the document as "
+        f"`<MaxRange>{active.max_range}</MaxRange>` — elementary physics over typed inputs, "
+        "schema-valid XML out.",
+        "",
+    ]
+
+
+def generate(schema_path: Path, out_dir: Path, example_input: Path | None = None) -> Path:
+    """Write the generated schema reference to ``<out_dir>/index.md`` and return its path.
+
+    When ``example_input`` is given, append worked examples (a sample document, typed-object
+    usage, and a physics-derived field) computed from that input via the pipeline.
+    """
     model = parse_schema(schema_path)
+    md = render_markdown(model)
+    if example_input is not None:
+        md = md.rstrip("\n") + "\n\n" + "\n".join(_render_examples(example_input)) + "\n"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_file = out_dir / "index.md"
-    out_file.write_text(render_markdown(model), encoding="utf-8")
+    out_file.write_text(md, encoding="utf-8")
     return out_file

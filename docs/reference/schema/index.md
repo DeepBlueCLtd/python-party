@@ -184,3 +184,103 @@ The numeric primitives below carry real XSD range facets, so an out-of-band valu
 | `Bearing` | `xs:decimal` | ≥ 0, < 360 | A compass bearing in degrees, in the half-open interval [0, 360): 0 is dead ahead, increasing clockwise. Radiated-noise sectors are spaced 30 degrees apart. |
 | `Year` | `xs:integer` | ≥ 1900, ≤ 2100 | A Gregorian calendar year, constrained to a sane modern range [1900, 2100]. |
 
+## Example document
+
+A validated document produced by `make pipeline` from `examples/calculation_input.json` (most radiated-noise detail elided):
+
+```xml
+<Platform xmlns="https://deepblue.example/acoustic-dataset/v0">
+  <SchemaVersion>0.2.0</SchemaVersion>
+  <Name>Reference Platform A</Name>
+  <GeneratedUtc>2026-06-14T00:00:00Z</GeneratedUtc>
+  <Characteristics>
+    <Draft>7.500</Draft>
+    <Length>95.000</Length>
+    <Weight>2400.000</Weight>
+    <YearIntroduced>1998</YearIntroduced>
+  </Characteristics>
+  <RadiatedNoise>
+    <Band index="1">
+      <CentreFrequency>50.000</CentreFrequency>
+      <Directional>
+        <Sector>
+          <Bearing>0.000</Bearing>
+          <Level>134.000</Level>
+        </Sector>
+        <Sector>
+          <Bearing>30.000</Bearing>
+          <Level>134.804</Level>
+        </Sector>
+        <!-- sectors 3-12 omitted for brevity -->
+      </Directional>
+    </Band>
+    <!-- bands 2-10 omitted for brevity -->
+  </RadiatedNoise>
+  <Sensors>
+    <Active>
+      <Name>AS-900 Echo</Name>
+      <Manufacturer>DeepBlue Sonics</Manufacturer>
+      <OperatingFrequency>6000.000</OperatingFrequency>
+      <SourceLevel>215.000</SourceLevel>
+      <Beamwidth>15.000</Beamwidth>
+      <PulseLength>0.500</PulseLength>
+      <MaxRange>118850.223</MaxRange>
+    </Active>
+    <Passive>
+      <Name>PA-110 Flank Array</Name>
+      <Manufacturer>DeepBlue Sonics</Manufacturer>
+      <OperatingFrequency>1500.000</OperatingFrequency>
+      <ArrayGain>18.000</ArrayGain>
+      <DetectionThreshold>10.000</DetectionThreshold>
+      <BearingAccuracy>1.500</BearingAccuracy>
+    </Passive>
+    <Passive>
+      <Name>PA-220 Towed Array</Name>
+      <Manufacturer>Marine Acoustics Ltd</Manufacturer>
+      <OperatingFrequency>300.000</OperatingFrequency>
+      <ArrayGain>22.000</ArrayGain>
+      <DetectionThreshold>8.000</DetectionThreshold>
+      <BearingAccuracy>2.000</BearingAccuracy>
+    </Passive>
+  </Sensors>
+</Platform>
+```
+
+## Working with the typed objects
+
+The pipeline maps calculation output **once** onto the generated dataclasses; tests assert on those typed objects (the testable boundary) and they serialise straight to XML:
+
+```python
+from acoustic_dataset import acoustics, serialize
+from acoustic_dataset.mapping import to_model
+
+result = acoustics.calculate_from_file("examples/calculation_input.json")
+platform = to_model(result)            # a generated Platform object
+
+platform.name                          # 'Reference Platform A'
+platform.characteristics.draft         # Decimal('7.500')
+len(platform.radiated_noise.band)      # 10
+platform.sensors.active.max_range      # Decimal('118850.223')
+
+xml = serialize.to_xml(platform)       # -> the validated document shown above
+```
+
+## Worked example: deriving a value from elementary physics
+
+Not every element is copied from the input — some are **computed** from typed inputs. The active sonar's maximum echo range is one: it falls out of the sonar equation under two-way spherical spreading.
+
+An echo travels out *and back*, so transmission loss is `TL = 40 * log10(r)` dB at range `r` metres. The platform can just detect the returning echo when its source level, less that loss, reaches the detection threshold — solve for `r`:
+
+```text
+SL - 40*log10(r) = DT     =>     r = 10 ** ((SL - DT) / 40)
+```
+
+This platform's active sonar transmits at `SL = 215` dB with a detection threshold `DT = 12` dB, so:
+
+```python
+from acoustic_dataset.acoustics import active_max_range_m
+active_max_range_m(215, 12)   # => 118850.223  (metres)
+```
+
+That typed result is exactly what serialises into the document as `<MaxRange>118850.223</MaxRange>` — elementary physics over typed inputs, schema-valid XML out.
+

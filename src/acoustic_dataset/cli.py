@@ -77,10 +77,10 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_gen_schema_docs(args: argparse.Namespace) -> int:
-    """Generate the schema reference + Mermaid ERD from the enriched XSD."""
+    """Generate the schema reference + Mermaid ERD (and worked examples) from the schema."""
     from acoustic_dataset import schema_docs
 
-    out_file = schema_docs.generate(args.schema, args.out)
+    out_file = schema_docs.generate(args.schema, args.out, example_input=args.input)
     print(f"schema docs ok: generated {out_file} from {args.schema}")
     return 0
 
@@ -158,6 +158,7 @@ def build_parser() -> argparse.ArgumentParser:
         "gen-schema-docs", help="Generate schema reference + Mermaid ERD from the XSD (US5)."
     )
     p_doc.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
+    p_doc.add_argument("--input", type=Path, default=DEFAULT_INPUT)
     p_doc.add_argument("--out", type=Path, default=_REPO_ROOT / "docs" / "reference" / "schema")
     p_doc.set_defaults(func=cmd_gen_schema_docs)
 
