@@ -1,8 +1,8 @@
 """Generate typed dataclass models from the XSD via xsdata.
 
 This is the *only* code that turns the schema into Python. It is schema-agnostic: it
-hard-codes no element names, so swapping in the real XSD (contracts/pipeline-contract.md)
-needs no edits here — just re-run ``make generate``.
+hard-codes no element names, so changing the schema needs no edits here — just re-run
+``make generate``.
 
 Two deliberate post-processing steps make the output fit our constraints:
 

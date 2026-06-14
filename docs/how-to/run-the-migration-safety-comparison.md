@@ -10,7 +10,7 @@ thing as a file a consumer already depends on. The `compare` command closes that
 ## Steps
 
 1. **Get a known-good reference.** Drop a trusted prior-process file (e.g. one of the
-   consumer's trial outputs) into `examples/reference/`. A shipped placeholder,
+   consumer's trial outputs) into `examples/reference/`. A shipped sample,
    `examples/reference/trial_known_good.xml`, is there as a template.
 
 2. **Produce fresh output.**

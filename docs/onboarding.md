@@ -24,11 +24,11 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 
 | You're looking for… | It's here |
 |---|---|
-| The contract (the XSD) — **swap location** for the real schema | `schema/acoustic_dataset.xsd` ([how-to](how-to/swap-in-the-real-schema.md)) |
+| The contract (the XSD) | `schema/acoustic_dataset.xsd` ([how to change it](how-to/change-the-schema.md)) |
 | The scientific seams (named, testable calc functions) | `src/acoustic_dataset/acoustics/` |
 | The **one** place calc output becomes typed objects | `src/acoustic_dataset/mapping.py` |
 | Generated models (never hand-edited — regenerate) | `src/acoustic_dataset/models/` |
-| Example calculation input (placeholder) | `examples/calculation_input.json` |
+| Example calculation input | `examples/calculation_input.json` |
 | Tests (unit / integration / golden) | `tests/` |
 | The plan & design artifacts | `specs/001-codespace-xml-scaffold/` (`spec.md`, `plan.md`, `tasks.md`) |
 | The generated schema reference + ERD | [reference/schema](reference/schema/index.md) (run `make gen-schema-docs`) |

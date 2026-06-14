@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.2.0-placeholder",
-  "name": "Illustrative platform (placeholder)",
+  "schemaVersion": "0.2.0",
+  "name": "Reference Platform A",
   "generatedUtc": "2026-06-14T00:00:00Z",
   "characteristics": {
     "draftMetres": 7.5,

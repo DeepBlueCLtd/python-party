@@ -1,7 +1,7 @@
 """The single mapping: ``CalculationResult`` -> populated generated models.
 
 This is the **one place schema-aware logic lives** (contracts/pipeline-contract.md). It is
-expected to change when the real XSD lands; nothing else references schema element names.
+the only place to touch when the schema changes; nothing else references schema element names.
 
 Two rules it enforces:
 

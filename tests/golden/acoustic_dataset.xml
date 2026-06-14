@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Platform xmlns="https://deepblue.example/acoustic-dataset/v0">
-  <SchemaVersion>0.2.0-placeholder</SchemaVersion>
-  <Name>Illustrative platform (placeholder)</Name>
+  <SchemaVersion>0.2.0</SchemaVersion>
+  <Name>Reference Platform A</Name>
   <GeneratedUtc>2026-06-14T00:00:00Z</GeneratedUtc>
   <Characteristics>
     <Draft>7.500</Draft>

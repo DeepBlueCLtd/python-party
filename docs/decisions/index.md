@@ -27,7 +27,7 @@ To add one, follow [Add a decision record](../how-to/add-a-decision-record.md) u
 | [0002](0002-drop-csv-pickle-and-write_xml.md) | Drop the CSV, the pickle hand-off, and hand-rolled `write_xml.py` | Accepted |
 | [0003](0003-xmlschema-as-validation-gate.md) | Use `xmlschema` as the structural validation gate | Accepted |
 | [0004](0004-two-gate-verification.md) | Verify with two gates: structural (mechanical) + semantic (human) | Accepted |
-| [0005](0005-placeholder-schema-runnable-now.md) | Ship a labelled placeholder schema so the pipeline runs today | Accepted |
+| [0005](0005-placeholder-schema-runnable-now.md) | Ship a labelled placeholder schema so the pipeline runs today | Superseded |
 | [0006](0006-codespaces-with-local-fallback.md) | GitHub Codespaces as primary env, with a portable local fallback | Accepted |
 | [0007](0007-pin-python-3-9-4.md) | Pin to exactly Python 3.9.4 to match the target system | Accepted |
 | [0008](0008-generated-models-no-drift.md) | Treat bindings as generated artifacts; fail CI on drift | Accepted |

@@ -136,7 +136,7 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 
 - [X] T031 [P] Add `mypy` to `make verify` (config switched to `files=` so a bare `mypy` works; clean on 3.9) in `Makefile`/`pyproject.toml`
 - [X] T032 Run the `quickstart.md` scenarios end-to-end and fix any gaps (added the schema-docs scenario; `make compare` happy path)
-- [ ] T033 [P] When the real XSD lands, follow `docs/how-to/swap-in-the-real-schema.md` and mark ADR 0005 **Superseded** in `docs/decisions/0005-placeholder-schema-runnable-now.md` — *deferred until the real schema arrives*
+- ~~T033 — swap in the real XSD~~ **Dropped**: the schema authored here is now the authoritative contract (there is no separate "real" XSD pending). ADR 0005 is marked Superseded; evolve the schema via `docs/how-to/change-the-schema.md`.
 - [X] T034 [P] Tidy docs cross-links/glossary for the new generated reference pages in `docs/`
 
 ---
@@ -186,8 +186,8 @@ Task: "Integration + golden-diff test in tests/integration/test_pipeline.py"   #
 ### Incremental delivery
 
 US2 (MVP) → US3 (migration safety) → US5 (generated schema docs/ERD) → US4 (bundle + drift gate),
-each an independently testable, demoable increment. The real-schema swap (T033) supersedes the
-placeholder once it arrives.
+each an independently testable, demoable increment. The schema authored here is now treated as
+the authoritative contract (ADR 0005 superseded); evolve it via the change-the-schema how-to.
 
 ---
 
@@ -196,5 +196,5 @@ placeholder once it arrives.
 - `[P]` = different files, no dependencies. `[Story]` ties a task to a user story for traceability.
 - Generated artifacts (`src/acoustic_dataset/models/`, `docs/reference/schema/`) are **never** hand-edited — regenerate (ADR 0008).
 - Commit after each task or logical group; keep `make verify` green.
-- Total: 34 tasks — 33 already complete (`[X]`), 1 remaining: **T033**, deliberately deferred
-  until the real XSD replaces the placeholder.
+- Total: 34 tasks — 33 complete (`[X]`); **T033 dropped** (the schema authored here is now the
+  authoritative contract — ADR 0005 superseded). Phase 1 is complete.

@@ -53,7 +53,7 @@ Distinct from both gates is the **schema-valid-but-different** check. When repla
 generator, new output can be perfectly schema-valid yet differ from files a consumer already
 depends on (perhaps relying on a quirk of the old hand-rolled output). The migration-safety
 comparison diffs new output against a known-good **reference** file to surface exactly this.
-See [Swap in the real schema](../how-to/swap-in-the-real-schema.md) and
+See [Change the schema](../how-to/change-the-schema.md) and
 [ADR 0004](../decisions/0004-two-gate-verification.md).
 
 ## Why split them at all?

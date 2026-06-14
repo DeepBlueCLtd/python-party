@@ -2,9 +2,9 @@
 <!-- Regenerate after any schema change; CI fails on drift. See docs/decisions/0008 and 0009. -->
 # Schema reference
 
-> **Reference (generated)** — produced from `schema/acoustic_dataset.xsd` (version `0.2.0-placeholder`) by `make gen-schema-docs`. Every entity, field, range and definition below is read from the XSD's `xs:annotation/xs:documentation`, so this page cannot drift from the contract.
+> **Reference (generated)** — produced from `schema/acoustic_dataset.xsd` (version `0.2.0`) by `make gen-schema-docs`. Every entity, field, range and definition below is read from the XSD's `xs:annotation/xs:documentation`, so this page cannot drift from the contract.
 
-Placeholder Platform schema. A document describes one platform: its physical characteristics, its directional radiated-noise signature across ten frequency bands, and the sonar sensors it carries. The banded numeric types below carry real XSD facets (ranges) and the radiated-noise structure carries enforced cardinalities (exactly ten bands, exactly twelve 30-degree sectors per band) so the validation gate has something meaningful to enforce.
+Platform schema. A document describes one platform: its physical characteristics, its directional radiated-noise signature across ten frequency bands, and the sonar sensors it carries. The banded numeric types below carry XSD facets (ranges) and the radiated-noise structure carries enforced cardinalities (exactly ten bands, exactly twelve 30-degree sectors per band) so the validation gate has something meaningful to enforce.
 
 ## Entity-relationship diagram
 

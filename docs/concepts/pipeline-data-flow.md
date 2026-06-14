@@ -70,7 +70,7 @@ erDiagram
     }
     SCHEMA {
         string xsd_path
-        string status "PLACEHOLDER"
+        string version "0.2.0"
     }
 ```
 
@@ -78,7 +78,7 @@ erDiagram
 
 | Entity | What it is | Key rule |
 |---|---|---|
-| **CalculationResult** | Output of the acoustic seams; placeholder for the real recalculation | Produced by discrete, testable functions |
+| **CalculationResult** | Output of the acoustic seams (the recalculation/resampling step) | Produced by discrete, testable functions |
 | **Populated domain objects** | Generated-model instances after the single mapping | The assertion boundary; the one place logic lives |
 | **Platform XML** | The validated, round-tripped Phase 1 deliverable | Must pass both gates before it's trusted |
 | **Golden file** | Trusted expected output | Drives the semantic gate; changed deliberately |

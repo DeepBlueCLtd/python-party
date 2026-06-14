@@ -39,7 +39,7 @@ specification, plan, and design artifacts are under
 | Path | What it is |
 |---|---|
 | `.devcontainer/` | Codespaces environment (Python 3.9.4) |
-| `schema/` | The XSD contract (placeholder until the real one lands) |
+| `schema/` | The XSD contract |
 | `src/acoustic_dataset/` | The pipeline package (`models/` is generated, never hand-edited) |
 | `examples/` | Example calculation input + `reference/` known-good files |
 | `tests/` | Unit, integration, and golden-file tests |

@@ -1,11 +1,10 @@
 """Acoustic calculation seams: ``calculation_input.json`` -> ``CalculationResult``.
 
-This is the placeholder stand-in for the real recalculation/resampling-onto-bands work
-(FR-012). Each physical step is a **discrete, named, testable function** with the
-engineering "how it's computed" documented here in code (FR-013) — definitions of *terms*
-live in the schema instead.
+The recalculation/resampling-onto-bands work (FR-012): each physical step is a **discrete,
+named, testable function** with the engineering "how it's computed" documented here in code
+(FR-013) — definitions of *terms* live in the schema instead.
 
-The maths is intentionally simple and illustrative. From a handful of high-level platform
+The maths is a deliberately compact analytic model. From a handful of high-level platform
 parameters it synthesises:
 
 * a geometric ladder of band centre frequencies,
@@ -13,9 +12,9 @@ parameters it synthesises:
   directivity lobe around the platform), sampled every 30 degrees, and
 * one derived sensor figure (an active sonar's maximum echo range from its source level).
 
-It exists to produce typed, banded numbers for the pipeline to carry; it is replaced
-wholesale when the real corpus arrives. The dataclasses below are deliberately named with a
-``Result`` suffix so they never collide with the *generated* model classes of the same domain.
+It produces typed, banded numbers for the pipeline to carry. The dataclasses below are
+deliberately named with a ``Result`` suffix so they never collide with the *generated* model
+classes of the same domain.
 """
 
 from __future__ import annotations
@@ -126,7 +125,7 @@ def radiated_level_db(base_level_db: float, rolloff_db: float, directivity_db: f
 
 
 def active_max_range_m(source_level_db: float, detection_threshold_db: float) -> float:
-    """Maximum echo range of an active sonar, in metres (illustrative).
+    """Maximum echo range of an active sonar, in metres.
 
     Inverts two-way spherical-spreading loss (``TL = 40 * log10(r)``): the source level above
     the detection threshold is the loss the echo can afford on its round trip, so
@@ -204,7 +203,7 @@ def calculate(data: dict) -> CalculationResult:
     characteristics = data["characteristics"]
     sensors = data["sensors"]
     return CalculationResult(
-        schema_version=str(data.get("schemaVersion", "0.2.0-placeholder")),
+        schema_version=str(data.get("schemaVersion", "0.2.0")),
         name=str(data["name"]),
         generated_utc=str(data["generatedUtc"]),
         characteristics=CharacteristicsResult(
