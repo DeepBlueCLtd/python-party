@@ -282,5 +282,5 @@ from acoustic_dataset.acoustics import active_max_range_m
 active_max_range_m(215, 12)   # => 118850.223  (metres)
 ```
 
-That typed result is exactly what serialises into the document as `<MaxRange>118850.223</MaxRange>` — elementary physics over typed inputs, schema-valid XML out.
+That value serialises into the document as `<MaxRange>118850.223</MaxRange>`.
 

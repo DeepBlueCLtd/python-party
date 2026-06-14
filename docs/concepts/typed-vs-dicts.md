@@ -1,79 +1,78 @@
 # Typed objects vs. dictionaries
 
-> **Explanation** — why the pipeline carries data in typed objects generated from the schema,
-> not in generic `dict`s. See [ADR 0002](../decisions/0002-drop-csv-pickle-and-write_xml.md): we
-> deliberately dropped the CSV/pickle/dict baton-pass.
+> **Explanation** — the input is loaded as JSON (nested `dict`s), but the pipeline maps it once
+> onto typed objects generated from the schema and stores data in those. This page sets out what
+> strong typing constrains at the point data is stored. See
+> [ADR 0002](../decisions/0002-drop-csv-pickle-and-write_xml.md).
 
-The example input arrives as JSON, which Python loads into nested `dict`s. It would be tempting
-to thread those dicts straight through to the XML. We don't — the pipeline maps them **once**
-onto the [generated dataclasses](../reference/schema/index.md) and works with those. Here's why.
+## Storing data in a dictionary
 
-## The generic dictionary (what we avoid)
-
-```python
-from acoustic_dataset import acoustics
-
-raw = acoustics.load_input("examples/calculation_input.json")   # nested dicts
-
-raw["sensors"]["active"]["sourceLevelDb"]   # 215.0  — a float; the unit lives only in the key
-raw["snesors"]                              # KeyError — a typo anywhere fails only at runtime
-raw["sensors"]["active"].get("srcLevel")    # None   — or fails *silently*, with no error at all
-```
-
-A `dict` is an opaque bag of `Any`:
-
-- **No structure** — every access is a stringly-typed guess; the editor can't autocomplete and a
-  typo (`snesors`, `srcLevel`) isn't caught until that line runs — or never, if you used `.get`.
-- **No types** — values are `float`/`str`/`Any`; nothing says `sourceLevelDb` is decibels, and a
-  bare `7.5` could be metres, feet, or a mistake.
-- **No validation** — a nonsense value (a 9999 dB source level) flows straight through; nothing
-  stops it becoming schema-invalid XML downstream.
-
-## The typed object (what the pipeline uses)
+A `dict` places no constraints on what it holds: keys are arbitrary strings and values are `Any`.
 
 ```python
-from acoustic_dataset import acoustics, serialize
-from acoustic_dataset.mapping import to_model
-
-platform = to_model(acoustics.calculate_from_file("examples/calculation_input.json"))
-
-platform.sensors.active.source_level   # Decimal('215.000') — the exact type the schema declares
-platform.sensors.active.sourceLevel    # AttributeError + a mypy error — the typo is caught
-xml = serialize.to_xml(platform)       # the object graph *is* the document
+record = {}
+record["sourceLevel"] = 215.0      # any key, any value type
+record["sorceLevel"] = 9999        # a misspelled key is just another entry
+record["sourceLevel"] = "loud"     # a string replaces the number, with no objection
 ```
 
-The generated dataclasses encode the contract:
+The structure exists only by convention. A misspelled key, a wrong value type, or an omitted
+field is stored as readily as correct data, so a mistake surfaces later — when something reads
+the value, when the XML fails validation, or not at all.
 
-- **Typos are caught** — statically by `mypy` and at runtime by `AttributeError`, never silently.
-- **Precise types** — `Decimal` (exact, not a lossy `float`); the field name plus its docstring
-  (lifted from the XSD's `xs:documentation`) carry the meaning, and the
-  [schema reference](../reference/schema/index.md) documents the whole shape.
-- **Validated at one boundary** — the single mapping rejects anything outside the schema's bands
-  *before* serialisation:
+## Storing data in a typed object
+
+The generated dataclasses declare which fields exist and the type of each, so the shape of what
+is stored is defined up front:
+
+```python
+from decimal import Decimal
+from acoustic_dataset.models.acoustic_dataset import Sector
+
+Sector(bearing=Decimal("30.000"), level=Decimal("134.000"))   # the declared fields
+Sector(bering=Decimal("30.000"), level=Decimal("134.000"))    # TypeError: unexpected 'bering'
+```
+
+- A name that is not a declared field is rejected when the object is constructed (`TypeError`),
+  where a `dict` would store it under a new key.
+- Each field has a declared type — here `Decimal`, as the schema specifies. A type checker
+  (`mypy`, run by `make verify`) reports a wrong-typed value before the code runs:
+
+  ```python
+  Sector(bearing="thirty", level=Decimal("134.000"))   # mypy: incompatible type "str"
+  ```
+
+- The fields and their documentation are generated from the schema, so the stored object follows
+  the contract rather than an ad-hoc shape.
+
+## Checking values as they are stored
+
+Field names and types define the *shape*. The single mapping (`to_model`) is where calculation
+output is stored into these objects, and it also enforces the schema's numeric **ranges** at that
+point:
 
 ```python
 import dataclasses
+from acoustic_dataset import acoustics
 from acoustic_dataset.mapping import to_model, MappingError
 
 result = acoustics.calculate_from_file("examples/calculation_input.json")
-# the schema bounds Decibels to [-200, 300]; force an impossible source level:
+# Decibels are bounded to [-200, 300]; attempt to store an impossible source level:
 bad = dataclasses.replace(
     result, active_sonar=dataclasses.replace(result.active_sonar, source_level_db=9999.0)
 )
-to_model(bad)        # raises MappingError — a dict would have passed 9999 straight through
+to_model(bad)        # MappingError — rejected as it is stored, not left for a later stage
 ```
 
-## The pay-off
+A `dict` would hold `9999` and pass it on; the typed boundary rejects it.
 
-| | `dict` | Typed object |
+## Summary
+
+| At the point data is stored | `dict` | Typed object |
 |---|---|---|
-| Find a field | guess a string key | attribute + autocomplete |
-| Wrong name | `KeyError` / silent `None`, at runtime | `mypy` error + `AttributeError` |
-| Value type | `Any` / `float` | `Decimal`, schema-banded |
-| Units / meaning | only in the key name | field name + generated docstring |
-| Bad value | flows through | `MappingError` at the boundary |
-| Is it the contract? | no — an ad-hoc shape | yes — generated from the XSD |
+| Field names | any string accepted | declared; an unknown name is a `TypeError` |
+| Value types | `Any` | declared (e.g. `Decimal`), checked by `mypy` |
+| Out-of-range values | stored as-is | rejected by the mapping (`MappingError`) |
+| Relationship to the schema | convention only | generated from it |
 
-This is the **typed, testable boundary** the pipeline is built around (FR-010): tests assert on
-these objects directly, and they serialise straight to validated XML. Every behaviour shown here
-is checked in `tests/unit/test_typed_vs_dict.py`, so the comparison can't quietly rot.
+The behaviours above are checked in `tests/unit/test_typed_vs_dict.py`.

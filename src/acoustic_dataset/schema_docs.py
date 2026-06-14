@@ -410,9 +410,8 @@ def _render_examples(example_input: Path) -> list[str]:
         f"active_max_range_m({sl:g}, {dt:g})   # => {derived:.3f}  (metres)",
         "```",
         "",
-        f"That typed result is exactly what serialises into the document as "
-        f"`<MaxRange>{active.max_range}</MaxRange>` — elementary physics over typed inputs, "
-        "schema-valid XML out.",
+        f"That value serialises into the document as "
+        f"`<MaxRange>{active.max_range}</MaxRange>`.",
         "",
     ]
 
