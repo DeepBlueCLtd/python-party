@@ -798,10 +798,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-generic-dictionary-what-we-avoid" class="md-nav__link">
+  <a href="#storing-data-in-a-dictionary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The generic dictionary (what we avoid)
+        Storing data in a dictionary
       
     </span>
   </a>
@@ -809,10 +809,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-typed-object-what-the-pipeline-uses" class="md-nav__link">
+  <a href="#storing-data-in-a-typed-object" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The typed object (what the pipeline uses)
+        Storing data in a typed object
       
     </span>
   </a>
@@ -820,10 +820,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-pay-off" class="md-nav__link">
+  <a href="#checking-values-as-they-are-stored" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The pay-off
+        Checking values as they are stored
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
       
     </span>
   </a>
@@ -1408,10 +1419,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-generic-dictionary-what-we-avoid" class="md-nav__link">
+  <a href="#storing-data-in-a-dictionary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The generic dictionary (what we avoid)
+        Storing data in a dictionary
       
     </span>
   </a>
@@ -1419,10 +1430,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-typed-object-what-the-pipeline-uses" class="md-nav__link">
+  <a href="#storing-data-in-a-typed-object" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The typed object (what the pipeline uses)
+        Storing data in a typed object
       
     </span>
   </a>
@@ -1430,10 +1441,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-pay-off" class="md-nav__link">
+  <a href="#checking-values-as-they-are-stored" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The pay-off
+        Checking values as they are stored
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
       
     </span>
   </a>
@@ -1459,105 +1481,91 @@
 
 <h1 id="typed-objects-vs-dictionaries">Typed objects vs. dictionaries<a class="headerlink" href="#typed-objects-vs-dictionaries" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Explanation</strong> — why the pipeline carries data in typed objects generated from the schema,
-not in generic <code>dict</code>s. See <a href="../../decisions/0002-drop-csv-pickle-and-write_xml/">ADR 0002</a>: we
-deliberately dropped the CSV/pickle/dict baton-pass.</p>
+<p><strong>Explanation</strong> — the input is loaded as JSON (nested <code>dict</code>s), but the pipeline maps it once
+onto typed objects generated from the schema and stores data in those. This page sets out what
+strong typing constrains at the point data is stored. See
+<a href="../../decisions/0002-drop-csv-pickle-and-write_xml/">ADR 0002</a>.</p>
 </blockquote>
-<p>The example input arrives as JSON, which Python loads into nested <code>dict</code>s. It would be tempting
-to thread those dicts straight through to the XML. We don't — the pipeline maps them <strong>once</strong>
-onto the <a href="../../reference/schema/">generated dataclasses</a> and works with those. Here's why.</p>
-<h2 id="the-generic-dictionary-what-we-avoid">The generic dictionary (what we avoid)<a class="headerlink" href="#the-generic-dictionary-what-we-avoid" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
-
-<span class="n">raw</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">load_input</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>   <span class="c1"># nested dicts</span>
-
-<span class="n">raw</span><span class="p">[</span><span class="s2">&quot;sensors&quot;</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">][</span><span class="s2">&quot;sourceLevelDb&quot;</span><span class="p">]</span>   <span class="c1"># 215.0  — a float; the unit lives only in the key</span>
-<span class="n">raw</span><span class="p">[</span><span class="s2">&quot;snesors&quot;</span><span class="p">]</span>                              <span class="c1"># KeyError — a typo anywhere fails only at runtime</span>
-<span class="n">raw</span><span class="p">[</span><span class="s2">&quot;sensors&quot;</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srcLevel&quot;</span><span class="p">)</span>    <span class="c1"># None   — or fails *silently*, with no error at all</span>
+<h2 id="storing-data-in-a-dictionary">Storing data in a dictionary<a class="headerlink" href="#storing-data-in-a-dictionary" title="Permanent link">&para;</a></h2>
+<p>A <code>dict</code> places no constraints on what it holds: keys are arbitrary strings and values are <code>Any</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">215.0</span>      <span class="c1"># any key, any value type</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sorceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9999</span>        <span class="c1"># a misspelled key is just another entry</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;loud&quot;</span>     <span class="c1"># a string replaces the number, with no objection</span>
 </code></pre></div>
-<p>A <code>dict</code> is an opaque bag of <code>Any</code>:</p>
-<ul>
-<li><strong>No structure</strong> — every access is a stringly-typed guess; the editor can't autocomplete and a
-  typo (<code>snesors</code>, <code>srcLevel</code>) isn't caught until that line runs — or never, if you used <code>.get</code>.</li>
-<li><strong>No types</strong> — values are <code>float</code>/<code>str</code>/<code>Any</code>; nothing says <code>sourceLevelDb</code> is decibels, and a
-  bare <code>7.5</code> could be metres, feet, or a mistake.</li>
-<li><strong>No validation</strong> — a nonsense value (a 9999 dB source level) flows straight through; nothing
-  stops it becoming schema-invalid XML downstream.</li>
-</ul>
-<h2 id="the-typed-object-what-the-pipeline-uses">The typed object (what the pipeline uses)<a class="headerlink" href="#the-typed-object-what-the-pipeline-uses" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span><span class="p">,</span> <span class="n">serialize</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span>
+<p>The structure exists only by convention. A misspelled key, a wrong value type, or an omitted
+field is stored as readily as correct data, so a mistake surfaces later — when something reads
+the value, when the XML fails validation, or not at all.</p>
+<h2 id="storing-data-in-a-typed-object">Storing data in a typed object<a class="headerlink" href="#storing-data-in-a-typed-object" title="Permanent link">&para;</a></h2>
+<p>The generated dataclasses declare which fields exist and the type of each, so the shape of what
+is stored is defined up front:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.models.acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sector</span>
 
-<span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">))</span>
-
-<span class="n">platform</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">source_level</span>   <span class="c1"># Decimal(&#39;215.000&#39;) — the exact type the schema declares</span>
-<span class="n">platform</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">sourceLevel</span>    <span class="c1"># AttributeError + a mypy error — the typo is caught</span>
-<span class="n">xml</span> <span class="o">=</span> <span class="n">serialize</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">platform</span><span class="p">)</span>       <span class="c1"># the object graph *is* the document</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>   <span class="c1"># the declared fields</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bering</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>    <span class="c1"># TypeError: unexpected &#39;bering&#39;</span>
 </code></pre></div>
-<p>The generated dataclasses encode the contract:</p>
 <ul>
-<li><strong>Typos are caught</strong> — statically by <code>mypy</code> and at runtime by <code>AttributeError</code>, never silently.</li>
-<li><strong>Precise types</strong> — <code>Decimal</code> (exact, not a lossy <code>float</code>); the field name plus its docstring
-  (lifted from the XSD's <code>xs:documentation</code>) carry the meaning, and the
-  <a href="../../reference/schema/">schema reference</a> documents the whole shape.</li>
-<li><strong>Validated at one boundary</strong> — the single mapping rejects anything outside the schema's bands
-  <em>before</em> serialisation:</li>
+<li>A name that is not a declared field is rejected when the object is constructed (<code>TypeError</code>),
+  where a <code>dict</code> would store it under a new key.</li>
+<li>Each field has a declared type — here <code>Decimal</code>, as the schema specifies. A type checker
+  (<code>mypy</code>, run by <code>make verify</code>) reports a wrong-typed value before the code runs:</li>
 </ul>
+<div class="highlight"><pre><span></span><code><span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="s2">&quot;thirty&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>   <span class="c1"># mypy: incompatible type &quot;str&quot;</span>
+</code></pre></div>
+<ul>
+<li>The fields and their documentation are generated from the schema, so the stored object follows
+  the contract rather than an ad-hoc shape.</li>
+</ul>
+<h2 id="checking-values-as-they-are-stored">Checking values as they are stored<a class="headerlink" href="#checking-values-as-they-are-stored" title="Permanent link">&para;</a></h2>
+<p>Field names and types define the <em>shape</em>. The single mapping (<code>to_model</code>) is where calculation
+output is stored into these objects, and it also enforces the schema's numeric <strong>ranges</strong> at that
+point:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span><span class="p">,</span> <span class="n">MappingError</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>
-<span class="c1"># the schema bounds Decibels to [-200, 300]; force an impossible source level:</span>
+<span class="c1"># Decibels are bounded to [-200, 300]; attempt to store an impossible source level:</span>
 <span class="n">bad</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
     <span class="n">result</span><span class="p">,</span> <span class="n">active_sonar</span><span class="o">=</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="p">,</span> <span class="n">source_level_db</span><span class="o">=</span><span class="mf">9999.0</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">to_model</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>        <span class="c1"># raises MappingError — a dict would have passed 9999 straight through</span>
+<span class="n">to_model</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>        <span class="c1"># MappingError — rejected as it is stored, not left for a later stage</span>
 </code></pre></div>
-<h2 id="the-pay-off">The pay-off<a class="headerlink" href="#the-pay-off" title="Permanent link">&para;</a></h2>
+<p>A <code>dict</code> would hold <code>9999</code> and pass it on; the typed boundary rejects it.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th></th>
+<th>At the point data is stored</th>
 <th><code>dict</code></th>
 <th>Typed object</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Find a field</td>
-<td>guess a string key</td>
-<td>attribute + autocomplete</td>
+<td>Field names</td>
+<td>any string accepted</td>
+<td>declared; an unknown name is a <code>TypeError</code></td>
 </tr>
 <tr>
-<td>Wrong name</td>
-<td><code>KeyError</code> / silent <code>None</code>, at runtime</td>
-<td><code>mypy</code> error + <code>AttributeError</code></td>
+<td>Value types</td>
+<td><code>Any</code></td>
+<td>declared (e.g. <code>Decimal</code>), checked by <code>mypy</code></td>
 </tr>
 <tr>
-<td>Value type</td>
-<td><code>Any</code> / <code>float</code></td>
-<td><code>Decimal</code>, schema-banded</td>
+<td>Out-of-range values</td>
+<td>stored as-is</td>
+<td>rejected by the mapping (<code>MappingError</code>)</td>
 </tr>
 <tr>
-<td>Units / meaning</td>
-<td>only in the key name</td>
-<td>field name + generated docstring</td>
-</tr>
-<tr>
-<td>Bad value</td>
-<td>flows through</td>
-<td><code>MappingError</code> at the boundary</td>
-</tr>
-<tr>
-<td>Is it the contract?</td>
-<td>no — an ad-hoc shape</td>
-<td>yes — generated from the XSD</td>
+<td>Relationship to the schema</td>
+<td>convention only</td>
+<td>generated from it</td>
 </tr>
 </tbody>
 </table>
-<p>This is the <strong>typed, testable boundary</strong> the pipeline is built around (FR-010): tests assert on
-these objects directly, and they serialise straight to validated XML. Every behaviour shown here
-is checked in <code>tests/unit/test_typed_vs_dict.py</code>, so the comparison can't quietly rot.</p>
+<p>The behaviours above are checked in <code>tests/unit/test_typed_vs_dict.py</code>.</p>
 
 
 
