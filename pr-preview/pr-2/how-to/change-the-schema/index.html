@@ -25,7 +25,7 @@
     
     
       
-        <title>Swap in the real schema - Acoustic Reference Book — Phase 1 Pipeline Docs</title>
+        <title>Change the schema - Acoustic Reference Book — Phase 1 Pipeline Docs</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-swap-in-the-real-schema" class="md-skip">
+        <a href="#how-to-change-the-schema" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Swap in the real schema
+              Change the schema
             
           </span>
         </div>
@@ -517,7 +517,7 @@
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -535,7 +535,7 @@
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -1427,55 +1427,60 @@
 
 
 
-<h1 id="how-to-swap-in-the-real-schema">How to swap in the real schema<a class="headerlink" href="#how-to-swap-in-the-real-schema" title="Permanent link">&para;</a></h1>
+<h1 id="how-to-change-the-schema">How to change the schema<a class="headerlink" href="#how-to-change-the-schema" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>How-to</strong> — replace the placeholder XSD with the real one when it arrives.</p>
+<p><strong>How-to</strong> — evolve the XSD and propagate the change through the schema-driven pipeline.</p>
 </blockquote>
-<p>The placeholder schema lives at one documented location so this swap is a <em>configuration
-change, not a redesign</em> (<a href="../../decisions/0005-placeholder-schema-runnable-now/">ADR 0005</a>).</p>
+<p>The schema is the single source of truth, so changing it is a <em>configuration change, not a
+redesign</em>: models, validation, bindings and the schema docs all regenerate from it.</p>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
-<p><strong>Replace the schema file.</strong>
-   Put the real enriched XSD at <code>schema/acoustic_dataset.xsd</code> (keep the path; if the filename
-   must differ, update the single schema path in the <code>Makefile</code> / <code>pyproject.toml</code>).</p>
+<p><strong>Edit the schema.</strong>
+   Change <code>schema/acoustic_dataset.xsd</code> (the contract). When you add or rename a type/element,
+   put its definition prose in <code>xs:annotation/xs:documentation</code> so it rides through to the
+   generated model docstrings and the schema reference.</p>
 </li>
 <li>
 <p><strong>Regenerate the models.</strong>
    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>generate
 </code></pre></div>
-   This runs <code>xsdata</code> over the new schema and rewrites <code>src/acoustic_dataset/models/</code>. <strong>Do not
+   Runs <code>xsdata</code> over the schema and rewrites <code>src/acoustic_dataset/models/</code>. <strong>Do not
    hand-edit</strong> the result — it's a generated artifact
-   (<a href="../../decisions/0008-generated-models-no-drift/">ADR 0008</a>).</p>
+   (<a href="../../decisions/0008-generated-models-no-drift/">ADR 0008</a>). Generation is pinned to the 3.9
+   toolchain so the output is byte-reproducible for the drift gate.</p>
 </li>
 <li>
 <p><strong>Regenerate the schema docs + ERD.</strong>
    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>gen-schema-docs
 </code></pre></div>
-   Produces the HTML reference pages and the Mermaid ERD from the new enriched XSD
+   Produces the reference pages and the Mermaid ERD from the schema
    (<a href="../../decisions/0009-mkdocs-material-mermaid-html-docs/">ADR 0009</a>).</p>
 </li>
 <li>
 <p><strong>Update the mapping.</strong>
-   <code>src/acoustic_dataset/mapping.py</code> is the <strong>one place</strong> that knows real element names — this is
-   where the band/recalculation logic lives and where it's expected to change. Generation code
-   does <em>not</em> change.</p>
+   <code>src/acoustic_dataset/mapping.py</code> is the <strong>one place</strong> that knows element names — update it
+   for any added/renamed/retyped fields. Generation code does <em>not</em> change.</p>
 </li>
 <li>
 <p><strong>Update the example and golden file.</strong>
-   Refresh <code>examples/calculation_input.json</code> and the golden file in <code>tests/golden/</code> to match
-   the new contract.</p>
+   Adjust <code>examples/calculation_input.json</code>, then refresh the golden file if the new output is
+   intended:
+   <div class="highlight"><pre><span></span><code>make<span class="w"> </span>pipeline<span class="w">                                                  </span><span class="c1"># writes build/acoustic_dataset.xml</span>
+cp<span class="w"> </span>build/acoustic_dataset.xml<span class="w"> </span>tests/golden/acoustic_dataset.xml
+</code></pre></div>
+   Review the golden diff deliberately — it's the semantic gate.</p>
 </li>
 <li>
 <p><strong>Re-run the gates.</strong>
-   <div class="highlight"><pre><span></span><code>make<span class="w"> </span>verify<span class="w">      </span><span class="c1"># structural gate + tests</span>
+   <div class="highlight"><pre><span></span><code>make<span class="w"> </span>verify<span class="w">      </span><span class="c1"># lint + type-check + tests + drift gate</span>
 make<span class="w"> </span>pipeline<span class="w">    </span><span class="c1"># end-to-end: map -&gt; serialise -&gt; validate -&gt; round-trip</span>
 </code></pre></div></p>
 </li>
 </ol>
 <h2 id="guard-against-schema-valid-but-different">Guard against schema-valid-but-different<a class="headerlink" href="#guard-against-schema-valid-but-different" title="Permanent link">&para;</a></h2>
-<p>If you have a <strong>known-good</strong> file from the old process (e.g. one of the consumer's trial files), drop
-it in <code>examples/reference/</code> and compare:</p>
+<p>If you have a <strong>known-good</strong> file from a prior process (e.g. one of the consumer's trial
+files), drop it in <code>examples/reference/</code> and compare:</p>
 <div class="highlight"><pre><span></span><code>make<span class="w"> </span>pipeline
 python<span class="w"> </span>-m<span class="w"> </span>acoustic_dataset.cli<span class="w"> </span>compare<span class="w"> </span>build/acoustic_dataset.xml<span class="w"> </span>examples/reference/&lt;file&gt;.xml
 </code></pre></div>
@@ -1485,12 +1490,9 @@ output that is schema-valid but differs from what a consumer depends on
 <h2 id="what-you-should-not-touch">What you should <em>not</em> touch<a class="headerlink" href="#what-you-should-not-touch" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Generated models (<code>src/acoustic_dataset/models/</code>) — regenerate instead.</li>
-<li>Generated schema reference/ERD under <code>reference/</code> — regenerate instead.</li>
+<li>Generated schema reference/ERD under <code>reference/schema/</code> — regenerate instead.</li>
 <li>The generation code — it's schema-agnostic by design.</li>
 </ul>
-<p>Once the real schema is in and green, mark
-<a href="../../decisions/0005-placeholder-schema-runnable-now/">ADR 0005</a> as <strong>Superseded</strong> and delete
-the placeholder artefacts.</p>
 
 
 

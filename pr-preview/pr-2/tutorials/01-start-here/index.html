@@ -614,14 +614,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../how-to/swap-in-the-real-schema/" class="md-nav__link">
+      <a href="../../how-to/change-the-schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -1502,9 +1502,8 @@ and you'll understand what you're looking at.</p>
 site you can browse</strong> — all on the target's Python (3.9.4). It assumes no prior setup.</p>
 <h2 id="what-youre-building-toward">What you're building toward<a class="headerlink" href="#what-youre-building-toward" title="Permanent link">&para;</a></h2>
 <p>A schema-driven pipeline that turns acoustic calculation output into validated Sonar
-Performance XML. Right now the pipeline runs against a <strong>placeholder</strong> schema so you can see
-the machinery work before the real schema and calculation exist
-(<a href="../../decisions/0005-placeholder-schema-runnable-now/">ADR 0005</a>).</p>
+Performance XML: generate typed models from the XSD, map calculation output onto them once,
+serialise, then validate and round-trip.</p>
 <h2 id="step-1-open-the-environment">Step 1 — Open the environment<a class="headerlink" href="#step-1-open-the-environment" title="Permanent link">&para;</a></h2>
 <p>The fastest path is a <strong>GitHub Codespace</strong> (no local installs):</p>
 <ol>
@@ -1548,7 +1547,7 @@ was made and <em>what was rejected</em> — that's the material you'll use to de
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Want to do a specific task? → <a href="../../how-to/use-the-codespace/">How-to guides</a></li>
-<li>Curious how a real schema slots in? → <a href="../../how-to/swap-in-the-real-schema/">Swap in the real schema</a></li>
+<li>Need to change the schema? → <a href="../../how-to/change-the-schema/">Change the schema</a></li>
 <li>Want to record your own decision? → <a href="../../how-to/add-a-decision-record/">Add a decision record</a></li>
 </ul>
 <div class="admonition tip">
