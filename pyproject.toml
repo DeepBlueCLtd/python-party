@@ -55,7 +55,9 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.mypy]
 python_version = "3.9"
-packages = ["acoustic_dataset"]
+# Check the hand-written source by path (not as an installed package — no py.typed needed),
+# so a bare `mypy` in `make verify` works.
+files = ["src/acoustic_dataset"]
 ignore_missing_imports = true
 # Generated models are excluded from type-checking (they are an artifact).
 exclude = "src/acoustic_dataset/models/"

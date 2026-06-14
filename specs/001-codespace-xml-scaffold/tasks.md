@@ -134,10 +134,10 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-- [ ] T031 [P] Add `mypy` to `make verify` now that hand-written pipeline code exists in `Makefile`
-- [ ] T032 Run the `quickstart.md` scenarios end-to-end and fix any gaps
-- [ ] T033 [P] When the real XSD lands, follow `docs/how-to/swap-in-the-real-schema.md` and mark ADR 0005 **Superseded** in `docs/decisions/0005-placeholder-schema-runnable-now.md`
-- [ ] T034 [P] Tidy docs cross-links/glossary for the new generated reference pages in `docs/`
+- [X] T031 [P] Add `mypy` to `make verify` (config switched to `files=` so a bare `mypy` works; clean on 3.9) in `Makefile`/`pyproject.toml`
+- [X] T032 Run the `quickstart.md` scenarios end-to-end and fix any gaps (added the schema-docs scenario; `make compare` happy path)
+- [ ] T033 [P] When the real XSD lands, follow `docs/how-to/swap-in-the-real-schema.md` and mark ADR 0005 **Superseded** in `docs/decisions/0005-placeholder-schema-runnable-now.md` — *deferred until the real schema arrives*
+- [X] T034 [P] Tidy docs cross-links/glossary for the new generated reference pages in `docs/`
 
 ---
 
@@ -196,4 +196,5 @@ placeholder once it arrives.
 - `[P]` = different files, no dependencies. `[Story]` ties a task to a user story for traceability.
 - Generated artifacts (`src/acoustic_dataset/models/`, `docs/reference/schema/`) are **never** hand-edited — regenerate (ADR 0008).
 - Commit after each task or logical group; keep `make verify` green.
-- Total: 34 tasks — 30 already complete (`[X]`), 4 remaining (Phase 8 polish).
+- Total: 34 tasks — 33 already complete (`[X]`), 1 remaining: **T033**, deliberately deferred
+  until the real XSD replaces the placeholder.

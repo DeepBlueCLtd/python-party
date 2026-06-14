@@ -17,8 +17,9 @@ bootstrap: ## Install deps + generate models. Run by the devcontainer.
 	$(MAKE) generate
 	@echo "Bootstrap complete. Run 'make verify' to check the environment."
 
-verify: ## Run the full test suite + lint — the single 'is the environment good?' command.
+verify: ## Run lint + type-check + tests — the single 'is the environment good?' command.
 	ruff check src tests
+	mypy
 	pytest
 
 docs: ## Build the attractive HTML docs site (strict — fails on broken links).
