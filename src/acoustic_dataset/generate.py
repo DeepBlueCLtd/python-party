@@ -6,10 +6,13 @@ needs no edits here — just re-run ``make generate``.
 
 Two deliberate post-processing steps make the output fit our constraints:
 
-1. **3.9 compatibility** — xsdata (>=26) emits ``@dataclass(kw_only=True)`` unconditionally,
-   but ``kw_only`` is Python 3.10+. The target system is pinned to 3.9.4
-   (docs/decisions/0007), so we strip it. The schema is modelled so field ordering stays
-   valid without ``kw_only`` (no required field follows a defaulted one).
+1. **3.9 compatibility & determinism** — xsdata auto-toggles ``slots`` / ``kw_only`` / PEP-604
+   unions by the *generating* interpreter's version, so we pass explicit ``--no-*`` flags to
+   force 3.9-compatible output whether models are regenerated on a dev 3.10+ box or the 3.9 CI
+   runner — without that, the drift gate would flap across Python versions. (``kw_only``
+   stripping below is kept as defence-in-depth.) The target system is pinned to 3.9.4
+   (docs/decisions/0007); the schema is modelled so field ordering stays valid without
+   ``kw_only`` (no required field follows a defaulted one).
 2. **No-drift discipline** — each module gets a deterministic "do not edit" header
    (docs/decisions/0008). Generation is reproducible byte-for-byte, so CI can diff-gate it.
 
@@ -41,7 +44,7 @@ _HEADER = (
     "# Regenerate after any schema change; CI fails on drift. See docs/decisions/0008.\n"
 )
 
-# xsdata >=26 always emits kw_only=True; strip it for the Python 3.9 target.
+# Defence-in-depth: strip kw_only if a future xsdata bump emits it despite --no-kw-only.
 _KW_ONLY_PATTERNS = (
     "@dataclass(kw_only=True)",  # the common case we emit
 )
@@ -110,6 +113,13 @@ def generate(schema: Path = DEFAULT_SCHEMA, out: Path = DEFAULT_OUT) -> Path:
         "--package", _TARGET_PACKAGE,
         "--structure-style", "filenames",
         "--no-include-header",  # deterministic output (no version/timestamp) for the drift gate
+        # Force 3.9-compatible output regardless of the generating interpreter, so the committed
+        # models are byte-identical whether regenerated on a dev 3.10+ box or the 3.9 CI runner
+        # (xsdata otherwise auto-toggles these by sys.version_info). See docs/decisions/0007.
+        "--no-slots",
+        "--no-kw-only",
+        "--no-union-type",
+        "--no-postponed-annotations",
     ]
     proc = subprocess.run(cmd, cwd=str(_SRC_DIR), capture_output=True, text=True)
     if proc.returncode != 0 or not out.is_dir():

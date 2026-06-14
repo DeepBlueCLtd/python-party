@@ -12,9 +12,11 @@ readme = "README.md"
 requires-python = ">=3.9,<3.13"
 license = { text = "See LICENSE" }
 dependencies = [
-    # Generate typed dataclasses from the XSD and bind objects <-> XML.
-    # xsdata >= 24 supports Python >= 3.9. See docs/decisions/0001.
-    "xsdata[cli,lxml]>=24.0",
+    # Generate typed dataclasses from the XSD and bind objects <-> XML. Pinned to 25.7 — the
+    # last xsdata line supporting the Python 3.9.4 target (26.x requires >=3.10) — so `make
+    # generate` is byte-reproducible on the target for the CI drift gate. Bump deliberately and
+    # re-run `make generate` to refresh the committed models. See docs/decisions/0001 and 0008.
+    "xsdata[cli,lxml]==25.7",
     # Pure-Python XSD validation gate (XSD 1.1 capable). See docs/decisions/0003.
     "xmlschema>=3.0",
 ]

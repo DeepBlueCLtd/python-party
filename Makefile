@@ -42,5 +42,5 @@ COMPARE_REFERENCE ?= examples/reference/trial_known_good.xml
 compare: ## Migration-safety diff: $(COMPARE_GENERATED) vs $(COMPARE_REFERENCE) (override the vars).
 	python -m acoustic_dataset.cli compare "$(COMPARE_GENERATED)" "$(COMPARE_REFERENCE)"
 
-bundle: ## Produce distribution bundle (data + schema + generated models). (Phase 1 task)
-	@echo "Not yet implemented — tracked in specs/001-codespace-xml-scaffold/tasks.md"; exit 1
+bundle: pipeline ## Produce distribution bundle (data + schema + generated models) in build/dist.
+	python -m acoustic_dataset.cli bundle

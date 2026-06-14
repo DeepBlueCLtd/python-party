@@ -16,10 +16,11 @@
 | `make gen-schema-docs` | Generate schema reference + Mermaid ERD from the enriched XSD | ✅ |
 | `make pipeline` | End-to-end: map → serialise → validate → round-trip | ✅ |
 | `make compare` | Migration-safety diff vs a known-good reference | ✅ |
-| `make bundle` | Distribution bundle (data + schema + models) | ⏳ Phase 1 task |
+| `make bundle` | Distribution bundle (data + schema + models) | ✅ |
 
-The remaining ⏳ target (`make bundle`, User Story 4) currently prints a pointer to
-`specs/001-codespace-xml-scaffold/tasks.md` and exits non-zero.
+All command targets are implemented. The CI drift gate regenerates the models and schema docs
+on the Python 3.9 target and fails if the committed artifacts are stale (see
+[ADR 0008](../decisions/0008-generated-models-no-drift.md)).
 
 ## CLI subcommands
 

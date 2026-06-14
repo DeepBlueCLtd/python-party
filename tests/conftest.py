@@ -32,3 +32,8 @@ def golden_path() -> Path:
 @pytest.fixture(scope="session")
 def reference_path() -> Path:
     return _REPO_ROOT / "examples" / "reference" / "trial_known_good.xml"
+
+
+@pytest.fixture(scope="session")
+def models_dir() -> Path:
+    return _REPO_ROOT / "src" / "acoustic_dataset" / "models"

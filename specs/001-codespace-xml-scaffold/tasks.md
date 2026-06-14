@@ -20,9 +20,10 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 > **User Story 3 — the migration-safety `compare`** and **User Story 5 — the generated schema
 > reference & ERD** are now implemented too: a canonicalising comparison (`make compare`) with a
 > shipped reference fixture, and an XSD-driven Markdown reference + Mermaid `erDiagram`
-> (`make gen-schema-docs`) wired into the docs nav, both with tests. The **remaining work is US4
-> (bundle + drift gate)**; the `bundle` CLI subcommand exists but exits non-zero as
-> not-yet-implemented.
+> (`make gen-schema-docs`) wired into the docs nav, both with tests. **User Story 4 — the
+> distribution `bundle` (`make bundle`) and the CI drift gate** is now implemented too, with
+> xsdata pinned (`==25.7`) so regeneration is byte-reproducible on the Python 3.9 target. All
+> five user stories are complete; only **Phase 8 (polish)** remains.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -117,17 +118,17 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 
 ---
 
-## Phase 7: User Story 4 - Distribution bundle & regeneration discipline (Priority: P3)
+## Phase 7: User Story 4 - Distribution bundle & regeneration discipline (Priority: P3) — ✅ COMPLETE
 
 **Goal**: Ship data + schema + models together; CI fails on any generated-artifact drift.
 
 **Independent Test**: `make bundle` yields a bundle with all three; a hand-edited model fails CI.
 
-- [ ] T028 [US4] Implement the bundle (assemble data + schema + generated models) + wire `bundle`/`make bundle` in `src/acoustic_dataset/bundle.py`, `src/acoustic_dataset/cli.py`
-- [ ] T029 [US4] CI drift gate: regenerate models AND schema docs, then fail on `git diff --exit-code` in `.github/workflows/ci.yml`
-- [ ] T030 [P] [US4] Test the bundle contains data + schema + models in `tests/integration/test_bundle.py`
+- [X] T028 [US4] Implement the bundle (assemble data + schema + generated models) + wire `bundle`/`make bundle` in `src/acoustic_dataset/bundle.py`, `src/acoustic_dataset/cli.py`
+- [X] T029 [US4] CI drift gate: regenerate models AND schema docs, then fail on tree drift in `.github/workflows/ci.yml` (runs on Python 3.9; xsdata pinned `==25.7` for byte-reproducibility — see ADR 0008)
+- [X] T030 [P] [US4] Test the bundle contains data + schema + models in `tests/integration/test_bundle.py`
 
-**Checkpoint**: bindings and generated docs are version-locked to the schema (FR-016, FR-017).
+**Checkpoint**: bindings and generated docs are version-locked to the schema (FR-016, FR-017). ✅
 
 ---
 
@@ -195,4 +196,4 @@ placeholder once it arrives.
 - `[P]` = different files, no dependencies. `[Story]` ties a task to a user story for traceability.
 - Generated artifacts (`src/acoustic_dataset/models/`, `docs/reference/schema/`) are **never** hand-edited — regenerate (ADR 0008).
 - Commit after each task or logical group; keep `make verify` green.
-- Total: 34 tasks — 27 already complete (`[X]`), 7 remaining (the pipeline).
+- Total: 34 tasks — 30 already complete (`[X]`), 4 remaining (Phase 8 polish).
