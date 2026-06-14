@@ -54,6 +54,7 @@ nav:
       - Schema as the contract: concepts/schema-as-contract.md
       - The two verification gates: concepts/two-verification-gates.md
       - Pipeline data flow (ERD): concepts/pipeline-data-flow.md
+      - Typed objects vs dictionaries: concepts/typed-vs-dicts.md
   - Decisions (ADRs):
       - Overview: decisions/index.md
       - ADR template: decisions/0000-template.md

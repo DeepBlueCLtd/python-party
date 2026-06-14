@@ -41,6 +41,7 @@ Read these, in order — they're short:
 1. [Schema as the contract](concepts/schema-as-contract.md) — the idea everything follows from.
 2. [The two verification gates](concepts/two-verification-gates.md) — why schema-valid isn't the same as correct.
 3. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
+4. [Typed objects vs dictionaries](concepts/typed-vs-dicts.md) — why typed data beats a generic `dict`.
 
 !!! tip "What's done, what's next"
     The full Phase 1 pipeline is in place — environment, end-to-end pipeline, migration-safety
