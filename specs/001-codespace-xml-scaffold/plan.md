@@ -83,7 +83,7 @@ specs/001-codespace-xml-scaffold/
 
 ```text
 .devcontainer/
-└── devcontainer.json          # Codespaces: Python 3.11 image, post-create bootstrap, extensions
+└── devcontainer.json          # Codespaces: Python 3.9.4 (devcontainer feature), post-create bootstrap, extensions
 
 .github/
 └── workflows/

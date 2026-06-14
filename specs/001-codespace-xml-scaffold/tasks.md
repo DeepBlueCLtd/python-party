@@ -191,4 +191,4 @@ placeholder once it arrives.
 - `[P]` = different files, no dependencies. `[Story]` ties a task to a user story for traceability.
 - Generated artifacts (`src/acoustic_dataset/models/`, `docs/reference/schema/`) are **never** hand-edited — regenerate (ADR 0008).
 - Commit after each task or logical group; keep `make verify` green.
-- Total: 34 tasks — 8 already complete (`[X]`), 26 remaining (the pipeline).
+- Total: 34 tasks — 20 already complete (`[X]`), 14 remaining (the pipeline).
