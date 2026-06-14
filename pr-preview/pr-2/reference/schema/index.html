@@ -1424,6 +1424,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#example-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-the-typed-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working with the typed objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-deriving-a-value-from-elementary-physics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: deriving a value from elementary physics
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1636,6 +1669,39 @@
     <span class="md-ellipsis">
       
         Banded numeric types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-the-typed-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working with the typed objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-deriving-a-value-from-elementary-physics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: deriving a value from elementary physics
       
     </span>
   </a>
@@ -2128,6 +2194,89 @@
 </tr>
 </tbody>
 </table>
+<h2 id="example-document">Example document<a class="headerlink" href="#example-document" title="Permanent link">&para;</a></h2>
+<p>A validated document produced by <code>make pipeline</code> from <code>examples/calculation_input.json</code> (most radiated-noise detail elided):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Platform</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">&quot;https://deepblue.example/acoustic-dataset/v0&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;SchemaVersion&gt;</span>0.2.0<span class="nt">&lt;/SchemaVersion&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>Reference<span class="w"> </span>Platform<span class="w"> </span>A<span class="nt">&lt;/Name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;GeneratedUtc&gt;</span>2026-06-14T00:00:00Z<span class="nt">&lt;/GeneratedUtc&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Characteristics&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Draft&gt;</span>7.500<span class="nt">&lt;/Draft&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Length&gt;</span>95.000<span class="nt">&lt;/Length&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Weight&gt;</span>2400.000<span class="nt">&lt;/Weight&gt;</span>
+<span class="w">    </span><span class="nt">&lt;YearIntroduced&gt;</span>1998<span class="nt">&lt;/YearIntroduced&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Characteristics&gt;</span>
+<span class="w">  </span><span class="nt">&lt;RadiatedNoise&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Band</span><span class="w"> </span><span class="na">index=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;CentreFrequency&gt;</span>50.000<span class="nt">&lt;/CentreFrequency&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Directional&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Sector&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Bearing&gt;</span>0.000<span class="nt">&lt;/Bearing&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Level&gt;</span>134.000<span class="nt">&lt;/Level&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Sector&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Sector&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Bearing&gt;</span>30.000<span class="nt">&lt;/Bearing&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Level&gt;</span>134.804<span class="nt">&lt;/Level&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Sector&gt;</span>
+<span class="w">        </span><span class="cm">&lt;!-- sectors 3-12 omitted for brevity --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Directional&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Band&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- bands 2-10 omitted for brevity --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/RadiatedNoise&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Sensors&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Active&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Name&gt;</span>AS-900<span class="w"> </span>Echo<span class="nt">&lt;/Name&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Manufacturer&gt;</span>DeepBlue<span class="w"> </span>Sonics<span class="nt">&lt;/Manufacturer&gt;</span>
+<span class="w">      </span><span class="nt">&lt;OperatingFrequency&gt;</span>6000.000<span class="nt">&lt;/OperatingFrequency&gt;</span>
+<span class="w">      </span><span class="nt">&lt;SourceLevel&gt;</span>215.000<span class="nt">&lt;/SourceLevel&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Beamwidth&gt;</span>15.000<span class="nt">&lt;/Beamwidth&gt;</span>
+<span class="w">      </span><span class="nt">&lt;PulseLength&gt;</span>0.500<span class="nt">&lt;/PulseLength&gt;</span>
+<span class="w">      </span><span class="nt">&lt;MaxRange&gt;</span>118850.223<span class="nt">&lt;/MaxRange&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Active&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Passive&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Name&gt;</span>PA-110<span class="w"> </span>Flank<span class="w"> </span>Array<span class="nt">&lt;/Name&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Manufacturer&gt;</span>DeepBlue<span class="w"> </span>Sonics<span class="nt">&lt;/Manufacturer&gt;</span>
+<span class="w">      </span><span class="nt">&lt;OperatingFrequency&gt;</span>1500.000<span class="nt">&lt;/OperatingFrequency&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ArrayGain&gt;</span>18.000<span class="nt">&lt;/ArrayGain&gt;</span>
+<span class="w">      </span><span class="nt">&lt;DetectionThreshold&gt;</span>10.000<span class="nt">&lt;/DetectionThreshold&gt;</span>
+<span class="w">      </span><span class="nt">&lt;BearingAccuracy&gt;</span>1.500<span class="nt">&lt;/BearingAccuracy&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Passive&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Passive&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Name&gt;</span>PA-220<span class="w"> </span>Towed<span class="w"> </span>Array<span class="nt">&lt;/Name&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Manufacturer&gt;</span>Marine<span class="w"> </span>Acoustics<span class="w"> </span>Ltd<span class="nt">&lt;/Manufacturer&gt;</span>
+<span class="w">      </span><span class="nt">&lt;OperatingFrequency&gt;</span>300.000<span class="nt">&lt;/OperatingFrequency&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ArrayGain&gt;</span>22.000<span class="nt">&lt;/ArrayGain&gt;</span>
+<span class="w">      </span><span class="nt">&lt;DetectionThreshold&gt;</span>8.000<span class="nt">&lt;/DetectionThreshold&gt;</span>
+<span class="w">      </span><span class="nt">&lt;BearingAccuracy&gt;</span>2.000<span class="nt">&lt;/BearingAccuracy&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Passive&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Sensors&gt;</span>
+<span class="nt">&lt;/Platform&gt;</span>
+</code></pre></div>
+<h2 id="working-with-the-typed-objects">Working with the typed objects<a class="headerlink" href="#working-with-the-typed-objects" title="Permanent link">&para;</a></h2>
+<p>The pipeline maps calculation output <strong>once</strong> onto the generated dataclasses; tests assert on those typed objects (the testable boundary) and they serialise straight to XML:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span><span class="p">,</span> <span class="n">serialize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>
+<span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>            <span class="c1"># a generated Platform object</span>
+
+<span class="n">platform</span><span class="o">.</span><span class="n">name</span>                          <span class="c1"># &#39;Reference Platform A&#39;</span>
+<span class="n">platform</span><span class="o">.</span><span class="n">characteristics</span><span class="o">.</span><span class="n">draft</span>         <span class="c1"># Decimal(&#39;7.500&#39;)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">radiated_noise</span><span class="o">.</span><span class="n">band</span><span class="p">)</span>      <span class="c1"># 10</span>
+<span class="n">platform</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">max_range</span>      <span class="c1"># Decimal(&#39;118850.223&#39;)</span>
+
+<span class="n">xml</span> <span class="o">=</span> <span class="n">serialize</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">platform</span><span class="p">)</span>       <span class="c1"># -&gt; the validated document shown above</span>
+</code></pre></div>
+<h2 id="worked-example-deriving-a-value-from-elementary-physics">Worked example: deriving a value from elementary physics<a class="headerlink" href="#worked-example-deriving-a-value-from-elementary-physics" title="Permanent link">&para;</a></h2>
+<p>Not every element is copied from the input — some are <strong>computed</strong> from typed inputs. The active sonar's maximum echo range is one: it falls out of the sonar equation under two-way spherical spreading.</p>
+<p>An echo travels out <em>and back</em>, so transmission loss is <code>TL = 40 * log10(r)</code> dB at range <code>r</code> metres. The platform can just detect the returning echo when its source level, less that loss, reaches the detection threshold — solve for <code>r</code>:</p>
+<div class="highlight"><pre><span></span><code>SL - 40*log10(r) = DT     =&gt;     r = 10 ** ((SL - DT) / 40)
+</code></pre></div>
+<p>This platform's active sonar transmits at <code>SL = 215</code> dB with a detection threshold <code>DT = 12</code> dB, so:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.acoustics</span><span class="w"> </span><span class="kn">import</span> <span class="n">active_max_range_m</span>
+<span class="n">active_max_range_m</span><span class="p">(</span><span class="mi">215</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>   <span class="c1"># =&gt; 118850.223  (metres)</span>
+</code></pre></div>
+<p>That typed result is exactly what serialises into the document as <code>&lt;MaxRange&gt;118850.223&lt;/MaxRange&gt;</code> — elementary physics over typed inputs, schema-valid XML out.</p>
 
 
 
