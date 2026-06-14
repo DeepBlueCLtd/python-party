@@ -1,0 +1,71 @@
+site_name: Acoustic Reference Book — Phase 1 Pipeline Docs
+site_description: >-
+  Schema-driven XML Acoustic Dataset pipeline — a learning- and decision-oriented
+  documentation set that grows with understanding.
+docs_dir: docs
+# Build into a gitignored folder; the HTML is a generated artifact.
+site_dir: site
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - content.code.copy
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - toc:
+      permalink: true
+  - tables
+
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Start here (zero to green): tutorials/01-start-here.md
+  - How-to guides:
+      - Use the Codespace: how-to/use-the-codespace.md
+      - Build the docs site: how-to/build-the-docs-site.md
+      - Swap in the real schema: how-to/swap-in-the-real-schema.md
+      - Add a decision record: how-to/add-a-decision-record.md
+  - Concepts:
+      - Schema as the contract: concepts/schema-as-contract.md
+      - The two verification gates: concepts/two-verification-gates.md
+      - Pipeline data flow (ERD): concepts/pipeline-data-flow.md
+  - Decisions (ADRs):
+      - Overview: decisions/index.md
+      - ADR template: decisions/0000-template.md
+      - 0001 Schema-driven generation with xsdata: decisions/0001-schema-driven-generation-with-xsdata.md
+      - 0002 Drop CSV, pickle and write_xml: decisions/0002-drop-csv-pickle-and-write_xml.md
+      - 0003 xmlschema as the validation gate: decisions/0003-xmlschema-as-validation-gate.md
+      - 0004 Two-gate verification: decisions/0004-two-gate-verification.md
+      - 0005 Placeholder schema, runnable now: decisions/0005-placeholder-schema-runnable-now.md
+      - 0006 Codespaces with a local fallback: decisions/0006-codespaces-with-local-fallback.md
+      - 0007 Pin to Python 3.9.4: decisions/0007-pin-python-3-9-4.md
+      - 0008 Generated models, no drift: decisions/0008-generated-models-no-drift.md
+      - 0009 MkDocs Material + Mermaid for HTML docs: decisions/0009-mkdocs-material-mermaid-html-docs.md
+  - Reference:
+      - Overview: reference/index.md
+      - Commands: reference/commands.md
+      - Schema ERD (example): reference/schema-erd.md
+  - Glossary: glossary.md

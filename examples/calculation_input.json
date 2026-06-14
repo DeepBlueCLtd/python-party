@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "0.2.0-placeholder",
+  "name": "Illustrative platform (placeholder)",
+  "generatedUtc": "2026-06-14T00:00:00Z",
+  "characteristics": {
+    "draftMetres": 7.5,
+    "lengthMetres": 95.0,
+    "weightTonnes": 2400.0,
+    "yearIntroduced": 1998
+  },
+  "radiatedNoise": {
+    "baseFrequencyHz": 50.0,
+    "bandRatio": 2.0,
+    "bandCount": 10,
+    "bearingStepDeg": 30.0,
+    "baseLevelDb": 140.0,
+    "rolloffDbPerOctave": 5.0,
+    "directivity": {
+      "peakBearingDeg": 180.0,
+      "amplitudeDb": 6.0
+    }
+  },
+  "sensors": {
+    "active": {
+      "name": "AS-900 Echo",
+      "manufacturer": "DeepBlue Sonics",
+      "operatingFrequencyHz": 6000.0,
+      "sourceLevelDb": 215.0,
+      "beamwidthDeg": 15.0,
+      "pulseLengthSeconds": 0.5,
+      "detectionThresholdDb": 12.0
+    },
+    "passive": [
+      {
+        "name": "PA-110 Flank Array",
+        "manufacturer": "DeepBlue Sonics",
+        "operatingFrequencyHz": 1500.0,
+        "arrayGainDb": 18.0,
+        "detectionThresholdDb": 10.0,
+        "bearingAccuracyDeg": 1.5
+      },
+      {
+        "name": "PA-220 Towed Array",
+        "manufacturer": "Marine Acoustics Ltd",
+        "operatingFrequencyHz": 300.0,
+        "arrayGainDb": 22.0,
+        "detectionThresholdDb": 8.0,
+        "bearingAccuracyDeg": 2.0
+      }
+    ]
+  }
+}

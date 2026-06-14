@@ -1,0 +1,43 @@
+name: Deploy docs
+
+# Build the MkDocs Material site and publish it to the `gh-pages` branch.
+# Pages is configured as "Deploy from a branch" -> gh-pages (root).
+
+on:
+  push:
+    branches: ["main"]
+  # Allow manual runs from the Actions tab.
+  workflow_dispatch:
+
+# Needed so `mkdocs gh-deploy` can push the built site to the gh-pages branch.
+permissions:
+  contents: write
+
+# Don't let two publishes race on the gh-pages branch.
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so gh-deploy can update the gh-pages branch cleanly.
+          fetch-depth: 0
+
+      - name: Set up Python 3.9
+        # Docs build on the latest 3.9.x patch; the exact-3.9.4 pin is a target-system
+        # constraint for the devcontainer and demo, not CI. See docs/decisions/0007.
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install docs dependencies
+        run: python -m pip install -e ".[docs]"
+
+      - name: Build (strict) and publish to gh-pages
+        # gh-deploy builds with --strict, force-pushes to gh-pages, and writes .nojekyll
+        # so GitHub serves the MkDocs HTML as-is (no Jekyll processing).
+        run: mkdocs gh-deploy --force --no-history --strict

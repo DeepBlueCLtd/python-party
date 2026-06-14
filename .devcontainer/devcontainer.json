@@ -1,0 +1,24 @@
+{
+  "name": "Acoustic Reference Book — Phase 1 pipeline (Python 3.9.4)",
+  "//": "Pinned to EXACTLY Python 3.9.4 to match the target system (docs/decisions/0007).",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.9.4"
+    },
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "postCreateCommand": "make bootstrap",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "redhat.vscode-xml"
+      ],
+      "settings": {
+        "python.testing.pytestEnabled": true
+      }
+    }
+  }
+}
