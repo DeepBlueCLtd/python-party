@@ -12,10 +12,10 @@
 | `make verify` | Lint (`ruff`) + tests (`pytest`) | ✅ |
 | `make docs` | Build static HTML site (`mkdocs build --strict`) → `site/` | ✅ |
 | `make docs-serve` | Live-preview docs at <http://localhost:8000> | ✅ |
-| `make generate` | Regenerate models from `schema/*.xsd` via `xsdata` | ⏳ Phase 1 task |
+| `make generate` | Regenerate models from `schema/*.xsd` via `xsdata` | ✅ |
 | `make gen-schema-docs` | Generate schema reference + Mermaid ERD from the enriched XSD | ⏳ Phase 1 task |
-| `make pipeline` | End-to-end: map → serialise → validate → round-trip | ⏳ Phase 1 task |
-| `make compare` | Migration-safety diff vs a known-good reference | ⏳ Phase 1 task |
+| `make pipeline` | End-to-end: map → serialise → validate → round-trip | ✅ |
+| `make compare` | Migration-safety diff vs a known-good reference | ✅ |
 | `make bundle` | Distribution bundle (data + schema + models) | ⏳ Phase 1 task |
 
 ⏳ targets currently print a pointer to `specs/001-codespace-xml-scaffold/tasks.md` and exit

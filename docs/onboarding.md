@@ -42,6 +42,6 @@ Read these, in order — they're short:
 3. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
 
 !!! tip "What's done, what's next"
-    The environment and the end-to-end pipeline are in place. Remaining pipeline work
-    (migration-safety `compare`, generated schema docs/ERD, the distribution bundle) is
-    tracked in `specs/001-codespace-xml-scaffold/tasks.md`.
+    The environment, the end-to-end pipeline, and the migration-safety `compare` are in
+    place. Remaining pipeline work (generated schema docs/ERD and the distribution bundle)
+    is tracked in `specs/001-codespace-xml-scaffold/tasks.md`.

@@ -48,6 +48,7 @@ nav:
       - Use the Codespace: how-to/use-the-codespace.md
       - Build the docs site: how-to/build-the-docs-site.md
       - Swap in the real schema: how-to/swap-in-the-real-schema.md
+      - Run the migration-safety comparison: how-to/run-the-migration-safety-comparison.md
       - Add a decision record: how-to/add-a-decision-record.md
   - Concepts:
       - Schema as the contract: concepts/schema-as-contract.md
