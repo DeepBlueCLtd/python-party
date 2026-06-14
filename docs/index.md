@@ -38,7 +38,7 @@ human semantic gate (is the science right?). See
   [Add a decision record](how-to/add-a-decision-record.md).
 - New understanding lands as a **concept** page; new recipes as **how-to** guides.
 - The **schema reference and ERD** are *generated from the enriched XSD* — see the
-  [example ERD](reference/schema-erd.md) — so the docs can never drift from the contract.
+  [generated schema reference](reference/schema/index.md) — so the docs can never drift from the contract.
 
 !!! note "Status"
     Provisional scaffold. The environment (Codespace, tests, docs site) is real and green

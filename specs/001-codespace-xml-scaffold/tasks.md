@@ -17,11 +17,12 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 > (Foundational) and **User Story 2 — the schema-driven pipeline MVP** are now implemented:
 > enriched placeholder XSD, xsdata generation (3.9-safe, idempotent), the single mapping, the
 > two structural gates, `make generate` / `make pipeline`, and the golden-file tests.
-> **User Story 3 — the migration-safety `compare`** is now implemented too: a canonicalising
-> comparison (prefix/attribute/whitespace/comment-insensitive), `make compare`, a shipped
-> known-good reference fixture, and its tests. The **remaining work is US5 (generated schema
-> docs/ERD) and US4 (bundle + drift gate)**; the `bundle` CLI subcommand exists but exits
-> non-zero as not-yet-implemented.
+> **User Story 3 — the migration-safety `compare`** and **User Story 5 — the generated schema
+> reference & ERD** are now implemented too: a canonicalising comparison (`make compare`) with a
+> shipped reference fixture, and an XSD-driven Markdown reference + Mermaid `erDiagram`
+> (`make gen-schema-docs`) wired into the docs nav, both with tests. The **remaining work is US4
+> (bundle + drift gate)**; the `bundle` CLI subcommand exists but exits non-zero as
+> not-yet-implemented.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -101,18 +102,18 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 
 ---
 
-## Phase 6: User Story 5 - Generated schema reference & ERD (Priority: P2) [FR-020/021/022]
+## Phase 6: User Story 5 - Generated schema reference & ERD (Priority: P2) [FR-020/021/022] — ✅ COMPLETE
 
 **Goal**: Generate the HTML schema reference + a Mermaid **ERD** *from the enriched XSD*, so docs can't drift.
 
 **Independent Test**: `make gen-schema-docs` then `make docs` renders generated reference pages and an ERD matching the schema.
 
-- [ ] T024 [US5] Implement the schema-docs generator (walk the enriched XSD/models → per-type Markdown reference carrying `xs:documentation` + a Mermaid `erDiagram`) into `docs/reference/schema/` in `src/acoustic_dataset/schema_docs.py` (depends on T010)
-- [ ] T025 [US5] Wire `gen-schema-docs` subcommand + `make gen-schema-docs` in `src/acoustic_dataset/cli.py` (depends on T024)
-- [ ] T026 [US5] Integrate generated pages into the MkDocs nav (e.g. `mkdocs-gen-files` + `mkdocs-literate-nav` or `awesome-pages`) and replace the hand-drawn stand-in note in `docs/reference/schema-erd.md`; update `mkdocs.yml`/`pyproject.toml` docs extra
-- [ ] T027 [P] [US5] Test generator output contains entities, the `xs:documentation` prose, and an `erDiagram` block in `tests/integration/test_schema_docs.py`
+- [X] T024 [US5] Implement the schema-docs generator (walk the enriched XSD/models → per-type Markdown reference carrying `xs:documentation` + a Mermaid `erDiagram`) into `docs/reference/schema/` in `src/acoustic_dataset/schema_docs.py` (depends on T010)
+- [X] T025 [US5] Wire `gen-schema-docs` subcommand + `make gen-schema-docs` in `src/acoustic_dataset/cli.py` (depends on T024)
+- [X] T026 [US5] Integrate the generated page into the MkDocs nav (single static `reference/schema/index.md` entry — no extra plugin needed) and replace the hand-drawn stand-in `docs/reference/schema-erd.md` (deleted; all inbound links repointed)
+- [X] T027 [P] [US5] Test generator output contains entities, the `xs:documentation` prose, and an `erDiagram` block in `tests/integration/test_schema_docs.py`
 
-**Checkpoint**: HTML site shows a schema ERD generated from the XSD (SC-008, SC-009).
+**Checkpoint**: HTML site shows a schema ERD generated from the XSD (SC-008, SC-009). ✅
 
 ---
 
@@ -194,4 +195,4 @@ placeholder once it arrives.
 - `[P]` = different files, no dependencies. `[Story]` ties a task to a user story for traceability.
 - Generated artifacts (`src/acoustic_dataset/models/`, `docs/reference/schema/`) are **never** hand-edited — regenerate (ADR 0008).
 - Commit after each task or logical group; keep `make verify` green.
-- Total: 34 tasks — 23 already complete (`[X]`), 11 remaining (the pipeline).
+- Total: 34 tasks — 27 already complete (`[X]`), 7 remaining (the pipeline).

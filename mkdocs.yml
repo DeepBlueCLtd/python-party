@@ -69,5 +69,5 @@ nav:
   - Reference:
       - Overview: reference/index.md
       - Commands: reference/commands.md
-      - Schema ERD (example): reference/schema-erd.md
+      - Schema reference (generated): reference/schema/index.md
   - Glossary: glossary.md

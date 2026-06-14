@@ -31,6 +31,7 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 | Example calculation input (placeholder) | `examples/calculation_input.json` |
 | Tests (unit / integration / golden) | `tests/` |
 | The plan & design artifacts | `specs/001-codespace-xml-scaffold/` (`spec.md`, `plan.md`, `tasks.md`) |
+| The generated schema reference + ERD | [reference/schema](reference/schema/index.md) (run `make gen-schema-docs`) |
 | Why each choice was made | [Decision records](decisions/index.md) |
 
 ## Build the mental model
@@ -42,6 +43,6 @@ Read these, in order — they're short:
 3. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
 
 !!! tip "What's done, what's next"
-    The environment, the end-to-end pipeline, and the migration-safety `compare` are in
-    place. Remaining pipeline work (generated schema docs/ERD and the distribution bundle)
-    is tracked in `specs/001-codespace-xml-scaffold/tasks.md`.
+    The environment, the end-to-end pipeline, the migration-safety `compare`, and the
+    generated schema reference/ERD are in place. The remaining pipeline work (the distribution
+    bundle + CI drift gate) is tracked in `specs/001-codespace-xml-scaffold/tasks.md`.

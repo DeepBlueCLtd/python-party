@@ -30,8 +30,8 @@ docs-serve: ## Live-preview the HTML docs at http://localhost:8000
 generate: ## Regenerate typed models from schema/*.xsd via xsdata.
 	python -m acoustic_dataset.cli generate
 
-gen-schema-docs: ## Generate schema reference pages + Mermaid ERD from the enriched XSD. (Phase 1 task)
-	@echo "Not yet implemented — tracked in specs/001-codespace-xml-scaffold/tasks.md"; exit 1
+gen-schema-docs: ## Generate schema reference pages + Mermaid ERD from the enriched XSD.
+	python -m acoustic_dataset.cli gen-schema-docs
 
 pipeline: ## End-to-end: map example input -> objects -> XML -> validate -> round-trip.
 	python -m acoustic_dataset.cli pipeline
