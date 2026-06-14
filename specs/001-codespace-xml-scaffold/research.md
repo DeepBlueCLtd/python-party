@@ -49,7 +49,7 @@ decisions, each with rationale and rejected alternatives, so the plan is grounde
 
 ## D5 — Codespaces environment: devcontainer
 
-- **Decision**: A `.devcontainer/devcontainer.json` on the Python 3.11 image with a `postCreateCommand`
+- **Decision**: A `.devcontainer/devcontainer.json` pinning the Python feature to 3.9.4 with a `postCreateCommand`
   that runs `make bootstrap` (install deps, generate models). Document an identical local path.
 - **Rationale**: FR-001/FR-002 one-click provisioning with no manual steps; FR-004 portability via the
   same Make targets locally. Keeps the environment definition declarative and version-controlled.

@@ -79,12 +79,32 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_compare(args: argparse.Namespace) -> int:
+    """Migration-safety diff: catch schema-valid-but-different output vs a reference."""
+    from lxml import etree
+
+    from acoustic_dataset import compare as compare_mod
+
+    generated, reference = args.generated, args.reference
+    for path in (generated, reference):
+        if not path.is_file():
+            print(f"error: file not found: {path}", file=sys.stderr)
+            return 1
+
+    try:
+        result = compare_mod.compare(generated, reference)
+    except etree.XMLSyntaxError as exc:
+        print(f"error: could not parse XML: {exc}", file=sys.stderr)
+        return 1
+
+    if result.equal:
+        print(f"match: {generated} is canonically identical to {reference}")
+        return 0
     print(
-        "compare is not yet implemented (User Story 3 — see "
-        "specs/001-codespace-xml-scaffold/tasks.md).",
+        f"different: {generated} is schema-shaped but differs from {reference}",
         file=sys.stderr,
     )
-    return _NOT_IMPLEMENTED
+    print(result.diff, file=sys.stderr)
+    return 1
 
 
 def cmd_bundle(args: argparse.Namespace) -> int:
@@ -119,8 +139,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_val.set_defaults(func=cmd_validate)
 
     p_cmp = sub.add_parser("compare", help="Migration-safety diff vs a reference (US3).")
-    p_cmp.add_argument("generated", nargs="?")
-    p_cmp.add_argument("reference", nargs="?")
+    p_cmp.add_argument("generated", type=Path, help="The freshly generated XML to check.")
+    p_cmp.add_argument(
+        "reference", type=Path, help="The known-good reference XML to compare against."
+    )
     p_cmp.set_defaults(func=cmd_compare)
 
     p_bun = sub.add_parser("bundle", help="Distribution bundle: data + schema + models (US4).")

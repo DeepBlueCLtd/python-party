@@ -27,3 +27,8 @@ def input_path() -> Path:
 @pytest.fixture(scope="session")
 def golden_path() -> Path:
     return _REPO_ROOT / "tests" / "golden" / "acoustic_dataset.xml"
+
+
+@pytest.fixture(scope="session")
+def reference_path() -> Path:
+    return _REPO_ROOT / "examples" / "reference" / "trial_known_good.xml"

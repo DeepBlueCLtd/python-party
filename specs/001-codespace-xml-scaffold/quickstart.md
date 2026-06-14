@@ -6,7 +6,7 @@ detail lives in `tasks.md` and the code itself. Commands map to the contract in
 
 ## Prerequisites
 
-- A GitHub account (for the Codespaces path), **or** Python 3.11 + `make` locally (fallback path).
+- A GitHub account (for the Codespaces path), **or** Python 3.9.x + `make` locally (fallback path).
 - No other local tooling required — provisioning installs everything.
 
 ## Path A — GitHub Codespaces (primary)
@@ -81,6 +81,7 @@ make bundle
 - The contract: `schema/acoustic_dataset.xsd` (PLACEHOLDER — swap here).
 - The one place logic lives: `src/acoustic_dataset/mapping.py`.
 - Scientific seams: `src/acoustic_dataset/acoustics/`.
-- The source plan: `docs/delivery-plan.md`; onboarding: `docs/onboarding.md`.
+- The source plan & design artifacts: `specs/001-codespace-xml-scaffold/` (`spec.md`, `plan.md`).
+- Onboarding entry point: `docs/onboarding.md` (also the tutorial `docs/tutorials/01-start-here.md`).
 
 *(SC-007: a second contributor should reach green and locate these using only `docs/onboarding.md`.)*

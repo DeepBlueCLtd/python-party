@@ -36,8 +36,11 @@ gen-schema-docs: ## Generate schema reference pages + Mermaid ERD from the enric
 pipeline: ## End-to-end: map example input -> objects -> XML -> validate -> round-trip.
 	python -m acoustic_dataset.cli pipeline
 
-compare: ## Migration-safety diff of generated output vs a known-good reference. (Phase 1 task)
-	@echo "Not yet implemented — tracked in specs/001-codespace-xml-scaffold/tasks.md"; exit 1
+COMPARE_GENERATED ?= build/acoustic_dataset.xml
+COMPARE_REFERENCE ?= examples/reference/trial_known_good.xml
+
+compare: ## Migration-safety diff: $(COMPARE_GENERATED) vs $(COMPARE_REFERENCE) (override the vars).
+	python -m acoustic_dataset.cli compare "$(COMPARE_GENERATED)" "$(COMPARE_REFERENCE)"
 
 bundle: ## Produce distribution bundle (data + schema + generated models). (Phase 1 task)
 	@echo "Not yet implemented — tracked in specs/001-codespace-xml-scaffold/tasks.md"; exit 1

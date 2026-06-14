@@ -16,9 +16,12 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 > **Status note**: Phase 1 (Setup) and User Story 1 (zero-to-green) landed first. Phase 2
 > (Foundational) and **User Story 2 — the schema-driven pipeline MVP** are now implemented:
 > enriched placeholder XSD, xsdata generation (3.9-safe, idempotent), the single mapping, the
-> two structural gates, `make generate` / `make pipeline`, and the golden-file tests. The
-> **remaining work is US3 (compare), US5 (generated schema docs/ERD) and US4 (bundle + drift
-> gate)**; their `compare`/`bundle` CLI subcommands exist but exit non-zero as not-yet-implemented.
+> two structural gates, `make generate` / `make pipeline`, and the golden-file tests.
+> **User Story 3 — the migration-safety `compare`** is now implemented too: a canonicalising
+> comparison (prefix/attribute/whitespace/comment-insensitive), `make compare`, a shipped
+> known-good reference fixture, and its tests. The **remaining work is US5 (generated schema
+> docs/ERD) and US4 (bundle + drift gate)**; the `bundle` CLI subcommand exists but exits
+> non-zero as not-yet-implemented.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -84,17 +87,17 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 
 ---
 
-## Phase 5: User Story 3 - Migration-safety comparison (Priority: P2)
+## Phase 5: User Story 3 - Migration-safety comparison (Priority: P2) — ✅ COMPLETE
 
 **Goal**: Diff generated output against a known-good reference; surface *schema-valid-but-different*.
 
 **Independent Test**: Identical output → clean match (exit 0); schema-valid-but-different → diff + non-zero exit.
 
-- [ ] T021 [US3] Implement canonicalise (sort attributes, normalise whitespace/namespaces) + diff in `src/acoustic_dataset/compare.py`
-- [ ] T022 [US3] Wire `compare` subcommand + `make compare` in `src/acoustic_dataset/cli.py` (depends on T021)
-- [ ] T023 [P] [US3] Reference fixture in `examples/reference/` + tests (clean match, meaningful diff, cosmetic-only ignored) in `tests/integration/test_compare.py`
+- [X] T021 [US3] Implement canonicalise (sort attributes, normalise whitespace/namespaces) + diff in `src/acoustic_dataset/compare.py`
+- [X] T022 [US3] Wire `compare` subcommand + `make compare` in `src/acoustic_dataset/cli.py` (depends on T021)
+- [X] T023 [P] [US3] Reference fixture in `examples/reference/` + tests (clean match, meaningful diff, cosmetic-only ignored) in `tests/integration/test_compare.py`
 
-**Checkpoint**: `make compare` catches a schema-valid-but-different file (SC-005).
+**Checkpoint**: `make compare` catches a schema-valid-but-different file (SC-005). ✅
 
 ---
 
@@ -191,4 +194,4 @@ placeholder once it arrives.
 - `[P]` = different files, no dependencies. `[Story]` ties a task to a user story for traceability.
 - Generated artifacts (`src/acoustic_dataset/models/`, `docs/reference/schema/`) are **never** hand-edited — regenerate (ADR 0008).
 - Commit after each task or logical group; keep `make verify` green.
-- Total: 34 tasks — 8 already complete (`[X]`), 26 remaining (the pipeline).
+- Total: 34 tasks — 23 already complete (`[X]`), 11 remaining (the pipeline).
