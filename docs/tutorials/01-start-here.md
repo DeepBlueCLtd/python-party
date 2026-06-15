@@ -53,11 +53,13 @@ Markdown that lives next to the code, so they travel with the project
 
 ## Step 4 — Build the mental model
 
-Read these two short pages, in order:
+Read these short pages, in order:
 
 1. [Schema as the contract](../concepts/schema-as-contract.md) — the one idea everything
    follows from.
-2. [The two verification gates](../concepts/two-verification-gates.md) — why schema-valid
+2. [Typed data, end to end](../concepts/typed-vs-dicts.md) — how you write Python here: start
+   from a structured set of parameters and keep the data in typed objects all the way to XML.
+3. [The two verification gates](../concepts/two-verification-gates.md) — why schema-valid
    isn't the same as correct.
 
 Then skim the [decisions overview](../decisions/index.md). Each ADR tells you *why* a choice

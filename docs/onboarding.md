@@ -39,9 +39,9 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 Read these, in order — they're short:
 
 1. [Schema as the contract](concepts/schema-as-contract.md) — the idea everything follows from.
-2. [The two verification gates](concepts/two-verification-gates.md) — why schema-valid isn't the same as correct.
-3. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
-4. [Typed objects vs dictionaries](concepts/typed-vs-dicts.md) — why typed data beats a generic `dict`.
+2. [Typed data, end to end](concepts/typed-vs-dicts.md) — how you write Python here: start from a structured set of parameters and keep the data typed all the way to XML.
+3. [The two verification gates](concepts/two-verification-gates.md) — why schema-valid isn't the same as correct.
+4. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
 
 !!! tip "What's done, what's next"
     The full Phase 1 pipeline is in place — environment, end-to-end pipeline, migration-safety
