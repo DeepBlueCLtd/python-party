@@ -14,7 +14,7 @@
         <link rel="prev" href="../use-the-codespace/">
       
       
-        <link rel="next" href="../swap-in-the-real-schema/">
+        <link rel="next" href="../change-the-schema/">
       
       
         
@@ -614,14 +614,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../swap-in-the-real-schema/" class="md-nav__link">
+      <a href="../change-the-schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -706,6 +706,8 @@
   
     
     
+      
+        
       
         
       
@@ -829,6 +831,34 @@
     
   
     Pipeline data flow (ERD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/typed-vs-dicts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typed objects vs dictionaries
   
 
     
@@ -1329,14 +1359,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/schema-erd/" class="md-nav__link">
+      <a href="../../reference/schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Schema ERD (example)
+    Schema reference (generated)
   
 
     
@@ -1527,12 +1557,12 @@ gitignored.</p>
 <span class="sb">```</span>
 </code></pre></div>
 <p>See the <a href="../../concepts/pipeline-data-flow/">pipeline ERD</a> and the
-<a href="../../reference/schema-erd/">example schema ERD</a> for working examples.</p>
+<a href="../../reference/schema/">generated schema ERD</a> for working examples.</p>
 <h2 id="schema-reference-erd-are-generated">Schema reference &amp; ERD are <em>generated</em><a class="headerlink" href="#schema-reference-erd-are-generated" title="Permanent link">&para;</a></h2>
-<p>The pages under <code>reference/</code> that describe the schema are produced from the <strong>enriched XSD</strong>
-by <code>make gen-schema-docs</code> (a Phase 1 task), not hand-written — so they can't drift from the
-contract. Until that step is implemented, the <a href="../../reference/schema-erd/">example ERD</a> is a
-hand-drawn stand-in showing the intended output.</p>
+<p>The <a href="../../reference/schema/">schema reference</a> — the entity tables and the Mermaid ERD —
+is produced from the <strong>enriched XSD</strong> by <code>make gen-schema-docs</code>, not hand-written, so it can't
+drift from the contract. Regenerate it after any schema change; the CI drift gate fails if the
+committed page is stale.</p>
 <h2 id="linking-rules-to-keep-strict-happy">Linking rules (to keep <code>--strict</code> happy)<a class="headerlink" href="#linking-rules-to-keep-strict-happy" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Link between docs pages with <strong>relative paths</strong> to the <code>.md</code> file

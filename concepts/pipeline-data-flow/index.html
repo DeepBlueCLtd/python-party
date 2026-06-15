@@ -14,7 +14,7 @@
         <link rel="prev" href="../two-verification-gates/">
       
       
-        <link rel="next" href="../../decisions/">
+        <link rel="next" href="../typed-vs-dicts/">
       
       
         
@@ -499,14 +499,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../how-to/swap-in-the-real-schema/" class="md-nav__link">
+      <a href="../../how-to/change-the-schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -593,6 +593,8 @@
   
     
     
+      
+        
       
         
       
@@ -804,6 +806,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../typed-vs-dicts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typed objects vs dictionaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1296,14 +1326,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/schema-erd/" class="md-nav__link">
+      <a href="../../reference/schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Schema ERD (example)
+    Schema reference (generated)
   
 
     
@@ -1451,10 +1481,11 @@ tests assert on them directly, or diff the serialised XML against a golden file.
 intermediate (no CSV, no pickle) is needed to get testability; that whole chain was removed
 (<a href="../../decisions/0002-drop-csv-pickle-and-write_xml/">ADR 0002</a>).</p>
 <h2 id="the-entities-as-an-er-diagram">The entities as an ER diagram<a class="headerlink" href="#the-entities-as-an-er-diagram" title="Permanent link">&para;</a></h2>
-<p>This is the kind of <strong>Mermaid ERD</strong> the docs render — here drawn by hand for the <em>placeholder</em>
-domain. Once the real enriched XSD lands, <code>make gen-schema-docs</code> produces the equivalent
-diagram <strong>automatically from the schema</strong> (see <a href="../../reference/schema-erd/">the example schema ERD</a>
-and <a href="../../decisions/0009-mkdocs-material-mermaid-html-docs/">ADR 0009</a>).</p>
+<p>This is the kind of <strong>Mermaid ERD</strong> the docs render — here drawn by hand for the data-flow story
+(it deliberately includes pipeline entities like the golden and reference files). The
+<strong><a href="../../reference/schema/">schema reference</a></strong> ERD, by contrast, is produced
+<strong>automatically from the schema</strong> by <code>make gen-schema-docs</code>
+(<a href="../../decisions/0009-mkdocs-material-mermaid-html-docs/">ADR 0009</a>).</p>
 <pre class="mermaid"><code>erDiagram
     CALCULATION_INPUT ||--|| CALCULATION_RESULT : "produces (via acoustic seams)"
     CALCULATION_RESULT ||--|| PLATFORM : "mapped once onto"
@@ -1490,7 +1521,7 @@ and <a href="../../decisions/0009-mkdocs-material-mermaid-html-docs/">ADR 0009</
     }
     SCHEMA {
         string xsd_path
-        string status "PLACEHOLDER"
+        string version "0.2.0"
     }</code></pre>
 <h2 id="reading-the-entities">Reading the entities<a class="headerlink" href="#reading-the-entities" title="Permanent link">&para;</a></h2>
 <table>
@@ -1504,7 +1535,7 @@ and <a href="../../decisions/0009-mkdocs-material-mermaid-html-docs/">ADR 0009</
 <tbody>
 <tr>
 <td><strong>CalculationResult</strong></td>
-<td>Output of the acoustic seams; placeholder for the real recalculation</td>
+<td>Output of the acoustic seams (the recalculation/resampling step)</td>
 <td>Produced by discrete, testable functions</td>
 </tr>
 <tr>

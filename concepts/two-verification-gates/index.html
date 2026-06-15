@@ -499,14 +499,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../how-to/swap-in-the-real-schema/" class="md-nav__link">
+      <a href="../../how-to/change-the-schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -593,6 +593,8 @@
   
     
     
+      
+        
       
         
       
@@ -818,6 +820,34 @@
     
   
     Pipeline data flow (ERD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../typed-vs-dicts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typed objects vs dictionaries
   
 
     
@@ -1318,14 +1348,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/schema-erd/" class="md-nav__link">
+      <a href="../../reference/schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Schema ERD (example)
+    Schema reference (generated)
   
 
     
@@ -1516,7 +1546,7 @@ one well-named function, not a 500-line script.</p>
 generator, new output can be perfectly schema-valid yet differ from files a consumer already
 depends on (perhaps relying on a quirk of the old hand-rolled output). The migration-safety
 comparison diffs new output against a known-good <strong>reference</strong> file to surface exactly this.
-See <a href="../../how-to/swap-in-the-real-schema/">Swap in the real schema</a> and
+See <a href="../../how-to/change-the-schema/">Change the schema</a> and
 <a href="../../decisions/0004-two-gate-verification/">ADR 0004</a>.</p>
 <h2 id="why-split-them-at-all">Why split them at all?<a class="headerlink" href="#why-split-them-at-all" title="Permanent link">&para;</a></h2>
 <p>Because each gate, kept separate, does one job and can't mask the other. Automate the half a

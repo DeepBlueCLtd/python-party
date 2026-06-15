@@ -14,7 +14,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../schema-erd/">
+        <link rel="next" href="../schema/">
       
       
         
@@ -499,14 +499,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../how-to/swap-in-the-real-schema/" class="md-nav__link">
+      <a href="../../how-to/change-the-schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -591,6 +591,8 @@
   
     
     
+      
+        
       
         
       
@@ -714,6 +716,34 @@
     
   
     Pipeline data flow (ERD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/typed-vs-dicts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typed objects vs dictionaries
   
 
     
@@ -1296,14 +1326,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../schema-erd/" class="md-nav__link">
+      <a href="../schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Schema ERD (example)
+    Schema reference (generated)
   
 
     
@@ -1475,7 +1505,7 @@
 <tr>
 <td><code>make gen-schema-docs</code></td>
 <td>Generate schema reference + Mermaid ERD from the enriched XSD</td>
-<td>⏳ Phase 1 task</td>
+<td>✅</td>
 </tr>
 <tr>
 <td><code>make pipeline</code></td>
@@ -1490,12 +1520,13 @@
 <tr>
 <td><code>make bundle</code></td>
 <td>Distribution bundle (data + schema + models)</td>
-<td>⏳ Phase 1 task</td>
+<td>✅</td>
 </tr>
 </tbody>
 </table>
-<p>⏳ targets currently print a pointer to <code>specs/001-codespace-xml-scaffold/tasks.md</code> and exit
-non-zero.</p>
+<p>All command targets are implemented. The CI drift gate regenerates the models and schema docs
+on the Python 3.9 target and fails if the committed artifacts are stale (see
+<a href="../../decisions/0008-generated-models-no-drift/">ADR 0008</a>).</p>
 <h2 id="cli-subcommands">CLI subcommands<a class="headerlink" href="#cli-subcommands" title="Permanent link">&para;</a></h2>
 <p><code>python -m acoustic_dataset.cli &lt;command&gt;</code> (and the <code>acoustic</code> entry point). Each maps to a make target
 above; full input/exit-code semantics are in the contract file. Summary:</p>

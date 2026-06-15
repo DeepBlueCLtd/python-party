@@ -499,14 +499,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../how-to/swap-in-the-real-schema/" class="md-nav__link">
+      <a href="../../how-to/change-the-schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Swap in the real schema
+    Change the schema
   
 
     
@@ -591,6 +591,8 @@
   
     
     
+      
+        
       
         
       
@@ -714,6 +716,34 @@
     
   
     Pipeline data flow (ERD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/typed-vs-dicts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typed objects vs dictionaries
   
 
     
@@ -1346,14 +1376,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/schema-erd/" class="md-nav__link">
+      <a href="../../reference/schema/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Schema ERD (example)
+    Schema reference (generated)
   
 
     
@@ -1529,7 +1559,9 @@
 
 <h1 id="adr-0005-ship-a-labelled-placeholder-schema-so-the-pipeline-runs-today">ADR 0005: Ship a labelled placeholder schema so the pipeline runs today<a class="headerlink" href="#adr-0005-ship-a-labelled-placeholder-schema-so-the-pipeline-runs-today" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status</strong>: Accepted (provisional — replaced by the real XSD when it lands)</li>
+<li><strong>Status</strong>: Superseded (2026-06-14) — the schema authored here has been adopted as the
+  authoritative contract; there is no separate "real" XSD pending. Evolve it via
+  <a href="../../how-to/change-the-schema/">Change the schema</a>.</li>
 <li><strong>Date</strong>: 2026-06-13</li>
 <li><strong>Deciders</strong>: Project team</li>
 </ul>
@@ -1544,7 +1576,7 @@ resolve. A scaffold nobody can run teaches nothing and validates nothing.</p>
 (a banded, typed numeric structure with <code>xs:documentation</code> on terms) and a matching example
 calculation, both <strong>clearly labelled as placeholders</strong>, so the whole pipeline — generate →
 map → serialise → validate → round-trip — is demonstrably runnable now. The schema sits at a
-single documented swap location (see <a href="../../how-to/swap-in-the-real-schema/">the how-to</a>).</p>
+single documented location (see <a href="../../how-to/change-the-schema/">the how-to</a>).</p>
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
 <h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1573,8 +1605,12 @@ single documented swap location (see <a href="../../how-to/swap-in-the-real-sche
 </ul>
 <h2 id="notes-revisit-triggers">Notes / revisit triggers<a class="headerlink" href="#notes-revisit-triggers" title="Permanent link">&para;</a></h2>
 <ul>
-<li>When the real XSD arrives, follow the swap how-to; this ADR is then <strong>superseded</strong> by the
-  reality of the real contract, and the placeholder is deleted.</li>
+<li><strong>Superseded.</strong> Rather than waiting for a separate "real" XSD, the schema authored here has
+  been adopted as the authoritative contract (it exercises the hard half — banded/typed
+  numerics, enforced cardinalities, type extension — so it earned the promotion). It is no
+  longer treated as a placeholder; evolve it like any contract via
+  <a href="../../how-to/change-the-schema/">Change the schema</a>. The decision to <em>bootstrap</em> with a
+  runnable schema (rather than stall on an external dependency) still stands and paid off.</li>
 </ul>
 
 
