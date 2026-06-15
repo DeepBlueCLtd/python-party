@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- PLACEHOLDER known-good reference (US3 migration-safety demo). Logically identical to the pipeline output but serialised in a different style (ds: prefix) to show the comparison ignores cosmetic differences. Replace with a real prior-process / trial file when one is available. -->
+<!-- Sample known-good reference for the migration-safety comparison (US3). Logically identical to the pipeline output but serialised in a different style (ds: prefix) to show the comparison ignores cosmetic differences. Replace with a real prior-process / trial file to check a migration. -->
 <ds:Platform xmlns:ds="https://deepblue.example/acoustic-dataset/v0">
-  <ds:SchemaVersion>0.2.0-placeholder</ds:SchemaVersion>
-  <ds:Name>Illustrative platform (placeholder)</ds:Name>
+  <ds:SchemaVersion>0.2.0</ds:SchemaVersion>
+  <ds:Name>Reference Platform A</ds:Name>
   <ds:GeneratedUtc>2026-06-14T00:00:00Z</ds:GeneratedUtc>
   <ds:Characteristics>
     <ds:Draft>7.500</ds:Draft>

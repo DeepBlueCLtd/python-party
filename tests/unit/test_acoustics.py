@@ -60,7 +60,7 @@ def test_calculate_produces_ten_bands_of_twelve_sectors(input_path):
 
 def test_calculate_synthesises_characteristics_and_sensors(input_path):
     result = acoustics.calculate_from_file(input_path)
-    assert result.schema_version == "0.2.0-placeholder"
+    assert result.schema_version == "0.2.0"
     assert result.characteristics.year_introduced == 1998
     assert result.active_sonar.name == "AS-900 Echo"
     assert result.active_sonar.max_range_m == pytest.approx(10.0 ** (203.0 / 40.0))

@@ -47,13 +47,14 @@ nav:
   - How-to guides:
       - Use the Codespace: how-to/use-the-codespace.md
       - Build the docs site: how-to/build-the-docs-site.md
-      - Swap in the real schema: how-to/swap-in-the-real-schema.md
+      - Change the schema: how-to/change-the-schema.md
       - Run the migration-safety comparison: how-to/run-the-migration-safety-comparison.md
       - Add a decision record: how-to/add-a-decision-record.md
   - Concepts:
       - Schema as the contract: concepts/schema-as-contract.md
       - The two verification gates: concepts/two-verification-gates.md
       - Pipeline data flow (ERD): concepts/pipeline-data-flow.md
+      - Typed objects vs dictionaries: concepts/typed-vs-dicts.md
   - Decisions (ADRs):
       - Overview: decisions/index.md
       - ADR template: decisions/0000-template.md
@@ -69,5 +70,5 @@ nav:
   - Reference:
       - Overview: reference/index.md
       - Commands: reference/commands.md
-      - Schema ERD (example): reference/schema-erd.md
+      - Schema reference (generated): reference/schema/index.md
   - Glossary: glossary.md

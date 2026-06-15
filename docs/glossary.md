@@ -46,7 +46,7 @@ comparison, not by validation alone.
 
 **ERD (Entity-Relationship Diagram)** — a diagram of entities and how they relate. We
 render these with **Mermaid** and generate them from the enriched XSD so they cannot drift
-from the contract. See the [example ERD](reference/schema-erd.md).
+from the contract. See the [generated schema reference](reference/schema/index.md).
 
 ## Tooling
 

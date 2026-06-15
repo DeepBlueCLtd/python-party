@@ -17,8 +17,9 @@ bootstrap: ## Install deps + generate models. Run by the devcontainer.
 	$(MAKE) generate
 	@echo "Bootstrap complete. Run 'make verify' to check the environment."
 
-verify: ## Run the full test suite + lint — the single 'is the environment good?' command.
+verify: ## Run lint + type-check + tests — the single 'is the environment good?' command.
 	ruff check src tests
+	mypy
 	pytest
 
 docs: ## Build the attractive HTML docs site (strict — fails on broken links).
@@ -30,8 +31,8 @@ docs-serve: ## Live-preview the HTML docs at http://localhost:8000
 generate: ## Regenerate typed models from schema/*.xsd via xsdata.
 	python -m acoustic_dataset.cli generate
 
-gen-schema-docs: ## Generate schema reference pages + Mermaid ERD from the enriched XSD. (Phase 1 task)
-	@echo "Not yet implemented — tracked in specs/001-codespace-xml-scaffold/tasks.md"; exit 1
+gen-schema-docs: ## Generate schema reference pages + Mermaid ERD from the enriched XSD.
+	python -m acoustic_dataset.cli gen-schema-docs
 
 pipeline: ## End-to-end: map example input -> objects -> XML -> validate -> round-trip.
 	python -m acoustic_dataset.cli pipeline
@@ -42,5 +43,5 @@ COMPARE_REFERENCE ?= examples/reference/trial_known_good.xml
 compare: ## Migration-safety diff: $(COMPARE_GENERATED) vs $(COMPARE_REFERENCE) (override the vars).
 	python -m acoustic_dataset.cli compare "$(COMPARE_GENERATED)" "$(COMPARE_REFERENCE)"
 
-bundle: ## Produce distribution bundle (data + schema + generated models). (Phase 1 task)
-	@echo "Not yet implemented — tracked in specs/001-codespace-xml-scaffold/tasks.md"; exit 1
+bundle: pipeline ## Produce distribution bundle (data + schema + generated models) in build/dist.
+	python -m acoustic_dataset.cli bundle

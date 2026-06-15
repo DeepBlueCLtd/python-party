@@ -4,8 +4,8 @@ The subcommand names, argument names and exit-code semantics are the contract th
 and CI bind to; internal module layout is not. Each command stays a thin wrapper that
 dispatches to a focused module.
 
-Exit codes: 0 = success; 1 = a real failure (validation, mapping, generation); 2 = a
-command that is recognised but not yet implemented (later user stories).
+Exit codes: 0 = success; 1 = a real failure (validation, mapping, generation, a missing
+bundle component, or a meaningful comparison difference); 2 = an argparse usage error.
 """
 
 from __future__ import annotations
@@ -20,8 +20,6 @@ _REPO_ROOT = _PKG_DIR.parent.parent
 DEFAULT_SCHEMA = _REPO_ROOT / "schema" / "acoustic_dataset.xsd"
 DEFAULT_INPUT = _REPO_ROOT / "examples" / "calculation_input.json"
 DEFAULT_OUT = _REPO_ROOT / "build" / "acoustic_dataset.xml"
-
-_NOT_IMPLEMENTED = 2
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
@@ -57,10 +55,10 @@ def cmd_pipeline(args: argparse.Namespace) -> int:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(xml, encoding="utf-8")
-    print(
-        f"pipeline ok: {len(model.radiated_noise.band)} band(s) -> {out} "
-        f"(schema-valid, round-trip-equal)"
-    )
+    # radiated_noise is Optional on the generated model (3.9-compatible, no kw_only); the gates
+    # above guarantee it is populated by the time we get here.
+    bands = model.radiated_noise.band if model.radiated_noise else []
+    print(f"pipeline ok: {len(bands)} band(s) -> {out} (schema-valid, round-trip-equal)")
     return 0
 
 
@@ -76,6 +74,15 @@ def cmd_validate(args: argparse.Namespace) -> int:
     for err in report.errors:
         print(f"  - {err}", file=sys.stderr)
     return 1
+
+
+def cmd_gen_schema_docs(args: argparse.Namespace) -> int:
+    """Generate the schema reference + Mermaid ERD (and worked examples) from the schema."""
+    from acoustic_dataset import schema_docs
+
+    out_file = schema_docs.generate(args.schema, args.out, example_input=args.input)
+    print(f"schema docs ok: generated {out_file} from {args.schema}")
+    return 0
 
 
 def cmd_compare(args: argparse.Namespace) -> int:
@@ -108,12 +115,21 @@ def cmd_compare(args: argparse.Namespace) -> int:
 
 
 def cmd_bundle(args: argparse.Namespace) -> int:
+    """Assemble the distribution bundle: data + schema + generated models."""
+    from acoustic_dataset import bundle
+
+    try:
+        result = bundle.build_bundle(
+            args.out, schema=args.schema, data=args.data, models_dir=args.models
+        )
+    except bundle.BundleError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
     print(
-        "bundle is not yet implemented (User Story 4 — see "
-        "specs/001-codespace-xml-scaffold/tasks.md).",
-        file=sys.stderr,
+        f"bundle ok: {result.out_dir} "
+        f"(schema + data + {len(result.models)} generated model file(s))"
     )
-    return _NOT_IMPLEMENTED
+    return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -138,6 +154,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_val.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
     p_val.set_defaults(func=cmd_validate)
 
+    p_doc = sub.add_parser(
+        "gen-schema-docs", help="Generate schema reference + Mermaid ERD from the XSD (US5)."
+    )
+    p_doc.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
+    p_doc.add_argument("--input", type=Path, default=DEFAULT_INPUT)
+    p_doc.add_argument("--out", type=Path, default=_REPO_ROOT / "docs" / "reference" / "schema")
+    p_doc.set_defaults(func=cmd_gen_schema_docs)
+
     p_cmp = sub.add_parser("compare", help="Migration-safety diff vs a reference (US3).")
     p_cmp.add_argument("generated", type=Path, help="The freshly generated XML to check.")
     p_cmp.add_argument(
@@ -146,6 +170,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_cmp.set_defaults(func=cmd_compare)
 
     p_bun = sub.add_parser("bundle", help="Distribution bundle: data + schema + models (US4).")
+    p_bun.add_argument("--data", type=Path, default=DEFAULT_OUT, help="The XML artifact to ship.")
+    p_bun.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
+    p_bun.add_argument("--models", type=Path, default=_PKG_DIR / "models")
     p_bun.add_argument("--out", type=Path, default=_REPO_ROOT / "build" / "dist")
     p_bun.set_defaults(func=cmd_bundle)
 

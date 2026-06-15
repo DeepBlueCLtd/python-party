@@ -1,6 +1,8 @@
 # ADR 0005: Ship a labelled placeholder schema so the pipeline runs today
 
-- **Status**: Accepted (provisional — replaced by the real XSD when it lands)
+- **Status**: Superseded (2026-06-14) — the schema authored here has been adopted as the
+  authoritative contract; there is no separate "real" XSD pending. Evolve it via
+  [Change the schema](../how-to/change-the-schema.md).
 - **Date**: 2026-06-13
 - **Deciders**: Project team
 
@@ -18,7 +20,7 @@ We will author a small but representative **placeholder** `schema/acoustic_datas
 (a banded, typed numeric structure with `xs:documentation` on terms) and a matching example
 calculation, both **clearly labelled as placeholders**, so the whole pipeline — generate →
 map → serialise → validate → round-trip — is demonstrably runnable now. The schema sits at a
-single documented swap location (see [the how-to](../how-to/swap-in-the-real-schema.md)).
+single documented location (see [the how-to](../how-to/change-the-schema.md)).
 
 ## Consequences
 
@@ -49,5 +51,9 @@ single documented swap location (see [the how-to](../how-to/swap-in-the-real-sch
 
 ## Notes / revisit triggers
 
-- When the real XSD arrives, follow the swap how-to; this ADR is then **superseded** by the
-  reality of the real contract, and the placeholder is deleted.
+- **Superseded.** Rather than waiting for a separate "real" XSD, the schema authored here has
+  been adopted as the authoritative contract (it exercises the hard half — banded/typed
+  numerics, enforced cardinalities, type extension — so it earned the promotion). It is no
+  longer treated as a placeholder; evolve it like any contract via
+  [Change the schema](../how-to/change-the-schema.md). The decision to *bootstrap* with a
+  runnable schema (rather than stall on an external dependency) still stands and paid off.

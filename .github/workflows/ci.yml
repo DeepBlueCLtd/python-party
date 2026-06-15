@@ -25,5 +25,21 @@ jobs:
       - name: Verify (lint + tests)
         run: make verify
 
+      - name: Drift gate (generated models + schema docs match the schema)
+        # Regenerate on the same Python 3.9 target and fail if the committed artifacts differ.
+        # xsdata is pinned (==25.7, the last 3.9-supporting line) so generation is byte-stable.
+        # See docs/decisions/0008.
+        run: |
+          make generate
+          make gen-schema-docs
+          paths="src/acoustic_dataset/models docs/reference/schema"
+          if [ -n "$(git status --porcelain -- $paths)" ]; then
+            echo "::error::Generated artifacts are stale. Run 'make generate' and 'make gen-schema-docs' and commit."
+            git --no-pager diff -- $paths
+            git status --porcelain -- $paths
+            exit 1
+          fi
+          echo "Generated models and schema docs are in sync with the schema."
+
       - name: Build HTML docs (strict)
         run: make docs

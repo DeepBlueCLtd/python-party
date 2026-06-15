@@ -9,9 +9,8 @@ site you can browse** — all on the target's Python (3.9.4). It assumes no prio
 ## What you're building toward
 
 A schema-driven pipeline that turns acoustic calculation output into validated Sonar
-Performance XML. Right now the pipeline runs against a **placeholder** schema so you can see
-the machinery work before the real schema and calculation exist
-([ADR 0005](../decisions/0005-placeholder-schema-runnable-now.md)).
+Performance XML: generate typed models from the XSD, map calculation output onto them once,
+serialise, then validate and round-trip.
 
 ## Step 1 — Open the environment
 
@@ -67,7 +66,7 @@ was made and *what was rejected* — that's the material you'll use to defend th
 ## Where to go next
 
 - Want to do a specific task? → [How-to guides](../how-to/use-the-codespace.md)
-- Curious how a real schema slots in? → [Swap in the real schema](../how-to/swap-in-the-real-schema.md)
+- Need to change the schema? → [Change the schema](../how-to/change-the-schema.md)
 - Want to record your own decision? → [Add a decision record](../how-to/add-a-decision-record.md)
 
 !!! tip "This set grows with you"

@@ -28,10 +28,11 @@ intermediate (no CSV, no pickle) is needed to get testability; that whole chain 
 
 ## The entities as an ER diagram
 
-This is the kind of **Mermaid ERD** the docs render — here drawn by hand for the *placeholder*
-domain. Once the real enriched XSD lands, `make gen-schema-docs` produces the equivalent
-diagram **automatically from the schema** (see [the example schema ERD](../reference/schema-erd.md)
-and [ADR 0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md)).
+This is the kind of **Mermaid ERD** the docs render — here drawn by hand for the data-flow story
+(it deliberately includes pipeline entities like the golden and reference files). The
+**[schema reference](../reference/schema/index.md)** ERD, by contrast, is produced
+**automatically from the schema** by `make gen-schema-docs`
+([ADR 0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md)).
 
 ```mermaid
 erDiagram
@@ -69,7 +70,7 @@ erDiagram
     }
     SCHEMA {
         string xsd_path
-        string status "PLACEHOLDER"
+        string version "0.2.0"
     }
 ```
 
@@ -77,7 +78,7 @@ erDiagram
 
 | Entity | What it is | Key rule |
 |---|---|---|
-| **CalculationResult** | Output of the acoustic seams; placeholder for the real recalculation | Produced by discrete, testable functions |
+| **CalculationResult** | Output of the acoustic seams (the recalculation/resampling step) | Produced by discrete, testable functions |
 | **Populated domain objects** | Generated-model instances after the single mapping | The assertion boundary; the one place logic lives |
 | **Platform XML** | The validated, round-tripped Phase 1 deliverable | Must pass both gates before it's trusted |
 | **Golden file** | Trusted expected output | Drives the semantic gate; changed deliberately |

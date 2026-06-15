@@ -38,9 +38,8 @@ human semantic gate (is the science right?). See
   [Add a decision record](how-to/add-a-decision-record.md).
 - New understanding lands as a **concept** page; new recipes as **how-to** guides.
 - The **schema reference and ERD** are *generated from the enriched XSD* — see the
-  [example ERD](reference/schema-erd.md) — so the docs can never drift from the contract.
+  [generated schema reference](reference/schema/index.md) — so the docs can never drift from the contract.
 
 !!! note "Status"
-    Provisional scaffold. The environment (Codespace, tests, docs site) is real and green
-    today against a **placeholder** schema. The acoustic calculation and the real XSD are
-    dropped in later — see the feature spec and plan under `specs/001-codespace-xml-scaffold/`.
+    The environment (Codespace, tests, docs site) and the full schema-driven pipeline are real
+    and green. See the feature spec and plan under `specs/001-codespace-xml-scaffold/`.

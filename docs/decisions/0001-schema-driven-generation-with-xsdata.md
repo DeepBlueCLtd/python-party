@@ -1,6 +1,6 @@
 # ADR 0001: Generate typed data classes from the XSD with xsdata
 
-- **Status**: Accepted (provisional — pending validation against the real XSD)
+- **Status**: Accepted
 - **Date**: 2026-06-13
 - **Deciders**: Project team (to confirm with the author/the consumer)
 

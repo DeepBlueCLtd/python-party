@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  PLACEHOLDER SCHEMA — Acoustic Reference Book, Phase 1 (see docs/decisions/0005-placeholder-schema-runnable-now.md).
+  Acoustic Reference Book — XML Acoustic Dataset schema (Platform).
 
-  This is a deliberately richer-but-still-illustrative *Platform* description. A document
-  records one platform's reference data in three parts:
+  A document records one platform's reference data in three parts:
 
     1. Platform characteristics  — draft, length, weight, year introduced.
     2. Radiated noise            — at each of 10 frequency bands, the noise radiated all
@@ -12,12 +11,10 @@
     3. Sensor fit                — one active sonar and two passive sonars, each with a name,
                                    manufacturer and typical performance figures.
 
-  It exists so the whole pipeline (generate -> map -> serialise -> validate -> round-trip)
-  exercises a typed, banded, *nested and directional* path — type extension, enforced
-  cardinalities, and many banded numeric facets — before the real Acoustic Reference Book
-  XSD arrives. It is replaced WHOLESALE via the swap procedure in
-  specs/001-codespace-xml-scaffold/contracts/pipeline-contract.md; nothing downstream
-  hard-codes its element names except mapping.py (the one schema-aware place logic lives).
+  The whole pipeline (generate -> map -> serialise -> validate -> round-trip) runs against this
+  schema: a typed, banded, nested and directional path — type extension, enforced cardinalities,
+  and many banded numeric facets. Nothing downstream hard-codes its element names except
+  mapping.py (the one schema-aware place logic lives).
 
   Term/element definitions live here as xs:annotation/xs:documentation and ride through to the
   generated model docstrings (FR-013). "How it's computed" lives in code (the acoustics seams).
@@ -26,19 +23,19 @@
            xmlns="https://deepblue.example/acoustic-dataset/v0"
            targetNamespace="https://deepblue.example/acoustic-dataset/v0"
            elementFormDefault="qualified"
-           version="0.2.0-placeholder">
+           version="0.2.0">
 
   <xs:annotation>
     <xs:documentation>
-      Placeholder Platform schema. A document describes one platform: its physical
-      characteristics, its directional radiated-noise signature across ten frequency bands, and
-      the sonar sensors it carries. The banded numeric types below carry real XSD facets (ranges)
-      and the radiated-noise structure carries enforced cardinalities (exactly ten bands, exactly
-      twelve 30-degree sectors per band) so the validation gate has something meaningful to enforce.
+      Platform schema. A document describes one platform: its physical characteristics, its
+      directional radiated-noise signature across ten frequency bands, and the sonar sensors it
+      carries. The banded numeric types below carry XSD facets (ranges) and the radiated-noise
+      structure carries enforced cardinalities (exactly ten bands, exactly twelve 30-degree
+      sectors per band) so the validation gate has something meaningful to enforce.
     </xs:documentation>
   </xs:annotation>
 
-  <!-- ===== Typed, banded numeric primitives (the point of the placeholder) ===== -->
+  <!-- ===== Typed, banded numeric primitives ===== -->
 
   <xs:simpleType name="Decibels">
     <xs:annotation>

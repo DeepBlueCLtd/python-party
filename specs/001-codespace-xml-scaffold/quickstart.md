@@ -56,12 +56,14 @@ make verify   # runs tests in tests/integration/
 ## Scenario 4 — Migration safety (schema-valid-but-different)
 
 ```bash
-# Drop a known-good prior-process file into examples/reference/, then:
 make pipeline
+make compare    # build/acoustic_dataset.xml vs the shipped examples/reference/trial_known_good.xml
+# ...or against your own prior-process file:
 python -m acoustic_dataset.cli compare build/acoustic_dataset.xml examples/reference/<file>.xml
 ```
 **Expected**: identical output → clean match (exit 0); output that is schema-valid but differs from the
-reference → a clear human-readable diff and non-zero exit. *(Validates US3 / FR-015, SC-005.)*
+reference → a clear human-readable diff and non-zero exit. Cosmetic differences (attribute order,
+whitespace, namespace prefix) are ignored. *(Validates US3 / FR-015, SC-005.)*
 
 ## Scenario 5 — Drift discipline (CI)
 
@@ -74,7 +76,19 @@ version-locked to the schema. *(Validates US4 / FR-017.)*
 ```bash
 make bundle
 ```
-**Expected**: a bundle containing data + schema + generated models together. *(Validates US4 / FR-016.)*
+**Expected**: `build/dist/` containing data + schema + generated models (plus a `MANIFEST.md`) together.
+*(Validates US4 / FR-016.)*
+
+## Scenario 7 — Generated schema reference & ERD
+
+```bash
+make gen-schema-docs
+make docs          # or: make docs-serve  (browse at http://localhost:8000)
+```
+**Expected**: `docs/reference/schema/index.md` is regenerated from the XSD — per-type field tables
+carrying the `xs:documentation` prose plus a Mermaid ERD — and the HTML site renders it. Regenerating
+is idempotent; the CI drift gate fails if the committed page is stale.
+*(Validates US5 / FR-020/021/022, SC-008/SC-009.)*
 
 ## Where things live (orientation)
 

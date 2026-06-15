@@ -24,13 +24,14 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 
 | You're looking for… | It's here |
 |---|---|
-| The contract (the XSD) — **swap location** for the real schema | `schema/acoustic_dataset.xsd` ([how-to](how-to/swap-in-the-real-schema.md)) |
+| The contract (the XSD) | `schema/acoustic_dataset.xsd` ([how to change it](how-to/change-the-schema.md)) |
 | The scientific seams (named, testable calc functions) | `src/acoustic_dataset/acoustics/` |
 | The **one** place calc output becomes typed objects | `src/acoustic_dataset/mapping.py` |
 | Generated models (never hand-edited — regenerate) | `src/acoustic_dataset/models/` |
-| Example calculation input (placeholder) | `examples/calculation_input.json` |
+| Example calculation input | `examples/calculation_input.json` |
 | Tests (unit / integration / golden) | `tests/` |
 | The plan & design artifacts | `specs/001-codespace-xml-scaffold/` (`spec.md`, `plan.md`, `tasks.md`) |
+| The generated schema reference + ERD | [reference/schema](reference/schema/index.md) (run `make gen-schema-docs`) |
 | Why each choice was made | [Decision records](decisions/index.md) |
 
 ## Build the mental model
@@ -40,8 +41,9 @@ Read these, in order — they're short:
 1. [Schema as the contract](concepts/schema-as-contract.md) — the idea everything follows from.
 2. [The two verification gates](concepts/two-verification-gates.md) — why schema-valid isn't the same as correct.
 3. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
+4. [Typed objects vs dictionaries](concepts/typed-vs-dicts.md) — why typed data beats a generic `dict`.
 
 !!! tip "What's done, what's next"
-    The environment, the end-to-end pipeline, and the migration-safety `compare` are in
-    place. Remaining pipeline work (generated schema docs/ERD and the distribution bundle)
-    is tracked in `specs/001-codespace-xml-scaffold/tasks.md`.
+    The full Phase 1 pipeline is in place — environment, end-to-end pipeline, migration-safety
+    `compare`, the generated schema reference/ERD, and the distribution `bundle` with a CI drift
+    gate. Remaining polish is tracked in `specs/001-codespace-xml-scaffold/tasks.md`.

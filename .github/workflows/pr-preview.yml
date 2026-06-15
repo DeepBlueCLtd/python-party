@@ -1,0 +1,45 @@
+name: Docs PR preview
+
+# Build this PR's docs and publish a live preview to gh-pages under pr-preview/pr-<N>/,
+# posting (and updating) a sticky comment with the link. The preview is torn down when the
+# PR closes. The main deploy (deploy-docs.yml) excludes pr-preview/ so it never wipes these.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+# Same-repo PRs get a write-scoped token (preview deploys + comments). Fork PRs get a
+# read-only token and will skip the deploy — that's expected and safe.
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.9
+        if: github.event.action != 'closed'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Build the docs site (strict)
+        if: github.event.action != 'closed'
+        run: |
+          python -m pip install -e ".[docs]"
+          mkdocs build --strict   # output -> site/
+          touch site/.nojekyll
+
+      - name: Deploy / update / tear down the PR preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: site
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview

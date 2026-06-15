@@ -17,11 +17,13 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 > (Foundational) and **User Story 2 — the schema-driven pipeline MVP** are now implemented:
 > enriched placeholder XSD, xsdata generation (3.9-safe, idempotent), the single mapping, the
 > two structural gates, `make generate` / `make pipeline`, and the golden-file tests.
-> **User Story 3 — the migration-safety `compare`** is now implemented too: a canonicalising
-> comparison (prefix/attribute/whitespace/comment-insensitive), `make compare`, a shipped
-> known-good reference fixture, and its tests. The **remaining work is US5 (generated schema
-> docs/ERD) and US4 (bundle + drift gate)**; the `bundle` CLI subcommand exists but exits
-> non-zero as not-yet-implemented.
+> **User Story 3 — the migration-safety `compare`** and **User Story 5 — the generated schema
+> reference & ERD** are now implemented too: a canonicalising comparison (`make compare`) with a
+> shipped reference fixture, and an XSD-driven Markdown reference + Mermaid `erDiagram`
+> (`make gen-schema-docs`) wired into the docs nav, both with tests. **User Story 4 — the
+> distribution `bundle` (`make bundle`) and the CI drift gate** is now implemented too, with
+> xsdata pinned (`==25.7`) so regeneration is byte-reproducible on the Python 3.9 target. All
+> five user stories are complete; only **Phase 8 (polish)** remains.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -101,41 +103,41 @@ round-trip gate (FR-009, FR-010, FR-014), so test tasks are first-class here.
 
 ---
 
-## Phase 6: User Story 5 - Generated schema reference & ERD (Priority: P2) [FR-020/021/022]
+## Phase 6: User Story 5 - Generated schema reference & ERD (Priority: P2) [FR-020/021/022] — ✅ COMPLETE
 
 **Goal**: Generate the HTML schema reference + a Mermaid **ERD** *from the enriched XSD*, so docs can't drift.
 
 **Independent Test**: `make gen-schema-docs` then `make docs` renders generated reference pages and an ERD matching the schema.
 
-- [ ] T024 [US5] Implement the schema-docs generator (walk the enriched XSD/models → per-type Markdown reference carrying `xs:documentation` + a Mermaid `erDiagram`) into `docs/reference/schema/` in `src/acoustic_dataset/schema_docs.py` (depends on T010)
-- [ ] T025 [US5] Wire `gen-schema-docs` subcommand + `make gen-schema-docs` in `src/acoustic_dataset/cli.py` (depends on T024)
-- [ ] T026 [US5] Integrate generated pages into the MkDocs nav (e.g. `mkdocs-gen-files` + `mkdocs-literate-nav` or `awesome-pages`) and replace the hand-drawn stand-in note in `docs/reference/schema-erd.md`; update `mkdocs.yml`/`pyproject.toml` docs extra
-- [ ] T027 [P] [US5] Test generator output contains entities, the `xs:documentation` prose, and an `erDiagram` block in `tests/integration/test_schema_docs.py`
+- [X] T024 [US5] Implement the schema-docs generator (walk the enriched XSD/models → per-type Markdown reference carrying `xs:documentation` + a Mermaid `erDiagram`) into `docs/reference/schema/` in `src/acoustic_dataset/schema_docs.py` (depends on T010)
+- [X] T025 [US5] Wire `gen-schema-docs` subcommand + `make gen-schema-docs` in `src/acoustic_dataset/cli.py` (depends on T024)
+- [X] T026 [US5] Integrate the generated page into the MkDocs nav (single static `reference/schema/index.md` entry — no extra plugin needed) and replace the hand-drawn stand-in `docs/reference/schema-erd.md` (deleted; all inbound links repointed)
+- [X] T027 [P] [US5] Test generator output contains entities, the `xs:documentation` prose, and an `erDiagram` block in `tests/integration/test_schema_docs.py`
 
-**Checkpoint**: HTML site shows a schema ERD generated from the XSD (SC-008, SC-009).
+**Checkpoint**: HTML site shows a schema ERD generated from the XSD (SC-008, SC-009). ✅
 
 ---
 
-## Phase 7: User Story 4 - Distribution bundle & regeneration discipline (Priority: P3)
+## Phase 7: User Story 4 - Distribution bundle & regeneration discipline (Priority: P3) — ✅ COMPLETE
 
 **Goal**: Ship data + schema + models together; CI fails on any generated-artifact drift.
 
 **Independent Test**: `make bundle` yields a bundle with all three; a hand-edited model fails CI.
 
-- [ ] T028 [US4] Implement the bundle (assemble data + schema + generated models) + wire `bundle`/`make bundle` in `src/acoustic_dataset/bundle.py`, `src/acoustic_dataset/cli.py`
-- [ ] T029 [US4] CI drift gate: regenerate models AND schema docs, then fail on `git diff --exit-code` in `.github/workflows/ci.yml`
-- [ ] T030 [P] [US4] Test the bundle contains data + schema + models in `tests/integration/test_bundle.py`
+- [X] T028 [US4] Implement the bundle (assemble data + schema + generated models) + wire `bundle`/`make bundle` in `src/acoustic_dataset/bundle.py`, `src/acoustic_dataset/cli.py`
+- [X] T029 [US4] CI drift gate: regenerate models AND schema docs, then fail on tree drift in `.github/workflows/ci.yml` (runs on Python 3.9; xsdata pinned `==25.7` for byte-reproducibility — see ADR 0008)
+- [X] T030 [P] [US4] Test the bundle contains data + schema + models in `tests/integration/test_bundle.py`
 
-**Checkpoint**: bindings and generated docs are version-locked to the schema (FR-016, FR-017).
+**Checkpoint**: bindings and generated docs are version-locked to the schema (FR-016, FR-017). ✅
 
 ---
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-- [ ] T031 [P] Add `mypy` to `make verify` now that hand-written pipeline code exists in `Makefile`
-- [ ] T032 Run the `quickstart.md` scenarios end-to-end and fix any gaps
-- [ ] T033 [P] When the real XSD lands, follow `docs/how-to/swap-in-the-real-schema.md` and mark ADR 0005 **Superseded** in `docs/decisions/0005-placeholder-schema-runnable-now.md`
-- [ ] T034 [P] Tidy docs cross-links/glossary for the new generated reference pages in `docs/`
+- [X] T031 [P] Add `mypy` to `make verify` (config switched to `files=` so a bare `mypy` works; clean on 3.9) in `Makefile`/`pyproject.toml`
+- [X] T032 Run the `quickstart.md` scenarios end-to-end and fix any gaps (added the schema-docs scenario; `make compare` happy path)
+- ~~T033 — swap in the real XSD~~ **Dropped**: the schema authored here is now the authoritative contract (there is no separate "real" XSD pending). ADR 0005 is marked Superseded; evolve the schema via `docs/how-to/change-the-schema.md`.
+- [X] T034 [P] Tidy docs cross-links/glossary for the new generated reference pages in `docs/`
 
 ---
 
@@ -184,8 +186,8 @@ Task: "Integration + golden-diff test in tests/integration/test_pipeline.py"   #
 ### Incremental delivery
 
 US2 (MVP) → US3 (migration safety) → US5 (generated schema docs/ERD) → US4 (bundle + drift gate),
-each an independently testable, demoable increment. The real-schema swap (T033) supersedes the
-placeholder once it arrives.
+each an independently testable, demoable increment. The schema authored here is now treated as
+the authoritative contract (ADR 0005 superseded); evolve it via the change-the-schema how-to.
 
 ---
 
@@ -194,4 +196,5 @@ placeholder once it arrives.
 - `[P]` = different files, no dependencies. `[Story]` ties a task to a user story for traceability.
 - Generated artifacts (`src/acoustic_dataset/models/`, `docs/reference/schema/`) are **never** hand-edited — regenerate (ADR 0008).
 - Commit after each task or logical group; keep `make verify` green.
-- Total: 34 tasks — 23 already complete (`[X]`), 11 remaining (the pipeline).
+- Total: 34 tasks — 33 complete (`[X]`); **T033 dropped** (the schema authored here is now the
+  authoritative contract — ADR 0005 superseded). Phase 1 is complete.

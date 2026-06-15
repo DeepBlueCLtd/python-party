@@ -23,7 +23,7 @@ def _build_xml(input_path):
 def test_populated_objects_carry_the_expected_typed_values(input_path):
     model = to_model(acoustics.calculate_from_file(input_path))
 
-    assert model.schema_version == "0.2.0-placeholder"
+    assert model.schema_version == "0.2.0"
 
     # Platform characteristics: Decimals (the typed boundary the schema declares), not floats.
     assert model.characteristics.draft == Decimal("7.500")

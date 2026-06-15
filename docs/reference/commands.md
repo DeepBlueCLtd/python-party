@@ -13,13 +13,14 @@
 | `make docs` | Build static HTML site (`mkdocs build --strict`) → `site/` | ✅ |
 | `make docs-serve` | Live-preview docs at <http://localhost:8000> | ✅ |
 | `make generate` | Regenerate models from `schema/*.xsd` via `xsdata` | ✅ |
-| `make gen-schema-docs` | Generate schema reference + Mermaid ERD from the enriched XSD | ⏳ Phase 1 task |
+| `make gen-schema-docs` | Generate schema reference + Mermaid ERD from the enriched XSD | ✅ |
 | `make pipeline` | End-to-end: map → serialise → validate → round-trip | ✅ |
 | `make compare` | Migration-safety diff vs a known-good reference | ✅ |
-| `make bundle` | Distribution bundle (data + schema + models) | ⏳ Phase 1 task |
+| `make bundle` | Distribution bundle (data + schema + models) | ✅ |
 
-⏳ targets currently print a pointer to `specs/001-codespace-xml-scaffold/tasks.md` and exit
-non-zero.
+All command targets are implemented. The CI drift gate regenerates the models and schema docs
+on the Python 3.9 target and fails if the committed artifacts are stale (see
+[ADR 0008](../decisions/0008-generated-models-no-drift.md)).
 
 ## CLI subcommands
 

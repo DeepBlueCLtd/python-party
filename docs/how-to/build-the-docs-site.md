@@ -45,14 +45,14 @@ erDiagram
 ````
 
 See the [pipeline ERD](../concepts/pipeline-data-flow.md) and the
-[example schema ERD](../reference/schema-erd.md) for working examples.
+[generated schema ERD](../reference/schema/index.md) for working examples.
 
 ## Schema reference & ERD are *generated*
 
-The pages under `reference/` that describe the schema are produced from the **enriched XSD**
-by `make gen-schema-docs` (a Phase 1 task), not hand-written — so they can't drift from the
-contract. Until that step is implemented, the [example ERD](../reference/schema-erd.md) is a
-hand-drawn stand-in showing the intended output.
+The [schema reference](../reference/schema/index.md) — the entity tables and the Mermaid ERD —
+is produced from the **enriched XSD** by `make gen-schema-docs`, not hand-written, so it can't
+drift from the contract. Regenerate it after any schema change; the CI drift gate fails if the
+committed page is stale.
 
 ## Linking rules (to keep `--strict` happy)
 
