@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../pipeline-data-flow/">
+        <link rel="prev" href="../schema-as-contract/">
       
       
-        <link rel="next" href="../../decisions/">
+        <link rel="next" href="../two-verification-gates/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Typed objects vs dictionaries - Acoustic Reference Book — Phase 1 Pipeline Docs</title>
+        <title>Typed data, end to end - Acoustic Reference Book — Phase 1 Pipeline Docs</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#typed-objects-vs-dictionaries" class="md-skip">
+        <a href="#typed-data-end-to-end" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Typed objects vs dictionaries
+              Typed data, end to end
             
           </span>
         </div>
@@ -285,6 +285,135 @@
       
   
   
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typed data, end to end
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typed data, end to end
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#work-with-the-schemas-data-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Work with the schema's data object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storing-data-in-a-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storing data in a dictionary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storing-data-in-a-typed-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storing data in a typed object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-values-as-they-are-stored" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking values as they are stored
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
   
   
     
@@ -305,10 +434,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -326,8 +455,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -389,8 +518,6 @@
       
         
       
-        
-      
     
     
     
@@ -404,10 +531,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -425,8 +552,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -548,34 +675,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../how-to/add-a-decision-record/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Add a decision record
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -615,10 +714,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   
@@ -636,8 +735,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -679,62 +778,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../two-verification-gates/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    The two verification gates
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pipeline-data-flow/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pipeline data flow (ERD)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -754,7 +797,7 @@
   <span class="md-ellipsis">
     
   
-    Typed objects vs dictionaries
+    Typed data, end to end
   
 
     
@@ -772,7 +815,7 @@
   <span class="md-ellipsis">
     
   
-    Typed objects vs dictionaries
+    Typed data, end to end
   
 
     
@@ -796,6 +839,17 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#work-with-the-schemas-data-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Work with the schema's data object
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#storing-data-in-a-dictionary" class="md-nav__link">
@@ -850,100 +904,6 @@
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../decisions/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Decisions (ADRs)
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Decisions (ADRs)
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
               
                 
   
@@ -951,14 +911,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../decisions/0000-template/" class="md-nav__link">
+      <a href="../two-verification-gates/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    ADR template
+    The two verification gates
   
 
     
@@ -979,238 +939,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../decisions/0001-schema-driven-generation-with-xsdata/" class="md-nav__link">
+      <a href="../pipeline-data-flow/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    0001 Schema-driven generation with xsdata
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0002-drop-csv-pickle-and-write_xml/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0002 Drop CSV, pickle and write_xml
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0003-xmlschema-as-validation-gate/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0003 xmlschema as the validation gate
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0004-two-gate-verification/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0004 Two-gate verification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0005-placeholder-schema-runnable-now/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0005 Placeholder schema, runnable now
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0006-codespaces-with-local-fallback/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0006 Codespaces with a local fallback
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0007-pin-python-3-9-4/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0007 Pin to Python 3.9.4
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0008-generated-models-no-drift/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0008 Generated models, no drift
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../decisions/0009-mkdocs-material-mermaid-html-docs/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    0009 MkDocs Material + Mermaid for HTML docs
+    Pipeline data flow (ERD)
   
 
     
@@ -1419,6 +1155,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#work-with-the-schemas-data-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Work with the schema's data object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#storing-data-in-a-dictionary" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1479,31 +1226,64 @@
 
 
 
-<h1 id="typed-objects-vs-dictionaries">Typed objects vs. dictionaries<a class="headerlink" href="#typed-objects-vs-dictionaries" title="Permanent link">&para;</a></h1>
+<h1 id="typed-data-end-to-end">Typed data, end to end<a class="headerlink" href="#typed-data-end-to-end" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Explanation</strong> — the input is loaded as JSON (nested <code>dict</code>s), but the pipeline maps it once
-onto typed objects generated from the schema and stores data in those. This page sets out what
-strong typing constrains at the point data is stored. See
-<a href="../../decisions/0002-drop-csv-pickle-and-write_xml/">ADR 0002</a>.</p>
+<p><strong>Explanation</strong> — once you are writing Python in this pipeline the data lives in a <strong>typed
+object that meets the schema</strong>, not a loosely-typed <code>dict</code>. The only loosely-typed moment is
+the raw JSON at the very edge, parsed <em>once</em> inside the pipeline. This page shows what strong
+typing buys you over a generic <code>dict</code>. See ADR 0002.</p>
 </blockquote>
+<h2 id="work-with-the-schemas-data-object">Work with the schema's data object<a class="headerlink" href="#work-with-the-schemas-data-object" title="Permanent link">&para;</a></h2>
+<p>The pipeline turns the calculation into <strong>one typed data object that meets the schema</strong> — a
+<code>Platform</code> generated from the XSD. You work with that object directly: every field is declared,
+typed, and documented by the contract, so values never have to live in a loosely-typed <code>dict</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span>
+
+<span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
+
+<span class="c1"># Produce the schema&#39;s data object from the calculation input:</span>
+<span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">))</span>
+
+<span class="c1"># It is generated from the XSD; explore it by attribute.</span>
+<span class="c1"># The IDE autocompletes each step and the values carry</span>
+<span class="c1"># the schema&#39;s Decimal type — no raw JSON key in sight:</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">platform</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># Platform</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">radiated_noise</span><span class="o">.</span><span class="n">band</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">centre_frequency</span><span class="p">)</span>
+<span class="c1"># 50.000</span>
+
+<span class="n">sector</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">radiated_noise</span><span class="o">.</span><span class="n">band</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">directional</span><span class="o">.</span><span class="n">sector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sector</span><span class="o">.</span><span class="n">bearing</span><span class="p">,</span> <span class="n">sector</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+<span class="c1"># 0.000 134.000</span>
+</code></pre></div>
+<p>Every value here is a typed attribute of the schema's data object, not a <code>dict</code> key. Your IDE
+autocompletes each step and a type checker flags a wrong one; the values carry the schema's
+<code>Decimal</code> type. The raw JSON is parsed once, inside the pipeline, and you never index it by key.</p>
 <h2 id="storing-data-in-a-dictionary">Storing data in a dictionary<a class="headerlink" href="#storing-data-in-a-dictionary" title="Permanent link">&para;</a></h2>
 <p>A <code>dict</code> places no constraints on what it holds: keys are arbitrary strings and values are <code>Any</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">215.0</span>      <span class="c1"># any key, any value type</span>
-<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sorceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9999</span>        <span class="c1"># a misspelled key is just another entry</span>
-<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;loud&quot;</span>     <span class="c1"># a string replaces the number, with no objection</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">215.0</span>   <span class="c1"># any key, any value type</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sorceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9999</span>     <span class="c1"># misspelled key, stored anyway</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;loud&quot;</span>  <span class="c1"># a string replaces the number</span>
 </code></pre></div>
 <p>The structure exists only by convention. A misspelled key, a wrong value type, or an omitted
 field is stored as readily as correct data, so a mistake surfaces later — when something reads
-the value, when the XML fails validation, or not at all.</p>
+the value, when the XML fails validation, or not at all. Carry data this way and <em>every</em> stage
+downstream inherits that uncertainty; start from a typed structure and none of it does.</p>
 <h2 id="storing-data-in-a-typed-object">Storing data in a typed object<a class="headerlink" href="#storing-data-in-a-typed-object" title="Permanent link">&para;</a></h2>
 <p>The generated dataclasses declare which fields exist and the type of each, so the shape of what
 is stored is defined up front:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.models.acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sector</span>
 
-<span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>   <span class="c1"># the declared fields</span>
-<span class="n">Sector</span><span class="p">(</span><span class="n">bering</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>    <span class="c1"># TypeError: unexpected &#39;bering&#39;</span>
+<span class="c1"># The declared fields are accepted:</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>
+
+<span class="c1"># An unknown field fails at construction:</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bering</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>
+<span class="c1">#   -&gt; TypeError: unexpected keyword argument &#39;bering&#39;</span>
 </code></pre></div>
 <ul>
 <li>A name that is not a declared field is rejected when the object is constructed (<code>TypeError</code>),
@@ -1511,7 +1291,9 @@ is stored is defined up front:</p>
 <li>Each field has a declared type — here <code>Decimal</code>, as the schema specifies. A type checker
   (<code>mypy</code>, run by <code>make verify</code>) reports a wrong-typed value before the code runs:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="s2">&quot;thirty&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>   <span class="c1"># mypy: incompatible type &quot;str&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># mypy flags a wrong-typed value before the code runs:</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="s2">&quot;thirty&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>
+<span class="c1">#   -&gt; mypy: incompatible type &quot;str&quot;</span>
 </code></pre></div>
 <ul>
 <li>The fields and their documentation are generated from the schema, so the stored object follows
@@ -1525,12 +1307,20 @@ point:</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span><span class="p">,</span> <span class="n">MappingError</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>
-<span class="c1"># Decibels are bounded to [-200, 300]; attempt to store an impossible source level:</span>
+<span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+
+<span class="c1"># Decibels are bounded to [-200, 300].</span>
+<span class="c1"># Force an impossible source level, then map it:</span>
 <span class="n">bad</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-    <span class="n">result</span><span class="p">,</span> <span class="n">active_sonar</span><span class="o">=</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="p">,</span> <span class="n">source_level_db</span><span class="o">=</span><span class="mf">9999.0</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">,</span>
+    <span class="n">active_sonar</span><span class="o">=</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="p">,</span> <span class="n">source_level_db</span><span class="o">=</span><span class="mf">9999.0</span>
+    <span class="p">),</span>
 <span class="p">)</span>
-<span class="n">to_model</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>        <span class="c1"># MappingError — rejected as it is stored, not left for a later stage</span>
+<span class="n">to_model</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+<span class="c1">#   -&gt; MappingError: rejected as it is stored,</span>
+<span class="c1">#      not left for a later stage</span>
 </code></pre></div>
 <p>A <code>dict</code> would hold <code>9999</code> and pass it on; the typed boundary rejects it.</p>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
@@ -1563,9 +1353,15 @@ point:</p>
 <td>convention only</td>
 <td>generated from it</td>
 </tr>
+<tr>
+<td>What downstream stages receive</td>
+<td>a shape to trust on faith</td>
+<td>a declared structure, all the way to XML</td>
+</tr>
 </tbody>
 </table>
-<p>The behaviours above are checked in <code>tests/unit/test_typed_vs_dict.py</code>.</p>
+<p>Hold the whole flow in typed data and these guarantees compound at every stage instead of
+having to be re-checked. The behaviours above are checked in <code>tests/unit/test_typed_vs_dict.py</code>.</p>
 
 
 
