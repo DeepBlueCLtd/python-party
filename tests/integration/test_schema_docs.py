@@ -72,7 +72,7 @@ def test_example_document_section_has_a_sample_xml(tmp_path, schema_path, input_
 def test_typed_objects_section_shows_real_values(tmp_path, schema_path, input_path):
     md = _generate(tmp_path, schema_path, input_path)
     assert "## Working with the typed objects" in md
-    assert "to_model(result)" in md
+    assert "build.build_platform_from_file(" in md
     assert "'Reference Platform A'" in md  # the real platform name
     assert "Decimal('118850.223')" in md
 

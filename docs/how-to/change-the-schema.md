@@ -28,8 +28,8 @@ redesign*: models, validation, bindings and the schema docs all regenerate from 
    Produces the reference pages and the Mermaid ERD from the schema
    (ADR 0009).
 
-4. **Update the mapping.**
-   `src/acoustic_dataset/mapping.py` is the **one place** that knows element names — update it
+4. **Update the builder.**
+   `src/acoustic_dataset/build.py` is the **one place** that knows element names — update it
    for any added/renamed/retyped fields. Generation code does *not* change.
 
 5. **Update the example and golden file.**

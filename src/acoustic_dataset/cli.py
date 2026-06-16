@@ -33,15 +33,13 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
 
 def cmd_pipeline(args: argparse.Namespace) -> int:
-    """Map input -> objects -> XML -> validate -> round-trip; write only if both gates pass."""
-    from acoustic_dataset import acoustics, serialize, validate
-    from acoustic_dataset.mapping import MappingError, to_model
+    """Build the schema object -> XML -> validate -> round-trip; write only if both gates pass."""
+    from acoustic_dataset import build, serialize, validate
 
-    result = acoustics.calculate_from_file(args.input)
     try:
-        model = to_model(result)
-    except MappingError as exc:
-        print(f"error: mapping rejected a value before serialisation: {exc}", file=sys.stderr)
+        model = build.build_platform_from_file(args.input)
+    except build.MappingError as exc:
+        print(f"error: build rejected a value before serialisation: {exc}", file=sys.stderr)
         return 1
 
     xml = serialize.to_xml(model)

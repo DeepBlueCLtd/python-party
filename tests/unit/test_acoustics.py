@@ -49,20 +49,3 @@ def test_bearings_sample_all_round_in_30_degree_sectors():
         0.0, 30.0, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0, 300.0, 330.0
     ]
     assert acoustics.bearings(90.0) == [0.0, 90.0, 180.0, 270.0]
-
-
-def test_calculate_produces_ten_bands_of_twelve_sectors(input_path):
-    result = acoustics.calculate_from_file(input_path)
-    assert [b.index for b in result.bands] == list(range(1, 11))
-    assert all(len(b.sectors) == 12 for b in result.bands)
-    assert [s.bearing_deg for s in result.bands[0].sectors][:3] == [0.0, 30.0, 60.0]
-
-
-def test_calculate_synthesises_characteristics_and_sensors(input_path):
-    result = acoustics.calculate_from_file(input_path)
-    assert result.schema_version == "0.2.0"
-    assert result.characteristics.year_introduced == 1998
-    assert result.active_sonar.name == "AS-900 Echo"
-    assert result.active_sonar.max_range_m == pytest.approx(10.0 ** (203.0 / 40.0))
-    assert len(result.passive_sonars) == 2
-    assert result.passive_sonars[1].manufacturer == "Marine Acoustics Ltd"

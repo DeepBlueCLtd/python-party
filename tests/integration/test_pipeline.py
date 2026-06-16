@@ -1,7 +1,7 @@
 """Integration test for the pipeline (T019).
 
 Asserts on BOTH boundaries the spec cares about (FR-010):
-1. the populated domain objects produced by the single mapping, and
+1. the schema data object the builder populates directly, and
 2. the serialised XML, diffed against the trusted golden file (the semantic gate).
 """
 
@@ -11,17 +11,16 @@ from decimal import Decimal
 
 from lxml import etree
 
-from acoustic_dataset import acoustics, serialize
-from acoustic_dataset.mapping import to_model
+from acoustic_dataset import build, serialize
 
 
 def _build_xml(input_path):
-    result = acoustics.calculate_from_file(input_path)
-    return result, serialize.to_xml(to_model(result))
+    model = build.build_platform_from_file(input_path)
+    return model, serialize.to_xml(model)
 
 
 def test_populated_objects_carry_the_expected_typed_values(input_path):
-    model = to_model(acoustics.calculate_from_file(input_path))
+    model = build.build_platform_from_file(input_path)
 
     assert model.schema_version == "0.2.0"
 

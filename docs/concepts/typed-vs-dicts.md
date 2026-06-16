@@ -12,13 +12,12 @@ The pipeline turns the calculation into **one typed data object that meets the s
 typed, and documented by the contract, so values never have to live in a loosely-typed `dict`.
 
 ```python
-from acoustic_dataset import acoustics
-from acoustic_dataset.mapping import to_model
+from acoustic_dataset import build
 
 input_path = "examples/calculation_input.json"
 
-# Produce the schema's data object from the calculation input:
-platform = to_model(acoustics.calculate_from_file(input_path))
+# Build the schema's data object directly from the input:
+platform = build.build_platform_from_file(input_path)
 
 # It is generated from the XSD; explore it by attribute.
 # The IDE autocompletes each step and the values carry
@@ -87,32 +86,25 @@ Sector(bering=Decimal("30.000"), level=Decimal("134.000"))
 
 ## Checking values as they are stored
 
-Field names and types define the *shape*. The single mapping (`to_model`) is where calculation
-output is stored into these objects, and it also enforces the schema's numeric **ranges** at that
-point:
+Field names and types define the *shape*. The builder is where each value is stored into the
+schema object, and it also enforces the schema's numeric **ranges** at that point — a value that
+does not meet the schema is rejected before serialisation:
 
 ```python
-import dataclasses
-from acoustic_dataset import acoustics
-from acoustic_dataset.mapping import to_model, MappingError
+from acoustic_dataset import acoustics, build
 
-input_path = "examples/calculation_input.json"
-result = acoustics.calculate_from_file(input_path)
+data = acoustics.load_input("examples/calculation_input.json")
 
-# Decibels are bounded to [-200, 300].
-# Force an impossible source level, then map it:
-bad = dataclasses.replace(
-    result,
-    active_sonar=dataclasses.replace(
-        result.active_sonar, source_level_db=9999.0
-    ),
-)
-to_model(bad)
-#   -> MappingError: rejected as it is stored,
+# Decibels are bounded to [-200, 300]. Force an impossible
+# source level into the input, then build the schema object:
+data["sensors"]["active"]["sourceLevelDb"] = 9999.0
+build.build_platform(data)
+#   -> MappingError: rejected as it is built,
 #      not left for a later stage
 ```
 
-A `dict` would hold `9999` and pass it on; the typed boundary rejects it.
+A `dict` would hold `9999` and pass it on; the builder rejects it because it does not meet the
+schema.
 
 ## Summary
 
@@ -120,7 +112,7 @@ A `dict` would hold `9999` and pass it on; the typed boundary rejects it.
 |---|---|---|
 | Field names | any string accepted | declared; an unknown name is a `TypeError` |
 | Value types | `Any` | declared (e.g. `Decimal`), checked by `mypy` |
-| Out-of-range values | stored as-is | rejected by the mapping (`MappingError`) |
+| Out-of-range values | stored as-is | rejected by the builder (`MappingError`) |
 | Relationship to the schema | convention only | generated from it |
 | What downstream stages receive | a shape to trust on faith | a declared structure, all the way to XML |
 
