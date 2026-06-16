@@ -42,6 +42,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Onboarding: onboarding.md
+  - Typed data, end to end: concepts/typed-vs-dicts.md
   - Tutorials:
       - Start here (zero to green): tutorials/01-start-here.md
   - How-to guides:
@@ -55,6 +56,7 @@ nav:
       - Typed data, end to end: concepts/typed-vs-dicts.md
       - The two verification gates: concepts/two-verification-gates.md
       - Pipeline data flow (ERD): concepts/pipeline-data-flow.md
+  # ^ "Typed data, end to end" is also surfaced as a top-level nav item above for prominence.
   - Decisions (ADRs):
       - Overview: decisions/index.md
       - ADR template: decisions/0000-template.md

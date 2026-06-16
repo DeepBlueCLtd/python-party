@@ -4,6 +4,12 @@ A schema-driven pipeline that turns acoustic calculation output into validated
 **XML Acoustic Dataset**, plus the documentation that lets you *learn it* and *defend
 the decisions behind it*.
 
+!!! tip "Writing Python here? Start with the data"
+    The pipeline keeps everything in **typed objects from a structured parameter set all the
+    way to XML**. The one page to read first is
+    **[Typed data, end to end](concepts/typed-vs-dicts.md)** — how to write code against the
+    generated structures.
+
 This site is organised so it can **grow with your understanding**. It follows the
 [Diátaxis](https://diataxis.fr) model — four kinds of documentation, each answering a
 different question — plus a set of **Architecture Decision Records (ADRs)** that record
