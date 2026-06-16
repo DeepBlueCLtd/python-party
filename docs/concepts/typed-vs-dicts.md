@@ -19,17 +19,26 @@ objects are serialised.
 from acoustic_dataset import acoustics
 from acoustic_dataset.mapping import to_model
 
-result = acoustics.calculate_from_file("examples/calculation_input.json")
-#   result                     -> acoustics.CalculationResult   (a typed dataclass)
-#   result.active_sonar        -> acoustics.ActiveSonarResult    (.source_level_db is a float)
-#   result.bands[0].sectors[0] -> acoustics.SectorResult(bearing_deg=..., level_db=...)
+# Parse the JSON input once; from here on the data is typed.
+input_path = "examples/calculation_input.json"
+result = acoustics.calculate_from_file(input_path)
 
+# The single mapping -> schema-generated model objects.
 platform = to_model(result)
-#   platform                                              -> models.Platform  (from the schema)
-#   platform.radiated_noise.band[0].directional.sector[0] -> models.Sector
 ```
 
-Each arrow hands a **declared shape** to the next stage. Nothing in this chain is a `dict`: a
+Every value above carries a **declared type**, not a `dict`:
+
+| Expression | Type it holds |
+|---|---|
+| `result` | `acoustics.CalculationResult` (a dataclass) |
+| `result.active_sonar` | `acoustics.ActiveSonarResult` |
+| `result.active_sonar.source_level_db` | `float` |
+| `result.bands[0].sectors[0]` | `acoustics.SectorResult` |
+| `platform` | `models.Platform` (from the schema) |
+| `platform.radiated_noise.band[0].directional.sector[0]` | `models.Sector` |
+
+Each stage hands a **declared shape** to the next. Nothing in this chain is a `dict`: a
 field that does not exist is an error on the line that names it, not a surprise three stages
 later. Raw JSON is parsed into typed objects at exactly one place, and from there the whole
 flow is typed data — which is the whole point of the sections below.
@@ -40,9 +49,9 @@ A `dict` places no constraints on what it holds: keys are arbitrary strings and 
 
 ```python
 record = {}
-record["sourceLevel"] = 215.0      # any key, any value type
-record["sorceLevel"] = 9999        # a misspelled key is just another entry
-record["sourceLevel"] = "loud"     # a string replaces the number, with no objection
+record["sourceLevel"] = 215.0   # any key, any value type
+record["sorceLevel"] = 9999     # misspelled key, stored anyway
+record["sourceLevel"] = "loud"  # a string replaces the number
 ```
 
 The structure exists only by convention. A misspelled key, a wrong value type, or an omitted
@@ -59,8 +68,12 @@ is stored is defined up front:
 from decimal import Decimal
 from acoustic_dataset.models.acoustic_dataset import Sector
 
-Sector(bearing=Decimal("30.000"), level=Decimal("134.000"))   # the declared fields
-Sector(bering=Decimal("30.000"), level=Decimal("134.000"))    # TypeError: unexpected 'bering'
+# The declared fields are accepted:
+Sector(bearing=Decimal("30.000"), level=Decimal("134.000"))
+
+# An unknown field fails at construction:
+Sector(bering=Decimal("30.000"), level=Decimal("134.000"))
+#   -> TypeError: unexpected keyword argument 'bering'
 ```
 
 - A name that is not a declared field is rejected when the object is constructed (`TypeError`),
@@ -69,7 +82,9 @@ Sector(bering=Decimal("30.000"), level=Decimal("134.000"))    # TypeError: unexp
   (`mypy`, run by `make verify`) reports a wrong-typed value before the code runs:
 
   ```python
-  Sector(bearing="thirty", level=Decimal("134.000"))   # mypy: incompatible type "str"
+  # mypy flags a wrong-typed value before the code runs:
+  Sector(bearing="thirty", level=Decimal("134.000"))
+  #   -> mypy: incompatible type "str"
   ```
 
 - The fields and their documentation are generated from the schema, so the stored object follows
@@ -86,12 +101,20 @@ import dataclasses
 from acoustic_dataset import acoustics
 from acoustic_dataset.mapping import to_model, MappingError
 
-result = acoustics.calculate_from_file("examples/calculation_input.json")
-# Decibels are bounded to [-200, 300]; attempt to store an impossible source level:
+input_path = "examples/calculation_input.json"
+result = acoustics.calculate_from_file(input_path)
+
+# Decibels are bounded to [-200, 300].
+# Force an impossible source level, then map it:
 bad = dataclasses.replace(
-    result, active_sonar=dataclasses.replace(result.active_sonar, source_level_db=9999.0)
+    result,
+    active_sonar=dataclasses.replace(
+        result.active_sonar, source_level_db=9999.0
+    ),
 )
-to_model(bad)        # MappingError — rejected as it is stored, not left for a later stage
+to_model(bad)
+#   -> MappingError: rejected as it is stored,
+#      not left for a later stage
 ```
 
 A `dict` would hold `9999` and pass it on; the typed boundary rejects it.
