@@ -24,7 +24,7 @@ flowchart TD
 The **populated domain objects, before serialisation, are the typed testable boundary** —
 tests assert on them directly, or diff the serialised XML against a golden file. No separate
 intermediate (no CSV, no pickle) is needed to get testability; that whole chain was removed
-([ADR 0002](../decisions/0002-drop-csv-pickle-and-write_xml.md)).
+(ADR 0002).
 
 ## The entities as an ER diagram
 
@@ -32,7 +32,7 @@ This is the kind of **Mermaid ERD** the docs render — here drawn by hand for t
 (it deliberately includes pipeline entities like the golden and reference files). The
 **[schema reference](../reference/schema/index.md)** ERD, by contrast, is produced
 **automatically from the schema** by `make gen-schema-docs`
-([ADR 0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md)).
+(ADR 0009).
 
 ```mermaid
 erDiagram

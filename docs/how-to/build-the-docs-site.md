@@ -3,7 +3,7 @@
 > **How-to** — produce and preview the attractive HTML documentation.
 
 The docs are written in Markdown under `docs/` and rendered by **MkDocs Material**
-([ADR 0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md)). Mermaid diagrams render
+(ADR 0009). Mermaid diagrams render
 natively.
 
 ## Preview while you write
