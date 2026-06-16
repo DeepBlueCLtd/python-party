@@ -12,8 +12,8 @@
 If you begin from a **set of parameters held in a structure**, every later stage can stay
 typed — there is never a point where the data degrades into an untyped `dict` you have to
 trust by convention. The pipeline already works this way: the acoustic seams return a typed
-`CalculationResult`, the single mapping turns that into generated model objects, and only those
-objects are serialised.
+`CalculationResult`, the single mapping (`to_model`) turns that into the schema-generated model
+objects, and only those objects are serialised.
 
 ```python
 from acoustic_dataset import acoustics
@@ -36,7 +36,9 @@ print(result.active_sonar.source_level_db)
 print(result.bands[0].sectors[0])
 # SectorResult(bearing_deg=0.0, level_db=134.0)
 
-# The single mapping -> the schema-generated typed model.
+# to_model() is the one mapping step: it copies result into
+# the schema-generated classes, converts to the schema's types,
+# and range-checks each value -> ready to serialise as XML.
 platform = to_model(result)
 print(type(platform).__name__)
 # Platform
