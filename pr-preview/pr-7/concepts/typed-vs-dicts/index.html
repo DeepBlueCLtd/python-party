@@ -348,10 +348,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#start-from-a-structure-not-a-bag-of-keys" class="md-nav__link">
+  <a href="#work-with-the-schemas-data-object" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Start from a structure, not a bag of keys
+        Work with the schema's data object
       
     </span>
   </a>
@@ -841,10 +841,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#start-from-a-structure-not-a-bag-of-keys" class="md-nav__link">
+  <a href="#work-with-the-schemas-data-object" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Start from a structure, not a bag of keys
+        Work with the schema's data object
       
     </span>
   </a>
@@ -1155,10 +1155,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#start-from-a-structure-not-a-bag-of-keys" class="md-nav__link">
+  <a href="#work-with-the-schemas-data-object" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Start from a structure, not a bag of keys
+        Work with the schema's data object
       
     </span>
   </a>
@@ -1228,58 +1228,39 @@
 
 <h1 id="typed-data-end-to-end">Typed data, end to end<a class="headerlink" href="#typed-data-end-to-end" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Explanation</strong> — once you are writing Python in this pipeline the data lives in <strong>typed
-objects from start to finish</strong>: a structured set of parameters, the calculation result, the
-generated models, then XML. The only loosely-typed moment is the raw JSON at the very edge,
-parsed <em>once</em> at a single boundary. This page shows that end-to-end typed flow, and what
-strong typing buys you over a generic <code>dict</code>. See
-ADR 0002.</p>
+<p><strong>Explanation</strong> — once you are writing Python in this pipeline the data lives in a <strong>typed
+object that meets the schema</strong>, not a loosely-typed <code>dict</code>. The only loosely-typed moment is
+the raw JSON at the very edge, parsed <em>once</em> inside the pipeline. This page shows what strong
+typing buys you over a generic <code>dict</code>. See ADR 0002.</p>
 </blockquote>
-<h2 id="start-from-a-structure-not-a-bag-of-keys">Start from a structure, not a bag of keys<a class="headerlink" href="#start-from-a-structure-not-a-bag-of-keys" title="Permanent link">&para;</a></h2>
-<p>If you begin from a <strong>set of parameters held in a structure</strong>, every later stage can stay
-typed — there is never a point where the data degrades into an untyped <code>dict</code> you have to
-trust by convention. The pipeline already works this way: the acoustic seams return a typed
-<code>CalculationResult</code>, the single mapping (<code>to_model</code>) turns that into the schema-generated model
-objects, and only those objects are serialised.</p>
+<h2 id="work-with-the-schemas-data-object">Work with the schema's data object<a class="headerlink" href="#work-with-the-schemas-data-object" title="Permanent link">&para;</a></h2>
+<p>The pipeline turns the calculation into <strong>one typed data object that meets the schema</strong> — a
+<code>Platform</code> generated from the XSD. You work with that object directly: every field is declared,
+typed, and documented by the contract, so values never have to live in a loosely-typed <code>dict</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span>
 
 <span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
 
-<span class="c1"># calculate_from_file parses the JSON once and returns a typed</span>
-<span class="c1"># object. From here you use attributes, never string keys — so</span>
-<span class="c1"># the IDE autocompletes each step and a typo fails immediately.</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+<span class="c1"># Produce the schema&#39;s data object from the calculation input:</span>
+<span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">))</span>
 
-<span class="c1"># result is a typed CalculationResult; explore it by attribute:</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="c1"># CalculationResult</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="o">.</span><span class="n">source_level_db</span><span class="p">)</span>
-<span class="c1"># 215.0</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">bands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sectors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="c1"># SectorResult(bearing_deg=0.0, level_db=134.0)</span>
-
-<span class="c1"># to_model() is the one mapping step: it copies result into</span>
-<span class="c1"># the schema-generated classes, converts to the schema&#39;s types,</span>
-<span class="c1"># and range-checks each value -&gt; ready to serialise as XML.</span>
-<span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="c1"># It is generated from the XSD; explore it by attribute.</span>
+<span class="c1"># The IDE autocompletes each step and the values carry</span>
+<span class="c1"># the schema&#39;s Decimal type — no raw JSON key in sight:</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">platform</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="c1"># Platform</span>
 
-<span class="c1"># Same attribute access on the model generated from the XSD;</span>
-<span class="c1"># values now carry the schema&#39;s Decimal type all the way down.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">radiated_noise</span><span class="o">.</span><span class="n">band</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">centre_frequency</span><span class="p">)</span>
+<span class="c1"># 50.000</span>
+
 <span class="n">sector</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">radiated_noise</span><span class="o">.</span><span class="n">band</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">directional</span><span class="o">.</span><span class="n">sector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sector</span><span class="o">.</span><span class="n">bearing</span><span class="p">,</span> <span class="n">sector</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
 <span class="c1"># 0.000 134.000</span>
 </code></pre></div>
-<p>Every value here is a <strong>typed object</strong> with declared fields — <code>CalculationResult</code>, then
-<code>SectorResult</code>, then the schema-generated <code>Platform</code> and <code>Sector</code>. Because each step is typed,
-your IDE autocompletes the attribute names and a type checker flags a wrong one; you never have
-to remember a JSON key or risk a silent typo. The raw JSON is parsed into typed objects at
-exactly one place, and from there the whole flow is typed data — which is the whole point of the
-sections below.</p>
+<p>Every value here is a typed attribute of the schema's data object, not a <code>dict</code> key. Your IDE
+autocompletes each step and a type checker flags a wrong one; the values carry the schema's
+<code>Decimal</code> type. The raw JSON is parsed once, inside the pipeline, and you never index it by key.</p>
 <h2 id="storing-data-in-a-dictionary">Storing data in a dictionary<a class="headerlink" href="#storing-data-in-a-dictionary" title="Permanent link">&para;</a></h2>
 <p>A <code>dict</code> places no constraints on what it holds: keys are arbitrary strings and values are <code>Any</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
