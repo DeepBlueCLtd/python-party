@@ -1,19 +1,15 @@
 # Typed data, end to end
 
-> **Explanation** — once you are writing Python in this pipeline the data lives in **typed
-> objects from start to finish**: a structured set of parameters, the calculation result, the
-> generated models, then XML. The only loosely-typed moment is the raw JSON at the very edge,
-> parsed *once* at a single boundary. This page shows that end-to-end typed flow, and what
-> strong typing buys you over a generic `dict`. See
-> ADR 0002.
+> **Explanation** — once you are writing Python in this pipeline the data lives in a **typed
+> object that meets the schema**, not a loosely-typed `dict`. The only loosely-typed moment is
+> the raw JSON at the very edge, parsed *once* inside the pipeline. This page shows what strong
+> typing buys you over a generic `dict`. See ADR 0002.
 
-## Start from a structure, not a bag of keys
+## Work with the schema's data object
 
-If you begin from a **set of parameters held in a structure**, every later stage can stay
-typed — there is never a point where the data degrades into an untyped `dict` you have to
-trust by convention. The pipeline already works this way: the acoustic seams return a typed
-`CalculationResult`, the single mapping (`to_model`) turns that into the schema-generated model
-objects, and only those objects are serialised.
+The pipeline turns the calculation into **one typed data object that meets the schema** — a
+`Platform` generated from the XSD. You work with that object directly: every field is declared,
+typed, and documented by the contract, so values never have to live in a loosely-typed `dict`.
 
 ```python
 from acoustic_dataset import acoustics
@@ -21,41 +17,26 @@ from acoustic_dataset.mapping import to_model
 
 input_path = "examples/calculation_input.json"
 
-# calculate_from_file parses the JSON once and returns a typed
-# object. From here you use attributes, never string keys — so
-# the IDE autocompletes each step and a typo fails immediately.
-result = acoustics.calculate_from_file(input_path)
+# Produce the schema's data object from the calculation input:
+platform = to_model(acoustics.calculate_from_file(input_path))
 
-# result is a typed CalculationResult; explore it by attribute:
-print(type(result).__name__)
-# CalculationResult
-
-print(result.active_sonar.source_level_db)
-# 215.0
-
-print(result.bands[0].sectors[0])
-# SectorResult(bearing_deg=0.0, level_db=134.0)
-
-# to_model() is the one mapping step: it copies result into
-# the schema-generated classes, converts to the schema's types,
-# and range-checks each value -> ready to serialise as XML.
-platform = to_model(result)
+# It is generated from the XSD; explore it by attribute.
+# The IDE autocompletes each step and the values carry
+# the schema's Decimal type — no raw JSON key in sight:
 print(type(platform).__name__)
 # Platform
 
-# Same attribute access on the model generated from the XSD;
-# values now carry the schema's Decimal type all the way down.
+print(platform.radiated_noise.band[0].centre_frequency)
+# 50.000
+
 sector = platform.radiated_noise.band[0].directional.sector[0]
 print(sector.bearing, sector.level)
 # 0.000 134.000
 ```
 
-Every value here is a **typed object** with declared fields — `CalculationResult`, then
-`SectorResult`, then the schema-generated `Platform` and `Sector`. Because each step is typed,
-your IDE autocompletes the attribute names and a type checker flags a wrong one; you never have
-to remember a JSON key or risk a silent typo. The raw JSON is parsed into typed objects at
-exactly one place, and from there the whole flow is typed data — which is the whole point of the
-sections below.
+Every value here is a typed attribute of the schema's data object, not a `dict` key. Your IDE
+autocompletes each step and a type checker flags a wrong one; the values carry the schema's
+`Decimal` type. The raw JSON is parsed once, inside the pipeline, and you never index it by key.
 
 ## Storing data in a dictionary
 
