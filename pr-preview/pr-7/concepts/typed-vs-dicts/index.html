@@ -1246,47 +1246,38 @@ objects are serialised.</p>
 
 <span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
 
-<span class="c1"># Parse the JSON input once; everything below is typed.</span>
+<span class="c1"># calculate_from_file parses the JSON once and returns a typed</span>
+<span class="c1"># object. From here you use attributes, never string keys — so</span>
+<span class="c1"># the IDE autocompletes each step and a typo fails immediately.</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
 
-<span class="c1"># It is a typed object, not a dict — drill in by attribute:</span>
+<span class="c1"># result is a typed CalculationResult; explore it by attribute:</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="c1"># CalculationResult</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="c1"># Reference Platform A</span>
-
-<span class="c1"># One level down: the active sonar is its own typed object.</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="c1"># ActiveSonarResult</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="o">.</span><span class="n">source_level_db</span><span class="p">)</span>
 <span class="c1"># 215.0</span>
 
-<span class="c1"># Deeper still: bands -&gt; sectors, each a typed record.</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">bands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sectors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="c1"># SectorResult(bearing_deg=0.0, level_db=134.0)</span>
 
-<span class="c1"># The single mapping -&gt; schema-generated model objects.</span>
+<span class="c1"># The single mapping -&gt; the schema-generated typed model.</span>
 <span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">platform</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="c1"># Platform</span>
 
-<span class="c1"># The same drill-down works on the generated models, which</span>
-<span class="c1"># now carry the schema&#39;s Decimal type all the way down:</span>
+<span class="c1"># Same attribute access on the model generated from the XSD;</span>
+<span class="c1"># values now carry the schema&#39;s Decimal type all the way down.</span>
 <span class="n">sector</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">radiated_noise</span><span class="o">.</span><span class="n">band</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">directional</span><span class="o">.</span><span class="n">sector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">sector</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="c1"># Sector</span>
-
 <span class="nb">print</span><span class="p">(</span><span class="n">sector</span><span class="o">.</span><span class="n">bearing</span><span class="p">,</span> <span class="n">sector</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
 <span class="c1"># 0.000 134.000</span>
 </code></pre></div>
-<p>Each <code>print</code> reaches one level deeper, and every value is a <strong>declared object</strong> —
-<code>CalculationResult</code>, then <code>ActiveSonarResult</code>, then <code>SectorResult</code>, then the schema-generated
-<code>Platform</code> and <code>Sector</code>. Nothing in this chain is a <code>dict</code>: a field that does not exist is an
-error on the line that names it, not a surprise three stages later. Raw JSON is parsed into
-typed objects at exactly one place, and from there the whole flow is typed data — which is the
-whole point of the sections below.</p>
+<p>Every value here is a <strong>typed object</strong> with declared fields — <code>CalculationResult</code>, then
+<code>SectorResult</code>, then the schema-generated <code>Platform</code> and <code>Sector</code>. Because each step is typed,
+your IDE autocompletes the attribute names and a type checker flags a wrong one; you never have
+to remember a JSON key or risk a silent typo. The raw JSON is parsed into typed objects at
+exactly one place, and from there the whole flow is typed data — which is the whole point of the
+sections below.</p>
 <h2 id="storing-data-in-a-dictionary">Storing data in a dictionary<a class="headerlink" href="#storing-data-in-a-dictionary" title="Permanent link">&para;</a></h2>
 <p>A <code>dict</code> places no constraints on what it holds: keys are arbitrary strings and values are <code>Any</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
