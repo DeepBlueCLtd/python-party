@@ -1648,25 +1648,58 @@ objects are serialised.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>
-<span class="c1">#   result                     -&gt; acoustics.CalculationResult   (a typed dataclass)</span>
-<span class="c1">#   result.active_sonar        -&gt; acoustics.ActiveSonarResult    (.source_level_db is a float)</span>
-<span class="c1">#   result.bands[0].sectors[0] -&gt; acoustics.SectorResult(bearing_deg=..., level_db=...)</span>
+<span class="c1"># Parse the JSON input once; from here on the data is typed.</span>
+<span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
 
+<span class="c1"># The single mapping -&gt; schema-generated model objects.</span>
 <span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="c1">#   platform                                              -&gt; models.Platform  (from the schema)</span>
-<span class="c1">#   platform.radiated_noise.band[0].directional.sector[0] -&gt; models.Sector</span>
 </code></pre></div>
-<p>Each arrow hands a <strong>declared shape</strong> to the next stage. Nothing in this chain is a <code>dict</code>: a
+<p>Every value above carries a <strong>declared type</strong>, not a <code>dict</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Type it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>result</code></td>
+<td><code>acoustics.CalculationResult</code> (a dataclass)</td>
+</tr>
+<tr>
+<td><code>result.active_sonar</code></td>
+<td><code>acoustics.ActiveSonarResult</code></td>
+</tr>
+<tr>
+<td><code>result.active_sonar.source_level_db</code></td>
+<td><code>float</code></td>
+</tr>
+<tr>
+<td><code>result.bands[0].sectors[0]</code></td>
+<td><code>acoustics.SectorResult</code></td>
+</tr>
+<tr>
+<td><code>platform</code></td>
+<td><code>models.Platform</code> (from the schema)</td>
+</tr>
+<tr>
+<td><code>platform.radiated_noise.band[0].directional.sector[0]</code></td>
+<td><code>models.Sector</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each stage hands a <strong>declared shape</strong> to the next. Nothing in this chain is a <code>dict</code>: a
 field that does not exist is an error on the line that names it, not a surprise three stages
 later. Raw JSON is parsed into typed objects at exactly one place, and from there the whole
 flow is typed data — which is the whole point of the sections below.</p>
 <h2 id="storing-data-in-a-dictionary">Storing data in a dictionary<a class="headerlink" href="#storing-data-in-a-dictionary" title="Permanent link">&para;</a></h2>
 <p>A <code>dict</code> places no constraints on what it holds: keys are arbitrary strings and values are <code>Any</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">215.0</span>      <span class="c1"># any key, any value type</span>
-<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sorceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9999</span>        <span class="c1"># a misspelled key is just another entry</span>
-<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;loud&quot;</span>     <span class="c1"># a string replaces the number, with no objection</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">215.0</span>   <span class="c1"># any key, any value type</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sorceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9999</span>     <span class="c1"># misspelled key, stored anyway</span>
+<span class="n">record</span><span class="p">[</span><span class="s2">&quot;sourceLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;loud&quot;</span>  <span class="c1"># a string replaces the number</span>
 </code></pre></div>
 <p>The structure exists only by convention. A misspelled key, a wrong value type, or an omitted
 field is stored as readily as correct data, so a mistake surfaces later — when something reads
@@ -1678,8 +1711,12 @@ is stored is defined up front:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.models.acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sector</span>
 
-<span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>   <span class="c1"># the declared fields</span>
-<span class="n">Sector</span><span class="p">(</span><span class="n">bering</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>    <span class="c1"># TypeError: unexpected &#39;bering&#39;</span>
+<span class="c1"># The declared fields are accepted:</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>
+
+<span class="c1"># An unknown field fails at construction:</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bering</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;30.000&quot;</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>
+<span class="c1">#   -&gt; TypeError: unexpected keyword argument &#39;bering&#39;</span>
 </code></pre></div>
 <ul>
 <li>A name that is not a declared field is rejected when the object is constructed (<code>TypeError</code>),
@@ -1687,7 +1724,9 @@ is stored is defined up front:</p>
 <li>Each field has a declared type — here <code>Decimal</code>, as the schema specifies. A type checker
   (<code>mypy</code>, run by <code>make verify</code>) reports a wrong-typed value before the code runs:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="s2">&quot;thirty&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>   <span class="c1"># mypy: incompatible type &quot;str&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># mypy flags a wrong-typed value before the code runs:</span>
+<span class="n">Sector</span><span class="p">(</span><span class="n">bearing</span><span class="o">=</span><span class="s2">&quot;thirty&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;134.000&quot;</span><span class="p">))</span>
+<span class="c1">#   -&gt; mypy: incompatible type &quot;str&quot;</span>
 </code></pre></div>
 <ul>
 <li>The fields and their documentation are generated from the schema, so the stored object follows
@@ -1701,12 +1740,20 @@ point:</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span><span class="p">,</span> <span class="n">MappingError</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>
-<span class="c1"># Decibels are bounded to [-200, 300]; attempt to store an impossible source level:</span>
+<span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+
+<span class="c1"># Decibels are bounded to [-200, 300].</span>
+<span class="c1"># Force an impossible source level, then map it:</span>
 <span class="n">bad</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-    <span class="n">result</span><span class="p">,</span> <span class="n">active_sonar</span><span class="o">=</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="p">,</span> <span class="n">source_level_db</span><span class="o">=</span><span class="mf">9999.0</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">,</span>
+    <span class="n">active_sonar</span><span class="o">=</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="p">,</span> <span class="n">source_level_db</span><span class="o">=</span><span class="mf">9999.0</span>
+    <span class="p">),</span>
 <span class="p">)</span>
-<span class="n">to_model</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>        <span class="c1"># MappingError — rejected as it is stored, not left for a later stage</span>
+<span class="n">to_model</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+<span class="c1">#   -&gt; MappingError: rejected as it is stored,</span>
+<span class="c1">#      not left for a later stage</span>
 </code></pre></div>
 <p>A <code>dict</code> would hold <code>9999</code> and pass it on; the typed boundary rejects it.</p>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
