@@ -51,21 +51,21 @@ from the contract. See the [generated schema reference](reference/schema/index.m
 ## Tooling
 
 **xsdata** — generates typed Python dataclasses from an XSD and binds objects ↔ XML.
-See [ADR 0001](decisions/0001-schema-driven-generation-with-xsdata.md).
+See ADR 0001.
 
 **xmlschema** — pure-Python library used as the XSD validation gate.
-See [ADR 0003](decisions/0003-xmlschema-as-validation-gate.md).
+See ADR 0003.
 
 **MkDocs Material** — static-site generator that turns this Markdown into the attractive
 HTML site, with native Mermaid support.
-See [ADR 0009](decisions/0009-mkdocs-material-mermaid-html-docs.md).
+See ADR 0009.
 
 **Mermaid** — text-based diagramming (flowcharts, ER diagrams) rendered in the browser;
 keeps diagrams in version control as plain text.
 
 **Devcontainer / GitHub Codespaces** — a declarative development environment so a
 contributor gets a ready-to-run setup with no manual installation.
-See [ADR 0006](decisions/0006-codespaces-with-local-fallback.md).
+See ADR 0006.
 
 **Diátaxis** — the documentation framework (tutorials / how-to / reference / explanation)
 this site is organised around.

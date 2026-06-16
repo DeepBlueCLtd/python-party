@@ -5,7 +5,7 @@
 > generated models, then XML. The only loosely-typed moment is the raw JSON at the very edge,
 > parsed *once* at a single boundary. This page shows that end-to-end typed flow, and what
 > strong typing buys you over a generic `dict`. See
-> [ADR 0002](../decisions/0002-drop-csv-pickle-and-write_xml.md).
+> ADR 0002.
 
 ## Start from a structure, not a bag of keys
 
@@ -19,29 +19,50 @@ objects are serialised.
 from acoustic_dataset import acoustics
 from acoustic_dataset.mapping import to_model
 
-# Parse the JSON input once; from here on the data is typed.
 input_path = "examples/calculation_input.json"
+
+# Parse the JSON input once; everything below is typed.
 result = acoustics.calculate_from_file(input_path)
+
+# It is a typed object, not a dict — drill in by attribute:
+print(type(result).__name__)
+# CalculationResult
+
+print(result.name)
+# Reference Platform A
+
+# One level down: the active sonar is its own typed object.
+print(type(result.active_sonar).__name__)
+# ActiveSonarResult
+
+print(result.active_sonar.source_level_db)
+# 215.0
+
+# Deeper still: bands -> sectors, each a typed record.
+print(result.bands[0].sectors[0])
+# SectorResult(bearing_deg=0.0, level_db=134.0)
 
 # The single mapping -> schema-generated model objects.
 platform = to_model(result)
+print(type(platform).__name__)
+# Platform
+
+# The same drill-down works on the generated models, which
+# now carry the schema's Decimal type all the way down:
+sector = platform.radiated_noise.band[0].directional.sector[0]
+print(type(sector).__name__)
+# Sector
+
+print(sector.bearing, sector.level)
+# 0.000 134.000
 ```
 
-Every value above carries a **declared type**, not a `dict`:
-
-| Expression | Type it holds |
-|---|---|
-| `result` | `acoustics.CalculationResult` (a dataclass) |
-| `result.active_sonar` | `acoustics.ActiveSonarResult` |
-| `result.active_sonar.source_level_db` | `float` |
-| `result.bands[0].sectors[0]` | `acoustics.SectorResult` |
-| `platform` | `models.Platform` (from the schema) |
-| `platform.radiated_noise.band[0].directional.sector[0]` | `models.Sector` |
-
-Each stage hands a **declared shape** to the next. Nothing in this chain is a `dict`: a
-field that does not exist is an error on the line that names it, not a surprise three stages
-later. Raw JSON is parsed into typed objects at exactly one place, and from there the whole
-flow is typed data — which is the whole point of the sections below.
+Each `print` reaches one level deeper, and every value is a **declared object** —
+`CalculationResult`, then `ActiveSonarResult`, then `SectorResult`, then the schema-generated
+`Platform` and `Sector`. Nothing in this chain is a `dict`: a field that does not exist is an
+error on the line that names it, not a surprise three stages later. Raw JSON is parsed into
+typed objects at exactly one place, and from there the whole flow is typed data — which is the
+whole point of the sections below.
 
 ## Storing data in a dictionary
 

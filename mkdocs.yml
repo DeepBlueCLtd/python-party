@@ -6,6 +6,12 @@ docs_dir: docs
 # Build into a gitignored folder; the HTML is a generated artifact.
 site_dir: site
 
+# The ADRs (decisions/) and the ADR how-to are kept in the repo for the decision
+# record, but excluded from the published site. They remain browsable on GitHub.
+exclude_docs: |
+  decisions/
+  how-to/add-a-decision-record.md
+
 theme:
   name: material
   features:
@@ -50,25 +56,12 @@ nav:
       - Build the docs site: how-to/build-the-docs-site.md
       - Change the schema: how-to/change-the-schema.md
       - Run the migration-safety comparison: how-to/run-the-migration-safety-comparison.md
-      - Add a decision record: how-to/add-a-decision-record.md
   - Concepts:
       - Schema as the contract: concepts/schema-as-contract.md
       - Typed data, end to end: concepts/typed-vs-dicts.md
       - The two verification gates: concepts/two-verification-gates.md
       - Pipeline data flow (ERD): concepts/pipeline-data-flow.md
   # ^ "Typed data, end to end" is also surfaced as a top-level nav item above for prominence.
-  - Decisions (ADRs):
-      - Overview: decisions/index.md
-      - ADR template: decisions/0000-template.md
-      - 0001 Schema-driven generation with xsdata: decisions/0001-schema-driven-generation-with-xsdata.md
-      - 0002 Drop CSV, pickle and write_xml: decisions/0002-drop-csv-pickle-and-write_xml.md
-      - 0003 xmlschema as the validation gate: decisions/0003-xmlschema-as-validation-gate.md
-      - 0004 Two-gate verification: decisions/0004-two-gate-verification.md
-      - 0005 Placeholder schema, runnable now: decisions/0005-placeholder-schema-runnable-now.md
-      - 0006 Codespaces with a local fallback: decisions/0006-codespaces-with-local-fallback.md
-      - 0007 Pin to Python 3.9.4: decisions/0007-pin-python-3-9-4.md
-      - 0008 Generated models, no drift: decisions/0008-generated-models-no-drift.md
-      - 0009 MkDocs Material + Mermaid for HTML docs: decisions/0009-mkdocs-material-mermaid-html-docs.md
   - Reference:
       - Overview: reference/index.md
       - Commands: reference/commands.md

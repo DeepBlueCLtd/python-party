@@ -22,7 +22,6 @@ different question — plus a set of **Architecture Decision Records (ADRs)** th
 | Get the environment running and see it work | **[Tutorials](tutorials/01-start-here.md)** | "Show me, step by step." |
 | Do a specific task | **[How-to guides](how-to/use-the-codespace.md)** | "How do I X?" |
 | Understand *why* it works this way | **[Concepts](concepts/schema-as-contract.md)** | "Help me understand." |
-| Defend or revisit a decision | **[Decisions (ADRs)](decisions/index.md)** | "Why did we choose this?" |
 | Look up a command or the schema shape | **[Reference](reference/index.md)** | "What exactly is X?" |
 | Decode a term | **[Glossary](glossary.md)** | "What does that word mean?" |
 
@@ -42,9 +41,8 @@ human semantic gate (is the science right?). See
 
 ## How this set grows
 
-- Every significant choice becomes a numbered **ADR** — start at the
-  [decisions overview](decisions/index.md). Adding one is a documented how-to:
-  [Add a decision record](how-to/add-a-decision-record.md).
+- Every significant choice is recorded as a numbered **ADR**, kept in the
+  repository under `docs/decisions/` (not published to this site).
 - New understanding lands as a **concept** page; new recipes as **how-to** guides.
 - The **schema reference and ERD** are *generated from the enriched XSD* — see the
   [generated schema reference](reference/schema/index.md) — so the docs can never drift from the contract.

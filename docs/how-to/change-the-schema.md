@@ -18,7 +18,7 @@ redesign*: models, validation, bindings and the schema docs all regenerate from 
    ```
    Runs `xsdata` over the schema and rewrites `src/acoustic_dataset/models/`. **Do not
    hand-edit** the result — it's a generated artifact
-   ([ADR 0008](../decisions/0008-generated-models-no-drift.md)). Generation is pinned to the 3.9
+   (ADR 0008). Generation is pinned to the 3.9
    toolchain so the output is byte-reproducible for the drift gate.
 
 3. **Regenerate the schema docs + ERD.**
@@ -26,7 +26,7 @@ redesign*: models, validation, bindings and the schema docs all regenerate from 
    make gen-schema-docs
    ```
    Produces the reference pages and the Mermaid ERD from the schema
-   ([ADR 0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md)).
+   (ADR 0009).
 
 4. **Update the mapping.**
    `src/acoustic_dataset/mapping.py` is the **one place** that knows element names — update it
@@ -59,7 +59,7 @@ python -m acoustic_dataset.cli compare build/acoustic_dataset.xml examples/refer
 
 A clean match exits 0; a meaningful difference prints a diff and exits non-zero — catching
 output that is schema-valid but differs from what a consumer depends on
-([ADR 0004](../decisions/0004-two-gate-verification.md)).
+(ADR 0004).
 
 ## What you should *not* touch
 

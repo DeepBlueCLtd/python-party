@@ -29,10 +29,10 @@ flowchart LR
 Three mechanical checks, all in CI:
 
 - **Conformant by construction** — output comes from schema-generated objects
-  ([ADR 0001](../decisions/0001-schema-driven-generation-with-xsdata.md)), so it starts in
+  (ADR 0001), so it starts in
   the right shape.
 - **XSD validation** — `xmlschema` confirms the document validates against the contract
-  ([ADR 0003](../decisions/0003-xmlschema-as-validation-gate.md)).
+  (ADR 0003).
 - **Round-trip** — parse the XML back and re-serialise; if it changed meaningfully, a binding
   or serialisation loss occurred. This catches things validation alone cannot.
 
@@ -54,7 +54,7 @@ generator, new output can be perfectly schema-valid yet differ from files a cons
 depends on (perhaps relying on a quirk of the old hand-rolled output). The migration-safety
 comparison diffs new output against a known-good **reference** file to surface exactly this.
 See [Change the schema](../how-to/change-the-schema.md) and
-[ADR 0004](../decisions/0004-two-gate-verification.md).
+ADR 0004.
 
 ## Why split them at all?
 

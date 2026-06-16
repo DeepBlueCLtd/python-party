@@ -18,7 +18,7 @@ make pipeline   # produce build/acoustic_dataset.xml (schema-valid, round-trip-e
 
 **Local fallback:** you need Python 3.9.x and `make`, then run `make bootstrap` yourself
 before the same `make verify` / `make pipeline`. Both paths reach the *same* green state
-([ADR 0006](decisions/0006-codespaces-with-local-fallback.md)). Run `make help` to see every target.
+(ADR 0006). Run `make help` to see every target.
 
 ## Where things live
 
@@ -32,7 +32,7 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 | Tests (unit / integration / golden) | `tests/` |
 | The plan & design artifacts | `specs/001-codespace-xml-scaffold/` (`spec.md`, `plan.md`, `tasks.md`) |
 | The generated schema reference + ERD | [reference/schema](reference/schema/index.md) (run `make gen-schema-docs`) |
-| Why each choice was made | [Decision records](decisions/index.md) |
+| Why each choice was made | `docs/decisions/` (ADRs, kept in the repo) |
 
 ## Build the mental model
 
