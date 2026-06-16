@@ -21,48 +21,39 @@ from acoustic_dataset.mapping import to_model
 
 input_path = "examples/calculation_input.json"
 
-# Parse the JSON input once; everything below is typed.
+# calculate_from_file parses the JSON once and returns a typed
+# object. From here you use attributes, never string keys — so
+# the IDE autocompletes each step and a typo fails immediately.
 result = acoustics.calculate_from_file(input_path)
 
-# It is a typed object, not a dict — drill in by attribute:
+# result is a typed CalculationResult; explore it by attribute:
 print(type(result).__name__)
 # CalculationResult
-
-print(result.name)
-# Reference Platform A
-
-# One level down: the active sonar is its own typed object.
-print(type(result.active_sonar).__name__)
-# ActiveSonarResult
 
 print(result.active_sonar.source_level_db)
 # 215.0
 
-# Deeper still: bands -> sectors, each a typed record.
 print(result.bands[0].sectors[0])
 # SectorResult(bearing_deg=0.0, level_db=134.0)
 
-# The single mapping -> schema-generated model objects.
+# The single mapping -> the schema-generated typed model.
 platform = to_model(result)
 print(type(platform).__name__)
 # Platform
 
-# The same drill-down works on the generated models, which
-# now carry the schema's Decimal type all the way down:
+# Same attribute access on the model generated from the XSD;
+# values now carry the schema's Decimal type all the way down.
 sector = platform.radiated_noise.band[0].directional.sector[0]
-print(type(sector).__name__)
-# Sector
-
 print(sector.bearing, sector.level)
 # 0.000 134.000
 ```
 
-Each `print` reaches one level deeper, and every value is a **declared object** —
-`CalculationResult`, then `ActiveSonarResult`, then `SectorResult`, then the schema-generated
-`Platform` and `Sector`. Nothing in this chain is a `dict`: a field that does not exist is an
-error on the line that names it, not a surprise three stages later. Raw JSON is parsed into
-typed objects at exactly one place, and from there the whole flow is typed data — which is the
-whole point of the sections below.
+Every value here is a **typed object** with declared fields — `CalculationResult`, then
+`SectorResult`, then the schema-generated `Platform` and `Sector`. Because each step is typed,
+your IDE autocompletes the attribute names and a type checker flags a wrong one; you never have
+to remember a JSON key or risk a silent typo. The raw JSON is parsed into typed objects at
+exactly one place, and from there the whole flow is typed data — which is the whole point of the
+sections below.
 
 ## Storing data in a dictionary
 
