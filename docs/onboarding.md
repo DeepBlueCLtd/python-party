@@ -26,7 +26,7 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 |---|---|
 | The contract (the XSD) | `schema/acoustic_dataset.xsd` ([how to change it](how-to/change-the-schema.md)) |
 | The scientific seams (named, testable calc functions) | `src/acoustic_dataset/acoustics/` |
-| The **one** place calc output becomes typed objects | `src/acoustic_dataset/mapping.py` |
+| The **one** place the schema object is built | `src/acoustic_dataset/build.py` |
 | Generated models (never hand-edited — regenerate) | `src/acoustic_dataset/models/` |
 | Example calculation input | `examples/calculation_input.json` |
 | Tests (unit / integration / golden) | `tests/` |

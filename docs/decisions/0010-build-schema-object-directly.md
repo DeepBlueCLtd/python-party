@@ -1,8 +1,8 @@
 # ADR 0010: Build the schema's data object directly (drop the intermediate domain hierarchy)
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-06-16
-- **Deciders**: Project team (pending stakeholder confirmation of the defensible-process framing)
+- **Deciders**: Project team (stakeholder-defensibility framing confirmed)
 
 ## Context
 

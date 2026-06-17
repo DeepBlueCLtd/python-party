@@ -324,11 +324,10 @@ def _render_examples(example_input: Path) -> list[str]:
 
     a trimmed sample document, typed-object usage, and a field *derived* from elementary physics.
     """
-    from acoustic_dataset import acoustics, serialize
-    from acoustic_dataset.mapping import to_model
+    from acoustic_dataset import acoustics, build, serialize
 
     raw = acoustics.load_input(example_input)
-    platform = to_model(acoustics.calculate(raw))
+    platform = build.build_platform(raw)
     xml = serialize.to_xml(platform)
 
     characteristics = platform.characteristics
@@ -370,15 +369,15 @@ def _render_examples(example_input: Path) -> list[str]:
         "",
         "## Working with the typed objects",
         "",
-        "The pipeline maps calculation output **once** onto the generated dataclasses; tests "
+        "The pipeline builds the calculation **directly** into the generated dataclasses; tests "
         "assert on those typed objects (the testable boundary) and they serialise straight to XML:",
         "",
         "```python",
-        "from acoustic_dataset import acoustics, serialize",
-        "from acoustic_dataset.mapping import to_model",
+        "from acoustic_dataset import build, serialize",
         "",
-        'result = acoustics.calculate_from_file("examples/calculation_input.json")',
-        "platform = to_model(result)            # a generated Platform object",
+        'platform = build.build_platform_from_file(  # a generated Platform object',
+        '    "examples/calculation_input.json"',
+        ")",
         "",
         f"platform.name                          # {platform.name!r}",
         f"platform.characteristics.draft         # Decimal('{characteristics.draft}')",

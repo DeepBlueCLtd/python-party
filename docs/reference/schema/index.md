@@ -248,14 +248,14 @@ A validated document produced by `make pipeline` from `examples/calculation_inpu
 
 ## Working with the typed objects
 
-The pipeline maps calculation output **once** onto the generated dataclasses; tests assert on those typed objects (the testable boundary) and they serialise straight to XML:
+The pipeline builds the calculation **directly** into the generated dataclasses; tests assert on those typed objects (the testable boundary) and they serialise straight to XML:
 
 ```python
-from acoustic_dataset import acoustics, serialize
-from acoustic_dataset.mapping import to_model
+from acoustic_dataset import build, serialize
 
-result = acoustics.calculate_from_file("examples/calculation_input.json")
-platform = to_model(result)            # a generated Platform object
+platform = build.build_platform_from_file(  # a generated Platform object
+    "examples/calculation_input.json"
+)
 
 platform.name                          # 'Reference Platform A'
 platform.characteristics.draft         # Decimal('7.500')

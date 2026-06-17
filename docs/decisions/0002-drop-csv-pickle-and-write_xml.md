@@ -48,5 +48,9 @@ serialised once to XML.
 
 ## Notes / revisit triggers
 
+- **Refined by [ADR 0010](0010-build-schema-object-directly.md)**: the "single mapping from
+  calculation output onto schema-generated objects" is replaced by building the schema object
+  *directly* (no intermediate domain hierarchy). The removal of CSV/pickle/`write_xml` and the
+  serialise-once decision here still stand.
 - If profiling later shows the single in-process flow can't hold the full corpus in memory,
   revisit with a streaming approach — but not by resurrecting CSV/pickle.
