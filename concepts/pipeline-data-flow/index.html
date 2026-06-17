@@ -1086,23 +1086,22 @@
 </blockquote>
 <h2 id="the-flow-end-to-end">The flow, end to end<a class="headerlink" href="#the-flow-end-to-end" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
-    Input["Example calculation input&lt;br/&gt;(examples/calculation_input.json)"]
-    Acoustics["Acoustic seams&lt;br/&gt;(named, testable functions)"]
-    Result["CalculationResult"]
-    Mapping["mapping.py&lt;br/&gt;(the ONE mapping)"]
-    Objects["Populated domain objects&lt;br/&gt;(generated from XSD)"]
+    Input["Calculation input&lt;br/&gt;(examples/calculation_input.json)"]
+    Build["build.py&lt;br/&gt;(acoustic seams compute &amp;&lt;br/&gt;populate the schema object)"]
+    Objects["Schema data object&lt;br/&gt;(Platform, generated from XSD)"]
     XML["Emitted Platform XML"]
     Golden["Golden file"]
     Reference["Known-good reference"]
 
-    Input --&gt; Acoustics --&gt; Result --&gt; Mapping --&gt; Objects --&gt; XML
+    Input --&gt; Build --&gt; Objects --&gt; XML
     Objects -. "tests assert here" .-&gt; Golden
     XML -. "structural gate" .-&gt; XML
     XML -. "migration safety" .-&gt; Reference</code></pre>
-<p>The <strong>populated domain objects, before serialisation, are the typed testable boundary</strong> —
-tests assert on them directly, or diff the serialised XML against a golden file. No separate
-intermediate (no CSV, no pickle) is needed to get testability; that whole chain was removed
-(ADR 0002).</p>
+<p>The acoustic seams compute the values and the builder populates <strong>one schema data object</strong>
+directly — there is no intermediate domain hierarchy built only to be converted (ADR 0010).
+That object, before serialisation, is the <strong>typed testable boundary</strong>: tests assert on it
+directly, or diff the serialised XML against a golden file. No separate intermediate (no CSV,
+no pickle) is needed to get testability; that whole chain was removed (ADR 0002).</p>
 <h2 id="the-entities-as-an-er-diagram">The entities as an ER diagram<a class="headerlink" href="#the-entities-as-an-er-diagram" title="Permanent link">&para;</a></h2>
 <p>This is the kind of <strong>Mermaid ERD</strong> the docs render — here drawn by hand for the data-flow story
 (it deliberately includes pipeline entities like the golden and reference files). The
@@ -1110,8 +1109,7 @@ intermediate (no CSV, no pickle) is needed to get testability; that whole chain 
 <strong>automatically from the schema</strong> by <code>make gen-schema-docs</code>
 (ADR 0009).</p>
 <pre class="mermaid"><code>erDiagram
-    CALCULATION_INPUT ||--|| CALCULATION_RESULT : "produces (via acoustic seams)"
-    CALCULATION_RESULT ||--|| PLATFORM : "mapped once onto"
+    CALCULATION_INPUT ||--|| PLATFORM : "built into (via acoustic seams)"
     PLATFORM ||--|| CHARACTERISTICS : describes
     PLATFORM ||--o{ RADIATED_BAND : "radiates across (10 bands)"
     RADIATED_BAND ||--o{ SECTOR : "all round (12 sectors)"
@@ -1157,14 +1155,14 @@ intermediate (no CSV, no pickle) is needed to get testability; that whole chain 
 </thead>
 <tbody>
 <tr>
-<td><strong>CalculationResult</strong></td>
-<td>Output of the acoustic seams (the recalculation/resampling step)</td>
-<td>Produced by discrete, testable functions</td>
+<td><strong>Acoustic seams</strong></td>
+<td>The named, testable calculation functions (<code>band_centre_hz</code>, …)</td>
+<td>Pure <code>float</code> arithmetic; feed the builder</td>
 </tr>
 <tr>
-<td><strong>Populated domain objects</strong></td>
-<td>Generated-model instances after the single mapping</td>
-<td>The assertion boundary; the one place logic lives</td>
+<td><strong>Schema data object</strong></td>
+<td>The generated <code>Platform</code> the builder populates directly</td>
+<td>The assertion boundary; built to meet the schema</td>
 </tr>
 <tr>
 <td><strong>Platform XML</strong></td>

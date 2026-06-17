@@ -1111,8 +1111,8 @@ redesign</em>: models, validation, bindings and the schema docs all regenerate f
    (ADR 0009).</p>
 </li>
 <li>
-<p><strong>Update the mapping.</strong>
-   <code>src/acoustic_dataset/mapping.py</code> is the <strong>one place</strong> that knows element names — update it
+<p><strong>Update the builder.</strong>
+   <code>src/acoustic_dataset/build.py</code> is the <strong>one place</strong> that knows element names — update it
    for any added/renamed/retyped fields. Generation code does <em>not</em> change.</p>
 </li>
 <li>

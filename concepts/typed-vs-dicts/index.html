@@ -1237,13 +1237,12 @@ typing buys you over a generic <code>dict</code>. See ADR 0002.</p>
 <p>The pipeline turns the calculation into <strong>one typed data object that meets the schema</strong> — a
 <code>Platform</code> generated from the XSD. You work with that object directly: every field is declared,
 typed, and documented by the contract, so values never have to live in a loosely-typed <code>dict</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
 
 <span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
 
-<span class="c1"># Produce the schema&#39;s data object from the calculation input:</span>
-<span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">))</span>
+<span class="c1"># Build the schema&#39;s data object directly from the input:</span>
+<span class="n">platform</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="n">build_platform_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
 
 <span class="c1"># It is generated from the XSD; explore it by attribute.</span>
 <span class="c1"># The IDE autocompletes each step and the values carry</span>
@@ -1300,29 +1299,22 @@ is stored is defined up front:</p>
   the contract rather than an ad-hoc shape.</li>
 </ul>
 <h2 id="checking-values-as-they-are-stored">Checking values as they are stored<a class="headerlink" href="#checking-values-as-they-are-stored" title="Permanent link">&para;</a></h2>
-<p>Field names and types define the <em>shape</em>. The single mapping (<code>to_model</code>) is where calculation
-output is stored into these objects, and it also enforces the schema's numeric <strong>ranges</strong> at that
-point:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span><span class="p">,</span> <span class="n">MappingError</span>
+<p>Field names and types define the <em>shape</em>. The builder is where each value is stored into the
+schema object, and it also enforces the schema's numeric <strong>ranges</strong> at that point — a value that
+does not meet the schema is rejected before serialisation:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span><span class="p">,</span> <span class="n">build</span>
 
-<span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;examples/calculation_input.json&quot;</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">load_input</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>
 
-<span class="c1"># Decibels are bounded to [-200, 300].</span>
-<span class="c1"># Force an impossible source level, then map it:</span>
-<span class="n">bad</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-    <span class="n">result</span><span class="p">,</span>
-    <span class="n">active_sonar</span><span class="o">=</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">active_sonar</span><span class="p">,</span> <span class="n">source_level_db</span><span class="o">=</span><span class="mf">9999.0</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="n">to_model</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
-<span class="c1">#   -&gt; MappingError: rejected as it is stored,</span>
+<span class="c1"># Decibels are bounded to [-200, 300]. Force an impossible</span>
+<span class="c1"># source level into the input, then build the schema object:</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;sensors&quot;</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">][</span><span class="s2">&quot;sourceLevelDb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9999.0</span>
+<span class="n">build</span><span class="o">.</span><span class="n">build_platform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="c1">#   -&gt; MappingError: rejected as it is built,</span>
 <span class="c1">#      not left for a later stage</span>
 </code></pre></div>
-<p>A <code>dict</code> would hold <code>9999</code> and pass it on; the typed boundary rejects it.</p>
+<p>A <code>dict</code> would hold <code>9999</code> and pass it on; the builder rejects it because it does not meet the
+schema.</p>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1346,7 +1338,7 @@ point:</p>
 <tr>
 <td>Out-of-range values</td>
 <td>stored as-is</td>
-<td>rejected by the mapping (<code>MappingError</code>)</td>
+<td>rejected by the builder (<code>MappingError</code>)</td>
 </tr>
 <tr>
 <td>Relationship to the schema</td>

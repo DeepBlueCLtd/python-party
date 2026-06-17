@@ -1906,12 +1906,12 @@
 <span class="nt">&lt;/Platform&gt;</span>
 </code></pre></div>
 <h2 id="working-with-the-typed-objects">Working with the typed objects<a class="headerlink" href="#working-with-the-typed-objects" title="Permanent link">&para;</a></h2>
-<p>The pipeline maps calculation output <strong>once</strong> onto the generated dataclasses; tests assert on those typed objects (the testable boundary) and they serialise straight to XML:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">acoustics</span><span class="p">,</span> <span class="n">serialize</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_model</span>
+<p>The pipeline builds the calculation <strong>directly</strong> into the generated dataclasses; tests assert on those typed objects (the testable boundary) and they serialise straight to XML:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">acoustic_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span><span class="p">,</span> <span class="n">serialize</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">acoustics</span><span class="o">.</span><span class="n">calculate_from_file</span><span class="p">(</span><span class="s2">&quot;examples/calculation_input.json&quot;</span><span class="p">)</span>
-<span class="n">platform</span> <span class="o">=</span> <span class="n">to_model</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>            <span class="c1"># a generated Platform object</span>
+<span class="n">platform</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="n">build_platform_from_file</span><span class="p">(</span>  <span class="c1"># a generated Platform object</span>
+    <span class="s2">&quot;examples/calculation_input.json&quot;</span>
+<span class="p">)</span>
 
 <span class="n">platform</span><span class="o">.</span><span class="n">name</span>                          <span class="c1"># &#39;Reference Platform A&#39;</span>
 <span class="n">platform</span><span class="o">.</span><span class="n">characteristics</span><span class="o">.</span><span class="n">draft</span>         <span class="c1"># Decimal(&#39;7.500&#39;)</span>
