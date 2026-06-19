@@ -20,7 +20,7 @@
 
 All command targets are implemented. The CI drift gate regenerates the models and schema docs
 on the Python 3.9 target and fails if the committed artifacts are stale (see
-[ADR 0008](../decisions/0008-generated-models-no-drift.md)).
+ADR 0008).
 
 ## CLI subcommands
 
@@ -37,6 +37,6 @@ above; full input/exit-code semantics are in the contract file. Summary:
 
 ## Tooling versions
 
-- **Python**: 3.9.4 (pinned — [ADR 0007](../decisions/0007-pin-python-3-9-4.md))
+- **Python**: 3.9.4 (pinned — ADR 0007)
 - **xsdata**: ≥ 24 · **xmlschema**: ≥ 3 · **mkdocs-material**: ≥ 9.5
 - Lint/type floors: `ruff target-version = py39`, `mypy python_version = 3.9`

@@ -8,7 +8,7 @@
 1. On the repository page: **Code → Codespaces → Create codespace on
    `claude/zealous-davinci-n4ssvn`** (or your branch).
 2. Wait for provisioning. The devcontainer pins **Python 3.9.4** to match the target system
-   ([ADR 0007](../decisions/0007-pin-python-3-9-4.md)) and runs `make bootstrap` automatically.
+   (ADR 0007) and runs `make bootstrap` automatically.
 
 ## Everyday commands
 
@@ -45,4 +45,4 @@ make bootstrap
 
 Everything above works locally too — you only need Python 3.9.x and `make`. Run
 `make bootstrap` once, then the same targets. See
-[ADR 0006](../decisions/0006-codespaces-with-local-fallback.md) for why we keep both paths.
+ADR 0006 for why we keep both paths.

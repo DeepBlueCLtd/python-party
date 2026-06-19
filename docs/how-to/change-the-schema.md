@@ -18,7 +18,7 @@ redesign*: models, validation, bindings and the schema docs all regenerate from 
    ```
    Runs `xsdata` over the schema and rewrites `src/acoustic_dataset/models/`. **Do not
    hand-edit** the result — it's a generated artifact
-   ([ADR 0008](../decisions/0008-generated-models-no-drift.md)). Generation is pinned to the 3.9
+   (ADR 0008). Generation is pinned to the 3.9
    toolchain so the output is byte-reproducible for the drift gate.
 
 3. **Regenerate the schema reference.**
@@ -26,10 +26,10 @@ redesign*: models, validation, bindings and the schema docs all regenerate from 
    make gen-schema-docs
    ```
    Produces the HTML reference from the schema via xs3p
-   ([ADR 0010](../decisions/0010-xs3p-html-schema-reference.md)).
+   (ADR 0011).
 
-4. **Update the mapping.**
-   `src/acoustic_dataset/mapping.py` is the **one place** that knows element names — update it
+4. **Update the builder.**
+   `src/acoustic_dataset/build.py` is the **one place** that knows element names — update it
    for any added/renamed/retyped fields. Generation code does *not* change.
 
 5. **Update the example and golden file.**
@@ -59,10 +59,10 @@ python -m acoustic_dataset.cli compare build/acoustic_dataset.xml examples/refer
 
 A clean match exits 0; a meaningful difference prints a diff and exits non-zero — catching
 output that is schema-valid but differs from what a consumer depends on
-([ADR 0004](../decisions/0004-two-gate-verification.md)).
+(ADR 0004).
 
 ## What you should *not* touch
 
 - Generated models (`src/acoustic_dataset/models/`) — regenerate instead.
-- Generated schema reference/ERD under `reference/schema/` — regenerate instead.
+- Generated HTML schema reference under `reference/schema/` — regenerate instead.
 - The generation code — it's schema-agnostic by design.

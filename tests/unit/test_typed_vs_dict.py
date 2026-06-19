@@ -6,13 +6,11 @@ accurate (FR-010, ADR 0002).
 
 from __future__ import annotations
 
-import dataclasses
 from decimal import Decimal
 
 import pytest
 
-from acoustic_dataset import acoustics
-from acoustic_dataset.mapping import MappingError, to_model
+from acoustic_dataset import acoustics, build
 from acoustic_dataset.models.acoustic_dataset import Sector
 
 
@@ -41,16 +39,14 @@ def test_an_unknown_field_is_rejected_when_constructing():
 
 
 def test_a_stored_field_has_the_schema_declared_type(input_path):
-    platform = to_model(acoustics.calculate_from_file(input_path))
+    platform = build.build_platform_from_file(input_path)
     level = platform.radiated_noise.band[0].directional.sector[0].sector_level.value
     assert isinstance(level, Decimal)  # stored as the schema's Decimal, not a bare float
 
 
 def test_out_of_range_value_is_rejected_as_it_is_stored(input_path):
-    result = acoustics.calculate_from_file(input_path)
+    data = acoustics.load_input(input_path)
     # The schema bounds Decibels to [-200, 300]; a dict would carry 9999 straight through.
-    bad = dataclasses.replace(
-        result, active_sonar=dataclasses.replace(result.active_sonar, source_level_db=9999.0)
-    )
-    with pytest.raises(MappingError, match="SourceLevel"):
-        to_model(bad)
+    data["sensors"]["active"]["sourceLevelDb"] = 9999.0
+    with pytest.raises(build.MappingError, match="SourceLevel"):
+        build.build_platform(data)

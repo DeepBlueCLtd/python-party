@@ -49,7 +49,7 @@ the Python 3.9.4 target** ([ADR 0007](0007-pin-python-3-9-4.md)):
 ### Negative / trade-offs
 
 - A schema change produces a large generated diff in the PR (noise, but honest).
-- Contributors must learn "edit the schema or the mapping, never the models." Documented in
+- Contributors must learn "edit the schema or the builder, never the models." Documented in
   [Change the schema](../how-to/change-the-schema.md).
 
 ## Alternatives considered

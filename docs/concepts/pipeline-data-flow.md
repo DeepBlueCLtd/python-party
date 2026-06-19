@@ -6,25 +6,24 @@
 
 ```mermaid
 flowchart TD
-    Input["Example calculation input<br/>(examples/calculation_input.json)"]
-    Acoustics["Acoustic seams<br/>(named, testable functions)"]
-    Result["CalculationResult"]
-    Mapping["mapping.py<br/>(the ONE mapping)"]
-    Objects["Populated domain objects<br/>(generated from XSD)"]
+    Input["Calculation input<br/>(examples/calculation_input.json)"]
+    Build["build.py<br/>(acoustic seams compute &<br/>populate the schema object)"]
+    Objects["Schema data object<br/>(Platform, generated from XSD)"]
     XML["Emitted Platform XML"]
     Golden["Golden file"]
     Reference["Known-good reference"]
 
-    Input --> Acoustics --> Result --> Mapping --> Objects --> XML
+    Input --> Build --> Objects --> XML
     Objects -. "tests assert here" .-> Golden
     XML -. "structural gate" .-> XML
     XML -. "migration safety" .-> Reference
 ```
 
-The **populated domain objects, before serialisation, are the typed testable boundary** —
-tests assert on them directly, or diff the serialised XML against a golden file. No separate
-intermediate (no CSV, no pickle) is needed to get testability; that whole chain was removed
-([ADR 0002](../decisions/0002-drop-csv-pickle-and-write_xml.md)).
+The acoustic seams compute the values and the builder populates **one schema data object**
+directly — there is no intermediate domain hierarchy built only to be converted (ADR 0010).
+That object, before serialisation, is the **typed testable boundary**: tests assert on it
+directly, or diff the serialised XML against a golden file. No separate intermediate (no CSV,
+no pickle) is needed to get testability; that whole chain was removed (ADR 0002).
 
 ## The entities as an ER diagram
 
@@ -32,12 +31,11 @@ This **Mermaid ERD** is drawn by hand for the data-flow story (it deliberately i
 entities like the golden and reference files). The
 **[schema reference](../reference/schema/index.html)**, by contrast, is produced
 **automatically from the schema** (as HTML) by `make gen-schema-docs`
-([ADR 0010](../decisions/0010-xs3p-html-schema-reference.md)).
+(ADR 0011).
 
 ```mermaid
 erDiagram
-    CALCULATION_INPUT ||--|| CALCULATION_RESULT : "produces (via acoustic seams)"
-    CALCULATION_RESULT ||--|| PLATFORM : "mapped once onto"
+    CALCULATION_INPUT ||--|| PLATFORM : "built into (via acoustic seams)"
     PLATFORM ||--|| CHARACTERISTICS : describes
     PLATFORM ||--o{ RADIATED_BAND : "radiates across (10 bands)"
     RADIATED_BAND ||--o{ SECTOR : "all round (12 sectors)"
@@ -78,8 +76,8 @@ erDiagram
 
 | Entity | What it is | Key rule |
 |---|---|---|
-| **CalculationResult** | Output of the acoustic seams (the recalculation/resampling step) | Produced by discrete, testable functions |
-| **Populated domain objects** | Generated-model instances after the single mapping | The assertion boundary; the one place logic lives |
+| **Acoustic seams** | The named, testable calculation functions (`band_centre_hz`, …) | Pure `float` arithmetic; feed the builder |
+| **Schema data object** | The generated `Platform` the builder populates directly | The assertion boundary; built to meet the schema |
 | **Platform XML** | The validated, round-tripped Phase 1 deliverable | Must pass both gates before it's trusted |
 | **Golden file** | Trusted expected output | Drives the semantic gate; changed deliberately |
 | **Reference file** | Prior-process output | Drives migration-safety comparison |

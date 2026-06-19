@@ -5,7 +5,7 @@
 
 Schema validity proves the output fits the contract; it does **not** prove it says the same
 thing as a file a consumer already depends on. The `compare` command closes that gap
-([ADR 0004](../decisions/0004-two-gate-verification.md), FR-015).
+(ADR 0004, FR-015).
 
 ## Steps
 

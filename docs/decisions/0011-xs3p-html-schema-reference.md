@@ -1,4 +1,4 @@
-# ADR 0010: Generate the schema reference as HTML with xs3p
+# ADR 0011: Generate the schema reference as HTML with xs3p
 
 **Status:** Accepted (supersedes the schema-reference/ERD portion of
 [ADR 0009](0009-mkdocs-material-mermaid-html-docs.md))

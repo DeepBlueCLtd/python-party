@@ -21,7 +21,7 @@ The fastest path is a **GitHub Codespace** (no local installs):
    Python 3.9.4) — see [Use the Codespace](../how-to/use-the-codespace.md) for detail.
 
 Prefer local? You need Python 3.9.x and `make`, then run `make bootstrap` yourself. Either
-way the commands below are identical ([ADR 0006](../decisions/0006-codespaces-with-local-fallback.md)).
+way the commands below are identical (ADR 0006).
 
 ## Step 2 — Verify it's green
 
@@ -49,25 +49,27 @@ Open <http://localhost:8000>. This is the very site you're reading, rendered by 
 Material — including the **Mermaid diagrams** (try the
 [pipeline ERD](../concepts/pipeline-data-flow.md)). The docs are generated from the same
 Markdown that lives next to the code, so they travel with the project
-([ADR 0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md)).
+(ADR 0009).
 
 ## Step 4 — Build the mental model
 
-Read these two short pages, in order:
+Read these short pages, in order:
 
 1. [Schema as the contract](../concepts/schema-as-contract.md) — the one idea everything
    follows from.
-2. [The two verification gates](../concepts/two-verification-gates.md) — why schema-valid
+2. [Typed data, end to end](../concepts/typed-vs-dicts.md) — how you write Python here: start
+   from a structured set of parameters and keep the data in typed objects all the way to XML.
+3. [The two verification gates](../concepts/two-verification-gates.md) — why schema-valid
    isn't the same as correct.
 
-Then skim the [decisions overview](../decisions/index.md). Each ADR tells you *why* a choice
+Then skim the ADRs in `docs/decisions/` (kept in the repo). Each one tells you *why* a choice
 was made and *what was rejected* — that's the material you'll use to defend the design.
 
 ## Where to go next
 
 - Want to do a specific task? → [How-to guides](../how-to/use-the-codespace.md)
 - Need to change the schema? → [Change the schema](../how-to/change-the-schema.md)
-- Want to record your own decision? → [Add a decision record](../how-to/add-a-decision-record.md)
+- Want to record your own decision? → add an ADR under `docs/decisions/`
 
 !!! tip "This set grows with you"
     As you learn, add a concept page; as you find a recipe, add a how-to; as you decide

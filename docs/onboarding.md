@@ -18,7 +18,7 @@ make pipeline   # produce build/acoustic_dataset.xml (schema-valid, round-trip-e
 
 **Local fallback:** you need Python 3.9.x and `make`, then run `make bootstrap` yourself
 before the same `make verify` / `make pipeline`. Both paths reach the *same* green state
-([ADR 0006](decisions/0006-codespaces-with-local-fallback.md)). Run `make help` to see every target.
+(ADR 0006). Run `make help` to see every target.
 
 ## Where things live
 
@@ -26,22 +26,22 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 |---|---|
 | The contract (the XSD) | `schema/acoustic_dataset.xsd` ([how to change it](how-to/change-the-schema.md)) |
 | The scientific seams (named, testable calc functions) | `src/acoustic_dataset/acoustics/` |
-| The **one** place calc output becomes typed objects | `src/acoustic_dataset/mapping.py` |
+| The **one** place the schema object is built | `src/acoustic_dataset/build.py` |
 | Generated models (never hand-edited — regenerate) | `src/acoustic_dataset/models/` |
 | Example calculation input | `examples/calculation_input.json` |
 | Tests (unit / integration / golden) | `tests/` |
 | The plan & design artifacts | `specs/001-codespace-xml-scaffold/` (`spec.md`, `plan.md`, `tasks.md`) |
 | The generated HTML schema reference | [reference/schema](reference/schema/index.html) (run `make gen-schema-docs`) |
-| Why each choice was made | [Decision records](decisions/index.md) |
+| Why each choice was made | `docs/decisions/` (ADRs, kept in the repo) |
 
 ## Build the mental model
 
 Read these, in order — they're short:
 
 1. [Schema as the contract](concepts/schema-as-contract.md) — the idea everything follows from.
-2. [The two verification gates](concepts/two-verification-gates.md) — why schema-valid isn't the same as correct.
-3. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
-4. [Typed objects vs dictionaries](concepts/typed-vs-dicts.md) — why typed data beats a generic `dict`.
+2. [Typed data, end to end](concepts/typed-vs-dicts.md) — how you write Python here: start from a structured set of parameters and keep the data typed all the way to XML.
+3. [The two verification gates](concepts/two-verification-gates.md) — why schema-valid isn't the same as correct.
+4. [Pipeline data flow](concepts/pipeline-data-flow.md) — how input becomes validated XML.
 
 !!! tip "What's done, what's next"
     The full Phase 1 pipeline is in place — environment, end-to-end pipeline, migration-safety

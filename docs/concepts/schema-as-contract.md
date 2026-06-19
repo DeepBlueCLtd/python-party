@@ -25,7 +25,7 @@ diagram a third. Each is a place the truth can rot.
 If there is exactly **one** source (the XSD) and everything else is generated from it, drift
 becomes structurally impossible — you change the schema and re-generate, or you don't change
 the format at all. CI enforces this by regenerating and failing on any difference
-(see [ADR 0008](../decisions/0008-generated-models-no-drift.md)).
+(see ADR 0008).
 
 ## What flows from the one source
 
@@ -65,6 +65,6 @@ right (and enriched) is the high-leverage work.
 
 - [The two verification gates](two-verification-gates.md) — why schema-valid isn't enough.
 - [Pipeline data flow](pipeline-data-flow.md) — the entities and how they move.
-- ADRs [0001](../decisions/0001-schema-driven-generation-with-xsdata.md),
-  [0008](../decisions/0008-generated-models-no-drift.md),
-  [0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md).
+- ADRs 0001,
+  0008,
+  0009.
