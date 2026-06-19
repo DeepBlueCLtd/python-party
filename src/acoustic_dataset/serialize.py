@@ -1,8 +1,8 @@
 """Serialise populated domain objects to XML text (xsdata ``XmlSerializer``).
 
 Binding-driven: there is no hand-built XML string anywhere, so the emitted document can only
-contain what the generated models (and therefore the schema) allow. The default namespace is
-bound to the schema target namespace for clean, prefix-free output.
+contain what the generated models (and therefore the schema) allow. The schema is a no-namespace
+contract (as the real one is), so the emitted document is unqualified — no default namespace.
 """
 
 from __future__ import annotations
@@ -12,7 +12,8 @@ from xsdata.formats.dataclass.serializers.config import SerializerConfig
 
 from acoustic_dataset.models.acoustic_dataset import Platform
 
-NAMESPACE = "https://deepblue.example/acoustic-dataset/v0"
+#: The contract has no target namespace; emitted documents are unqualified.
+NAMESPACE = ""
 
 
 def _serializer() -> XmlSerializer:
@@ -27,5 +28,5 @@ def _serializer() -> XmlSerializer:
 
 
 def to_xml(model: Platform) -> str:
-    """Serialise a ``Platform`` to an XML string (default-namespace bound)."""
-    return _serializer().render(model, ns_map={None: NAMESPACE})
+    """Serialise a ``Platform`` to an XML string (unqualified — no namespace)."""
+    return _serializer().render(model)

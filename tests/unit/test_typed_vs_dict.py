@@ -25,16 +25,24 @@ def test_a_dict_stores_anything_silently():
 
 
 def test_an_unknown_field_is_rejected_when_constructing():
+    from acoustic_dataset.models.acoustic_dataset import SectorBearing, SectorLevel
+
     # The declared shape is accepted...
-    Sector(bearing=Decimal("30.000"), level=Decimal("134.000"))
+    Sector(
+        sector_bearing=SectorBearing(Decimal("30.000")),
+        sector_level=SectorLevel(Decimal("134.000")),
+    )
     # ...but a name that is not a field fails at construction (a dict would just store it).
     with pytest.raises(TypeError):
-        Sector(bering=Decimal("30.000"), level=Decimal("134.000"))
+        Sector(
+            bering=SectorBearing(Decimal("30.000")),
+            sector_level=SectorLevel(Decimal("134.000")),
+        )
 
 
 def test_a_stored_field_has_the_schema_declared_type(input_path):
     platform = to_model(acoustics.calculate_from_file(input_path))
-    level = platform.radiated_noise.band[0].directional.sector[0].level
+    level = platform.radiated_noise.band[0].directional.sector[0].sector_level.value
     assert isinstance(level, Decimal)  # stored as the schema's Decimal, not a bare float
 
 

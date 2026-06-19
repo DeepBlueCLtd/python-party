@@ -26,10 +26,12 @@ def test_whitespace_and_indentation_are_cosmetic(golden_path):
     assert compare.compare(squashed, text).equal
 
 
-def test_namespace_prefix_is_cosmetic(golden_path, reference_path):
-    # The shipped reference uses a ``ds:`` prefix; the golden uses the default namespace.
-    assert "xmlns:ds" in reference_path.read_text(encoding="utf-8")
-    assert compare.compare(golden_path, reference_path).equal
+def test_namespace_prefix_is_cosmetic():
+    # The contract is no-namespace, but the equality key still rewrites prefixes, so the same
+    # document under a prefix vs the default namespace compares equal.
+    default_ns = '<R xmlns="urn:x"><E>1</E></R>'
+    prefixed = '<p:R xmlns:p="urn:x"><p:E>1</p:E></p:R>'
+    assert compare.compare(default_ns, prefixed).equal
 
 
 def test_attribute_order_is_cosmetic():
@@ -57,7 +59,9 @@ def test_shipped_reference_matches_the_pipeline_output(golden_path, reference_pa
 def test_schema_valid_but_different_is_surfaced(golden_path, schema_path):
     text = golden_path.read_text(encoding="utf-8")
     # 144.000 dB is still inside the schema's Decibels band [-200, 300] -> schema-valid...
-    different = text.replace("<Level>134.000</Level>", "<Level>144.000</Level>", 1)
+    different = text.replace(
+        "<SectorLevel>134.000</SectorLevel>", "<SectorLevel>144.000</SectorLevel>", 1
+    )
     assert different != text
     assert validate.schema_errors(different, schema_path) == []  # ...yet schema-valid
 
@@ -69,11 +73,13 @@ def test_schema_valid_but_different_is_surfaced(golden_path, schema_path):
 
 def test_diff_is_oriented_reference_to_generated(golden_path):
     text = golden_path.read_text(encoding="utf-8")
-    generated = text.replace("<Level>134.000</Level>", "<Level>144.000</Level>", 1)
+    generated = text.replace(
+        "<SectorLevel>134.000</SectorLevel>", "<SectorLevel>144.000</SectorLevel>", 1
+    )
     diff = compare.compare(generated, text).diff
     # reference (134.000) removed, generated (144.000) added
-    assert "-          <Level>134.000</Level>" in diff
-    assert "+          <Level>144.000</Level>" in diff
+    assert "-          <SectorLevel>134.000</SectorLevel>" in diff
+    assert "+          <SectorLevel>144.000</SectorLevel>" in diff
 
 
 # --- CLI exit-code contract (contracts/cli-commands.md §compare) --------------------------
@@ -89,7 +95,7 @@ def test_cli_meaningful_difference_exits_nonzero(tmp_path, golden_path, capsys):
     different = tmp_path / "generated.xml"
     different.write_text(
         golden_path.read_text(encoding="utf-8").replace(
-            "<Level>134.000</Level>", "<Level>144.000</Level>", 1
+            "<SectorLevel>134.000</SectorLevel>", "<SectorLevel>144.000</SectorLevel>", 1
         ),
         encoding="utf-8",
     )

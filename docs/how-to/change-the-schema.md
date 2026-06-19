@@ -21,12 +21,12 @@ redesign*: models, validation, bindings and the schema docs all regenerate from 
    ([ADR 0008](../decisions/0008-generated-models-no-drift.md)). Generation is pinned to the 3.9
    toolchain so the output is byte-reproducible for the drift gate.
 
-3. **Regenerate the schema docs + ERD.**
+3. **Regenerate the schema reference.**
    ```bash
    make gen-schema-docs
    ```
-   Produces the reference pages and the Mermaid ERD from the schema
-   ([ADR 0009](../decisions/0009-mkdocs-material-mermaid-html-docs.md)).
+   Produces the HTML reference from the schema via xs3p
+   ([ADR 0010](../decisions/0010-xs3p-html-schema-reference.md)).
 
 4. **Update the mapping.**
    `src/acoustic_dataset/mapping.py` is the **one place** that knows element names — update it

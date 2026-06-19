@@ -23,28 +23,29 @@ def _build_xml(input_path):
 def test_populated_objects_carry_the_expected_typed_values(input_path):
     model = to_model(acoustics.calculate_from_file(input_path))
 
-    assert model.schema_version == "0.2.0"
+    # Every scalar is a wrapper element (salami-slice idiom); the datum is on ``.value``.
+    assert model.schema_version.value == "0.2.0"
 
     # Platform characteristics: Decimals (the typed boundary the schema declares), not floats.
-    assert model.characteristics.draft == Decimal("7.500")
-    assert model.characteristics.weight == Decimal("2400.000")
-    assert model.characteristics.year_introduced == 1998
+    assert model.characteristics.draft.value == Decimal("7.500")
+    assert model.characteristics.weight.value == Decimal("2400.000")
+    assert model.characteristics.year_introduced.value == 1998
 
     # Radiated noise: exactly ten bands, each with twelve directional sectors.
-    assert [b.index for b in model.radiated_noise.band] == list(range(1, 11))
+    assert [b.band_index.value for b in model.radiated_noise.band] == list(range(1, 11))
     band1 = model.radiated_noise.band[0]
-    assert band1.centre_frequency == Decimal("50.000")
+    assert band1.centre_frequency.value == Decimal("50.000")
     assert len(band1.directional.sector) == 12
     # Directivity peaks astern (180 deg) and troughs ahead (0 deg).
-    assert band1.directional.sector[0].bearing == Decimal("0.000")
-    assert band1.directional.sector[0].level == Decimal("134.000")
-    assert band1.directional.sector[6].bearing == Decimal("180.000")
-    assert band1.directional.sector[6].level == Decimal("146.000")
+    assert band1.directional.sector[0].sector_bearing.value == Decimal("0.000")
+    assert band1.directional.sector[0].sector_level.value == Decimal("134.000")
+    assert band1.directional.sector[6].sector_bearing.value == Decimal("180.000")
+    assert band1.directional.sector[6].sector_level.value == Decimal("146.000")
 
     # Sensor fit: one active sonar (with a derived max range) and two passive sonars.
-    assert model.sensors.active.name == "AS-900 Echo"
-    assert model.sensors.active.max_range == Decimal("118850.223")
-    assert [p.name for p in model.sensors.passive] == [
+    assert model.sensors.active_sonar.active_name.value == "AS-900 Echo"
+    assert model.sensors.active_sonar.max_range.value == Decimal("118850.223")
+    assert [p.passive_name.value for p in model.sensors.passive_sonar] == [
         "PA-110 Flank Array",
         "PA-220 Towed Array",
     ]

@@ -27,8 +27,9 @@ jobs:
 
       - name: Drift gate (generated models + schema docs match the schema)
         # Regenerate on the same Python 3.9 target and fail if the committed artifacts differ.
-        # xsdata is pinned (==25.7, the last 3.9-supporting line) so generation is byte-stable.
-        # See docs/decisions/0008.
+        # Models: xsdata is pinned (==25.7, the last 3.9-supporting line) so generation is
+        # byte-stable. Schema reference: HTML produced from the XSD by the vendored xs3p
+        # stylesheet (deterministic). See docs/decisions/0008 and 0010.
         run: |
           make generate
           make gen-schema-docs

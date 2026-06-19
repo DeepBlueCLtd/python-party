@@ -31,7 +31,8 @@ To add one, follow [Add a decision record](../how-to/add-a-decision-record.md) u
 | [0006](0006-codespaces-with-local-fallback.md) | GitHub Codespaces as primary env, with a portable local fallback | Accepted |
 | [0007](0007-pin-python-3-9-4.md) | Pin to exactly Python 3.9.4 to match the target system | Accepted |
 | [0008](0008-generated-models-no-drift.md) | Treat bindings as generated artifacts; fail CI on drift | Accepted |
-| [0009](0009-mkdocs-material-mermaid-html-docs.md) | MkDocs Material + Mermaid for HTML docs and ERDs from the XSD | Accepted |
+| [0009](0009-mkdocs-material-mermaid-html-docs.md) | MkDocs Material + Mermaid for HTML docs and ERDs from the XSD | Superseded (in part) |
+| [0010](0010-xs3p-html-schema-reference.md) | Generate the schema reference as HTML with xs3p | Accepted |
 
 !!! note
     Most decisions are **provisional in spirit** — the delivery plan records that the design

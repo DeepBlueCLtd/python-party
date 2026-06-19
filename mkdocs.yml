@@ -67,8 +67,9 @@ nav:
       - 0007 Pin to Python 3.9.4: decisions/0007-pin-python-3-9-4.md
       - 0008 Generated models, no drift: decisions/0008-generated-models-no-drift.md
       - 0009 MkDocs Material + Mermaid for HTML docs: decisions/0009-mkdocs-material-mermaid-html-docs.md
+      - 0010 xs3p HTML schema reference: decisions/0010-xs3p-html-schema-reference.md
   - Reference:
       - Overview: reference/index.md
       - Commands: reference/commands.md
-      - Schema reference (generated): reference/schema/index.md
+      - Schema reference (generated): reference/schema/index.html
   - Glossary: glossary.md
