@@ -28,7 +28,9 @@ def test_pipeline_output_passes_both_gates(input_path, schema_path):
 def test_schema_invalid_document_is_caught(input_path, schema_path):
     # Push a bearing past the schema's [0, 360) band: must fail the structural gate.
     xml = serialize.to_xml(build.build_platform_from_file(input_path))
-    bad = xml.replace("<Bearing>0.000</Bearing>", "<Bearing>400.000</Bearing>", 1)
+    bad = xml.replace(
+        "<SectorBearing>0.000</SectorBearing>", "<SectorBearing>400.000</SectorBearing>", 1
+    )
     assert bad != xml, "expected to find a bearing to tamper with"
     report = validate.validate(bad, schema_path)
     assert not report.schema_valid

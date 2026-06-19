@@ -1,8 +1,13 @@
 # ADR 0009: MkDocs Material + Mermaid for HTML docs and ERDs generated from the XSD
 
-- **Status**: Accepted
+- **Status**: Superseded (in part) by [ADR 0011](0011-xs3p-html-schema-reference.md)
 - **Date**: 2026-06-13
 - **Deciders**: Project team
+
+> **Note (superseded in part):** the decision to *generate the schema reference + Mermaid ERD as
+> Markdown by walking the XSD ourselves* is superseded by [ADR 0011](0011-xs3p-html-schema-reference.md),
+> which generates the reference as HTML with the off-the-shelf xs3p stylesheet (no generated ERD).
+> The choice of MkDocs Material + Mermaid for the rest of the site still stands.
 
 ## Context
 

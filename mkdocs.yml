@@ -65,5 +65,5 @@ nav:
   - Reference:
       - Overview: reference/index.md
       - Commands: reference/commands.md
-      - Schema reference (generated): reference/schema/index.md
+      - Schema reference (generated): reference/schema/index.html
   - Glossary: glossary.md

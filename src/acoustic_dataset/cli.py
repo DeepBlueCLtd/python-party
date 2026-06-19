@@ -75,10 +75,10 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_gen_schema_docs(args: argparse.Namespace) -> int:
-    """Generate the schema reference + Mermaid ERD (and worked examples) from the schema."""
-    from acoustic_dataset import schema_docs
+    """Generate the schema reference as HTML from the XSD (via the vendored xs3p stylesheet)."""
+    from acoustic_dataset import schema_html
 
-    out_file = schema_docs.generate(args.schema, args.out, example_input=args.input)
+    out_file = schema_html.generate(args.schema, args.out)
     print(f"schema docs ok: generated {out_file} from {args.schema}")
     return 0
 
@@ -153,11 +153,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_val.set_defaults(func=cmd_validate)
 
     p_doc = sub.add_parser(
-        "gen-schema-docs", help="Generate schema reference + Mermaid ERD from the XSD (US5)."
+        "gen-schema-docs", help="Generate the schema reference as HTML from the XSD (xs3p)."
     )
     p_doc.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
-    p_doc.add_argument("--input", type=Path, default=DEFAULT_INPUT)
-    p_doc.add_argument("--out", type=Path, default=_REPO_ROOT / "docs" / "reference" / "schema")
+    p_doc.add_argument(
+        "--out", type=Path, default=_REPO_ROOT / "docs" / "reference" / "schema" / "index.html"
+    )
     p_doc.set_defaults(func=cmd_gen_schema_docs)
 
     p_cmp = sub.add_parser("compare", help="Migration-safety diff vs a reference (US3).")

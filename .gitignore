@@ -222,3 +222,6 @@ site/
 
 # Local verification venvs
 .venv-check/
+
+# Private real material — real XSD/corpus/models. NEVER committed (proprietary).
+private/

@@ -31,7 +31,7 @@ before the same `make verify` / `make pipeline`. Both paths reach the *same* gre
 | Example calculation input | `examples/calculation_input.json` |
 | Tests (unit / integration / golden) | `tests/` |
 | The plan & design artifacts | `specs/001-codespace-xml-scaffold/` (`spec.md`, `plan.md`, `tasks.md`) |
-| The generated schema reference + ERD | [reference/schema](reference/schema/index.md) (run `make gen-schema-docs`) |
+| The generated HTML schema reference | [reference/schema](reference/schema/index.html) (run `make gen-schema-docs`) |
 | Why each choice was made | `docs/decisions/` (ADRs, kept in the repo) |
 
 ## Build the mental model
@@ -45,5 +45,5 @@ Read these, in order — they're short:
 
 !!! tip "What's done, what's next"
     The full Phase 1 pipeline is in place — environment, end-to-end pipeline, migration-safety
-    `compare`, the generated schema reference/ERD, and the distribution `bundle` with a CI drift
+    `compare`, the generated HTML schema reference, and the distribution `bundle` with a CI drift
     gate. Remaining polish is tracked in `specs/001-codespace-xml-scaffold/tasks.md`.

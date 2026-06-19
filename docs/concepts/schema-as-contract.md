@@ -34,8 +34,7 @@ flowchart TD
     XSD["Enriched XSD<br/>(schema/acoustic_dataset.xsd)"]
     XSD --> Models["Typed data classes<br/>(xsdata)"]
     XSD --> Validate["Validation gate<br/>(xmlschema)"]
-    XSD --> Docs["HTML schema reference<br/>(MkDocs Material)"]
-    XSD --> ERD["Mermaid ERD"]
+    XSD --> Docs["HTML schema reference<br/>(xs3p)"]
     XSD --> Bindings["Other-language bindings<br/>(Java, JSON Schema — later)"]
     Models --> XML["Emitted XML Acoustic Dataset"]
     Validate --> XML

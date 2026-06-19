@@ -44,9 +44,9 @@ catch *schema-valid-but-different* output during migration.
 validation yet differs from what a consumer depended on. Caught by the migration-safety
 comparison, not by validation alone.
 
-**ERD (Entity-Relationship Diagram)** — a diagram of entities and how they relate. We
-render these with **Mermaid** and generate them from the enriched XSD so they cannot drift
-from the contract. See the [generated schema reference](reference/schema/index.md).
+**ERD (Entity-Relationship Diagram)** — a diagram of entities and how they relate. We draw
+these by hand with **Mermaid** in the concept pages. The entity/type structure of the contract
+itself is in the [generated schema reference](reference/schema/index.html) (HTML, from the XSD).
 
 ## Tooling
 

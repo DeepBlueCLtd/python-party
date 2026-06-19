@@ -3,61 +3,373 @@
 # Regenerate after any schema change; CI fails on drift. See docs/decisions/0008.
 from dataclasses import dataclass, field
 from decimal import Decimal
+from enum import Enum
 from typing import Optional
 from xsdata.models.datatype import XmlDateTime
 
-__NAMESPACE__ = "https://deepblue.example/acoustic-dataset/v0"
+
+@dataclass
+class ActiveManufacturer:
+    """
+    Manufacturer of the active sonar.
+    """
+
+    value: str = field(
+        default="",
+        metadata={
+            "required": True,
+        },
+    )
 
 
 @dataclass
-class PlatformCharacteristics:
+class ActiveName:
     """
-    The physical characteristics of the platform.
-
-    :ivar draft: Draft (depth of the lowest point below the waterline),
-        in metres.
-    :ivar length: Overall length of the platform, in metres.
-    :ivar weight: Displacement (weight) of the platform, in tonnes.
-    :ivar year_introduced: Calendar year the platform class entered
-        service.
+    Model name of the active sonar.
     """
 
-    draft: Optional[Decimal] = field(
+    value: str = field(
+        default="",
+        metadata={
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class ActiveOperatingFrequency:
+    """
+    Nominal operating (centre) frequency of the active sonar, in hertz.
+    """
+
+    value: Optional[Decimal] = field(
         default=None,
         metadata={
-            "name": "Draft",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
             "min_inclusive": Decimal("0"),
         },
     )
-    length: Optional[Decimal] = field(
+
+
+@dataclass
+class ArrayGain:
+    """
+    Array gain of the receiving array, in decibels.
+    """
+
+    value: Optional[Decimal] = field(
         default=None,
         metadata={
-            "name": "Length",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
+            "required": True,
+            "min_inclusive": Decimal("-200"),
+            "max_inclusive": Decimal("300"),
+        },
+    )
+
+
+@dataclass
+class BandIndex:
+    """
+    1-based ordinal of the band within the signature.
+    """
+
+    value: Optional[int] = field(
+        default=None,
+        metadata={
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class Beamwidth:
+    """
+    Transmit/receive beamwidth, in degrees.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+            "max_inclusive": Decimal("360"),
+        },
+    )
+
+
+@dataclass
+class BearingAccuracy:
+    """
+    1-sigma bearing accuracy of the sonar, in degrees.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+            "max_inclusive": Decimal("360"),
+        },
+    )
+
+
+@dataclass
+class CentreFrequency:
+    """
+    Centre frequency of the band, in hertz.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
             "required": True,
             "min_inclusive": Decimal("0"),
         },
     )
-    weight: Optional[Decimal] = field(
+
+
+@dataclass
+class DetectionThreshold:
+    """
+    Signal-to-noise ratio required for detection, in decibels.
+    """
+
+    value: Optional[Decimal] = field(
         default=None,
         metadata={
-            "name": "Weight",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
+            "required": True,
+            "min_inclusive": Decimal("-200"),
+            "max_inclusive": Decimal("300"),
+        },
+    )
+
+
+@dataclass
+class Draft:
+    """
+    Draft (depth of the lowest point below the waterline), in metres.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
             "required": True,
             "min_inclusive": Decimal("0"),
         },
     )
-    year_introduced: Optional[int] = field(
+
+
+@dataclass
+class GeneratedUtc:
+    """
+    UTC timestamp identifying when the document was produced.
+    """
+
+    value: Optional[XmlDateTime] = field(
         default=None,
         metadata={
-            "name": "YearIntroduced",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class Length:
+    """
+    Overall length of the platform, in metres.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+        },
+    )
+
+
+@dataclass
+class MaxRange:
+    """
+    Maximum echo detection range, in metres.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+        },
+    )
+
+
+@dataclass
+class PassiveManufacturer:
+    """
+    Manufacturer of the passive sonar.
+    """
+
+    value: str = field(
+        default="",
+        metadata={
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class PassiveName:
+    """
+    Model name of the passive sonar.
+    """
+
+    value: str = field(
+        default="",
+        metadata={
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class PassiveOperatingFrequency:
+    """
+    Nominal operating (centre) frequency of the passive sonar, in hertz.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+        },
+    )
+
+
+@dataclass
+class PlatformName:
+    """
+    Human-readable name of the platform.
+    """
+
+    value: str = field(
+        default="",
+        metadata={
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class PulseLength:
+    """
+    Transmit pulse length, in seconds.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+        },
+    )
+
+
+@dataclass
+class SchemaVersion:
+    """
+    Version of the schema this document targets.
+    """
+
+    value: str = field(
+        default="",
+        metadata={
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class SectorBearing:
+    """
+    Centre bearing of the sector, in degrees [0, 360).
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+            "max_exclusive": Decimal("360"),
+        },
+    )
+
+
+@dataclass
+class SectorLevel:
+    """
+    Radiated noise level in this sector, in decibels.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("-200"),
+            "max_inclusive": Decimal("300"),
+        },
+    )
+
+
+class SignatureQuality(Enum):
+    """How a radiated-noise signature was obtained: measured at sea, modelled, or
+    estimated."""
+
+    MEASURED = "measured"
+    MODELLED = "modelled"
+    ESTIMATED = "estimated"
+
+
+@dataclass
+class SourceLevel:
+    """
+    Transmit source level, in decibels.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("-200"),
+            "max_inclusive": Decimal("300"),
+        },
+    )
+
+
+@dataclass
+class Weight:
+    """
+    Displacement (weight) of the platform, in tonnes.
+    """
+
+    value: Optional[Decimal] = field(
+        default=None,
+        metadata={
+            "required": True,
+            "min_inclusive": Decimal("0"),
+        },
+    )
+
+
+@dataclass
+class YearIntroduced:
+    """
+    Calendar year the platform class entered service.
+    """
+
+    value: Optional[int] = field(
+        default=None,
+        metadata={
             "required": True,
             "min_inclusive": 1900,
             "max_inclusive": 2100,
@@ -66,139 +378,235 @@ class PlatformCharacteristics:
 
 
 @dataclass
-class Sector:
-    """
-    The radiated noise level in one 30-degree bearing sector of a band.
+class ActiveSonar:
+    """An active sonar: it transmits, so it carries a source level, beam/pulse figures, and a derived maximum (echo) detection range."""
 
-    :ivar bearing: Centre bearing of the sector, in degrees [0, 360).
-    :ivar level: Radiated noise level in this sector, in decibels.
-    """
-
-    bearing: Optional[Decimal] = field(
+    active_name: Optional[ActiveName] = field(
         default=None,
         metadata={
-            "name": "Bearing",
+            "name": "ActiveName",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "required": True,
-            "min_inclusive": Decimal("0"),
-            "max_exclusive": Decimal("360"),
-        },
-    )
-    level: Optional[Decimal] = field(
-        default=None,
-        metadata={
-            "name": "Level",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "required": True,
-            "min_inclusive": Decimal("-200"),
-            "max_inclusive": Decimal("300"),
-        },
-    )
-
-
-@dataclass
-class Sonar:
-    """Fields common to every sonar: identity plus a nominal operating frequency.
-
-    :ivar name: Model name of the sonar.
-    :ivar manufacturer: Manufacturer of the sonar.
-    :ivar operating_frequency: Nominal operating (centre) frequency of
-        the sonar, in hertz.
-    """
-
-    name: Optional[str] = field(
-        default=None,
-        metadata={
-            "name": "Name",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
-    manufacturer: Optional[str] = field(
+    active_manufacturer: Optional[ActiveManufacturer] = field(
         default=None,
         metadata={
-            "name": "Manufacturer",
+            "name": "ActiveManufacturer",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
-    operating_frequency: Optional[Decimal] = field(
+    active_operating_frequency: Optional[ActiveOperatingFrequency] = field(
         default=None,
         metadata={
-            "name": "OperatingFrequency",
+            "name": "ActiveOperatingFrequency",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
-            "min_inclusive": Decimal("0"),
         },
     )
-
-
-@dataclass
-class ActiveSonar(Sonar):
-    """An active sonar: it transmits, so it carries a source level and beam/pulse
-    figures, and a derived maximum (echo) detection range.
-
-    :ivar source_level: Transmit source level, in decibels.
-    :ivar beamwidth: Transmit/receive beamwidth, in degrees.
-    :ivar pulse_length: Transmit pulse length, in seconds.
-    :ivar max_range: Maximum echo detection range, in metres.
-    """
-
-    source_level: Optional[Decimal] = field(
+    source_level: Optional[SourceLevel] = field(
         default=None,
         metadata={
             "name": "SourceLevel",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
-            "min_inclusive": Decimal("-200"),
-            "max_inclusive": Decimal("300"),
         },
     )
-    beamwidth: Optional[Decimal] = field(
+    beamwidth: Optional[Beamwidth] = field(
         default=None,
         metadata={
             "name": "Beamwidth",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
-            "min_inclusive": Decimal("0"),
-            "max_inclusive": Decimal("360"),
         },
     )
-    pulse_length: Optional[Decimal] = field(
+    pulse_length: Optional[PulseLength] = field(
         default=None,
         metadata={
             "name": "PulseLength",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
-            "min_inclusive": Decimal("0"),
         },
     )
-    max_range: Optional[Decimal] = field(
+    max_range: Optional[MaxRange] = field(
         default=None,
         metadata={
             "name": "MaxRange",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
-            "min_inclusive": Decimal("0"),
+        },
+    )
+
+
+@dataclass
+class Characteristics:
+    """
+    The physical characteristics of the platform.
+    """
+
+    draft: Optional[Draft] = field(
+        default=None,
+        metadata={
+            "name": "Draft",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    length: Optional[Length] = field(
+        default=None,
+        metadata={
+            "name": "Length",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    weight: Optional[Weight] = field(
+        default=None,
+        metadata={
+            "name": "Weight",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    year_introduced: Optional[YearIntroduced] = field(
+        default=None,
+        metadata={
+            "name": "YearIntroduced",
+            "type": "Element",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class PassiveSonar:
+    """A passive sonar: it only listens, so it carries array gain, a detection threshold and a bearing accuracy rather than a transmit source level."""
+
+    passive_name: Optional[PassiveName] = field(
+        default=None,
+        metadata={
+            "name": "PassiveName",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    passive_manufacturer: Optional[PassiveManufacturer] = field(
+        default=None,
+        metadata={
+            "name": "PassiveManufacturer",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    passive_operating_frequency: Optional[PassiveOperatingFrequency] = field(
+        default=None,
+        metadata={
+            "name": "PassiveOperatingFrequency",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    array_gain: Optional[ArrayGain] = field(
+        default=None,
+        metadata={
+            "name": "ArrayGain",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    detection_threshold: Optional[DetectionThreshold] = field(
+        default=None,
+        metadata={
+            "name": "DetectionThreshold",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    bearing_accuracy: Optional[BearingAccuracy] = field(
+        default=None,
+        metadata={
+            "name": "BearingAccuracy",
+            "type": "Element",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class Quality:
+    """
+    How this signature was obtained.
+    """
+
+    value: Optional[SignatureQuality] = field(
+        default=None,
+        metadata={
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class SectorType:
+    """
+    The radiated noise level in one directional bearing sector of a band.
+    """
+
+    sector_bearing: Optional[SectorBearing] = field(
+        default=None,
+        metadata={
+            "name": "SectorBearing",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    sector_level: Optional[SectorLevel] = field(
+        default=None,
+        metadata={
+            "name": "SectorLevel",
+            "type": "Element",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class Sector(SectorType):
+    pass
+
+
+@dataclass
+class Sensors:
+    """The sonar fit carried by the platform: one active sonar and one or more passive sonars.
+
+    :ivar active_sonar: The platform's single active sonar.
+    :ivar passive_sonar: The platform's passive sonars.
+    """
+
+    active_sonar: Optional[ActiveSonar] = field(
+        default=None,
+        metadata={
+            "name": "ActiveSonar",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    passive_sonar: list[PassiveSonar] = field(
+        default_factory=list,
+        metadata={
+            "name": "PassiveSonar",
+            "type": "Element",
+            "min_occurs": 1,
         },
     )
 
 
 @dataclass
 class Directional:
-    """The all-round radiated noise for one band: exactly twelve sectors at
-    30-degree intervals, in ascending bearing order (0, 30, ..., 330).
+    """The all-round radiated noise for one band: the directional sectors in ascending bearing order.
 
-    :ivar sector: One 30-degree bearing sector.
+    :ivar sector: One directional bearing sector.
     """
 
     sector: list[Sector] = field(
@@ -206,79 +614,35 @@ class Directional:
         metadata={
             "name": "Sector",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "min_occurs": 12,
-            "max_occurs": 12,
+            "min_occurs": 1,
         },
     )
 
 
 @dataclass
-class PassiveSonar(Sonar):
-    """A passive sonar: it only listens, so it carries array gain, a detection
-    threshold and a bearing accuracy rather than a transmit source level.
-
-    :ivar array_gain: Array gain of the receiving array, in decibels.
-    :ivar detection_threshold: Signal-to-noise ratio required for
-        detection, in decibels.
-    :ivar bearing_accuracy: 1-sigma bearing accuracy of the sonar, in
-        degrees.
-    """
-
-    array_gain: Optional[Decimal] = field(
-        default=None,
-        metadata={
-            "name": "ArrayGain",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "required": True,
-            "min_inclusive": Decimal("-200"),
-            "max_inclusive": Decimal("300"),
-        },
-    )
-    detection_threshold: Optional[Decimal] = field(
-        default=None,
-        metadata={
-            "name": "DetectionThreshold",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "required": True,
-            "min_inclusive": Decimal("-200"),
-            "max_inclusive": Decimal("300"),
-        },
-    )
-    bearing_accuracy: Optional[Decimal] = field(
-        default=None,
-        metadata={
-            "name": "BearingAccuracy",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "required": True,
-            "min_inclusive": Decimal("0"),
-            "max_inclusive": Decimal("360"),
-        },
-    )
-
-
-@dataclass
-class RadiatedBand:
+class Band:
     """
     The directional radiated noise for one frequency band.
 
-    :ivar centre_frequency: Centre frequency of the band, in hertz.
-    :ivar directional: The twelve 30-degree directional noise sectors
-        for this band.
-    :ivar index: 1-based ordinal of the band within the signature.
+    :ivar band_index:
+    :ivar centre_frequency:
+    :ivar directional: The directional noise sectors for this band.
     """
 
-    centre_frequency: Optional[Decimal] = field(
+    band_index: Optional[BandIndex] = field(
+        default=None,
+        metadata={
+            "name": "BandIndex",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    centre_frequency: Optional[CentreFrequency] = field(
         default=None,
         metadata={
             "name": "CentreFrequency",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
-            "min_inclusive": Decimal("0"),
         },
     )
     directional: Optional[Directional] = field(
@@ -286,44 +650,7 @@ class RadiatedBand:
         metadata={
             "name": "Directional",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
-        },
-    )
-    index: Optional[int] = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-            "required": True,
-        },
-    )
-
-
-@dataclass
-class SensorSuite:
-    """The sonar fit carried by the platform: one active sonar and two passive sonars.
-
-    :ivar active: The platform's single active sonar.
-    :ivar passive: The platform's two passive sonars.
-    """
-
-    active: Optional[ActiveSonar] = field(
-        default=None,
-        metadata={
-            "name": "Active",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "required": True,
-        },
-    )
-    passive: list[PassiveSonar] = field(
-        default_factory=list,
-        metadata={
-            "name": "Passive",
-            "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "min_occurs": 2,
-            "max_occurs": 2,
         },
     )
 
@@ -331,72 +658,72 @@ class SensorSuite:
 @dataclass
 class RadiatedNoise:
     """
-    The platform's radiated-noise signature: exactly ten frequency bands, in
+    The platform's radiated-noise signature: one or more frequency bands in
     ascending index order.
 
+    :ivar quality: Optional provenance of the signature.
     :ivar band: One frequency band of the radiated-noise signature.
     """
 
-    band: list[RadiatedBand] = field(
+    quality: Optional[Quality] = field(
+        default=None,
+        metadata={
+            "name": "Quality",
+            "type": "Element",
+        },
+    )
+    band: list[Band] = field(
         default_factory=list,
         metadata={
             "name": "Band",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
-            "min_occurs": 10,
-            "max_occurs": 10,
+            "min_occurs": 1,
         },
     )
 
 
 @dataclass
-class PlatformType:
-    """A single platform: titled, timestamped reference data in three parts —
-    physical characteristics, directional radiated noise, and the sonar fit.
+class Platform:
+    """Root element: titled, timestamped reference data for one platform in three parts — physical characteristics, directional radiated noise, and the sonar fit.
 
-    :ivar schema_version: Version of the schema this document targets.
-    :ivar name: Human-readable name of the platform.
-    :ivar generated_utc: UTC timestamp identifying when the document was
-        produced.
+    :ivar schema_version:
+    :ivar platform_name:
+    :ivar generated_utc:
     :ivar characteristics: The platform's physical characteristics.
     :ivar radiated_noise: The platform's directional radiated-noise
         signature.
     :ivar sensors: The platform's sonar fit.
     """
 
-    schema_version: Optional[str] = field(
+    schema_version: Optional[SchemaVersion] = field(
         default=None,
         metadata={
             "name": "SchemaVersion",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
-    name: Optional[str] = field(
+    platform_name: Optional[PlatformName] = field(
         default=None,
         metadata={
-            "name": "Name",
+            "name": "PlatformName",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
-    generated_utc: Optional[XmlDateTime] = field(
+    generated_utc: Optional[GeneratedUtc] = field(
         default=None,
         metadata={
             "name": "GeneratedUtc",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
-    characteristics: Optional[PlatformCharacteristics] = field(
+    characteristics: Optional[Characteristics] = field(
         default=None,
         metadata={
             "name": "Characteristics",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
@@ -405,24 +732,14 @@ class PlatformType:
         metadata={
             "name": "RadiatedNoise",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
-    sensors: Optional[SensorSuite] = field(
+    sensors: Optional[Sensors] = field(
         default=None,
         metadata={
             "name": "Sensors",
             "type": "Element",
-            "namespace": "https://deepblue.example/acoustic-dataset/v0",
             "required": True,
         },
     )
-
-
-@dataclass
-class Platform(PlatformType):
-    """Root element: the reference data for one platform."""
-
-    class Meta:
-        namespace = "https://deepblue.example/acoustic-dataset/v0"

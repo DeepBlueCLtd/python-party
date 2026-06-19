@@ -47,11 +47,11 @@ The comparison canonicalises both sides first, so these **never** cause a failur
 |---|---|
 | Attribute order | `a="1" b="2"` vs `b="2" a="1"` |
 | Whitespace / indentation | pretty-printed vs single-line |
-| Namespace **prefix** | default `xmlns=…` vs `ds:` prefix (same URI) |
+| Namespace **prefix** | the same URI under a prefix vs the default namespace (the contract itself is no-namespace) |
 | Comments | a `<!-- trial file -->` banner |
 
 Anything that changes the **data** — an element value, a missing or extra element, a different
-structure — is reported as a difference. For instance, a radiated-noise `Level` of `134.000`
+structure — is reported as a difference. For instance, a radiated-noise `SectorLevel` of `134.000`
 that becomes `144.000` is still inside the schema's decibel band (so it stays schema-valid) but
 is surfaced as a one-line diff.
 

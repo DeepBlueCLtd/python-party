@@ -2,8 +2,12 @@
 
 This is the **one builder** that produces schema-typed objects. It computes the dataset's
 values with the pure seam functions in :mod:`acoustic_dataset.acoustics` and populates the
-generated ``Platform`` / ``RadiatedBand`` / ``Sector`` / ... classes directly — there is no
-intermediate domain hierarchy that is built only to be converted.
+generated ``Platform`` / ``Band`` / ``Sector`` / ... classes directly — there is no intermediate
+domain hierarchy that is built only to be converted.
+
+The schema is in the "salami-slice" idiom (every element global; complex types hold
+``xs:element ref=...``), so xsdata emits a wrapper dataclass per element. Each scalar is therefore
+constructed as ``ElementClass(value=...)`` rather than assigned bare.
 
 It enforces, at the point of construction, that every value **meets the schema**:
 
@@ -24,15 +28,39 @@ from xsdata.models.datatype import XmlDateTime
 
 from acoustic_dataset import acoustics
 from acoustic_dataset.models.acoustic_dataset import (
+    ActiveManufacturer,
+    ActiveName,
+    ActiveOperatingFrequency,
     ActiveSonar,
+    ArrayGain,
+    Band,
+    BandIndex,
+    Beamwidth,
+    BearingAccuracy,
+    CentreFrequency,
+    Characteristics,
+    DetectionThreshold,
     Directional,
+    Draft,
+    GeneratedUtc,
+    Length,
+    MaxRange,
+    PassiveManufacturer,
+    PassiveName,
+    PassiveOperatingFrequency,
     PassiveSonar,
     Platform,
-    PlatformCharacteristics,
-    RadiatedBand,
+    PlatformName,
+    PulseLength,
     RadiatedNoise,
+    SchemaVersion,
     Sector,
-    SensorSuite,
+    SectorBearing,
+    SectorLevel,
+    Sensors,
+    SourceLevel,
+    Weight,
+    YearIntroduced,
 )
 
 # Declared schema bands (kept in step with schema/acoustic_dataset.xsd). These mirror the
@@ -84,20 +112,28 @@ def _require_int_in_range(value: int, low: int, high: int, *, where: str, field:
     return value
 
 
-def _build_characteristics(spec: dict) -> PlatformCharacteristics:
+def _build_characteristics(spec: dict) -> Characteristics:
     where = "characteristics"
-    return PlatformCharacteristics(
-        draft=_require_min(
-            _dec(float(spec["draftMetres"])), _NON_NEGATIVE, where=where, field="Draft"
+    return Characteristics(
+        draft=Draft(
+            _require_min(
+                _dec(float(spec["draftMetres"])), _NON_NEGATIVE, where=where, field="Draft"
+            )
         ),
-        length=_require_min(
-            _dec(float(spec["lengthMetres"])), _NON_NEGATIVE, where=where, field="Length"
+        length=Length(
+            _require_min(
+                _dec(float(spec["lengthMetres"])), _NON_NEGATIVE, where=where, field="Length"
+            )
         ),
-        weight=_require_min(
-            _dec(float(spec["weightTonnes"])), _NON_NEGATIVE, where=where, field="Weight"
+        weight=Weight(
+            _require_min(
+                _dec(float(spec["weightTonnes"])), _NON_NEGATIVE, where=where, field="Weight"
+            )
         ),
-        year_introduced=_require_int_in_range(
-            int(spec["yearIntroduced"]), *_YEAR_RANGE, where=where, field="YearIntroduced"
+        year_introduced=YearIntroduced(
+            _require_int_in_range(
+                int(spec["yearIntroduced"]), *_YEAR_RANGE, where=where, field="YearIntroduced"
+            )
         ),
     )
 
@@ -105,12 +141,16 @@ def _build_characteristics(spec: dict) -> PlatformCharacteristics:
 def _build_sector(band_index: int, bearing_deg: float, level_db: float) -> Sector:
     where = f"band {band_index} bearing {bearing_deg:g}"
     return Sector(
-        bearing=_require_below(_dec(bearing_deg), *_BEARING_RANGE, where=where, field="Bearing"),
-        level=_require_in_range(_dec(level_db), *_DECIBELS_RANGE, where=where, field="Level"),
+        sector_bearing=SectorBearing(
+            _require_below(_dec(bearing_deg), *_BEARING_RANGE, where=where, field="Bearing")
+        ),
+        sector_level=SectorLevel(
+            _require_in_range(_dec(level_db), *_DECIBELS_RANGE, where=where, field="Level")
+        ),
     )
 
 
-def _build_bands(spec: dict) -> list[RadiatedBand]:
+def _build_bands(spec: dict) -> list[Band]:
     """Synthesise the directional radiated-noise bands and build them into schema objects."""
     base_hz = float(spec["baseFrequencyHz"])
     ratio = float(spec["bandRatio"])
@@ -121,7 +161,7 @@ def _build_bands(spec: dict) -> list[RadiatedBand]:
     amplitude = float(spec["directivity"]["amplitudeDb"])
     sampled_bearings = acoustics.bearings(float(spec["bearingStepDeg"]))
 
-    bands: list[RadiatedBand] = []
+    bands: list[Band] = []
     for index in range(1, band_count + 1):
         centre = acoustics.band_centre_hz(base_hz, ratio, index)
         rolloff_db = acoustics.spectral_rolloff_db(centre, base_hz, rolloff)
@@ -138,12 +178,14 @@ def _build_bands(spec: dict) -> list[RadiatedBand]:
             for bearing in sampled_bearings
         ]
         bands.append(
-            RadiatedBand(
-                centre_frequency=_require_min(
-                    _dec(centre), _NON_NEGATIVE, where=f"band {index}", field="CentreFrequency"
+            Band(
+                band_index=BandIndex(index),
+                centre_frequency=CentreFrequency(
+                    _require_min(
+                        _dec(centre), _NON_NEGATIVE, where=f"band {index}", field="CentreFrequency"
+                    )
                 ),
                 directional=Directional(sector=sectors),
-                index=index,
             )
         )
     return bands
@@ -154,55 +196,73 @@ def _build_active(spec: dict) -> ActiveSonar:
     source_level = float(spec["sourceLevelDb"])
     max_range = acoustics.active_max_range_m(source_level, float(spec["detectionThresholdDb"]))
     return ActiveSonar(
-        name=str(spec["name"]),
-        manufacturer=str(spec["manufacturer"]),
-        operating_frequency=_require_min(
-            _dec(float(spec["operatingFrequencyHz"])),
-            _NON_NEGATIVE,
-            where=where,
-            field="OperatingFrequency",
+        active_name=ActiveName(str(spec["name"])),
+        active_manufacturer=ActiveManufacturer(str(spec["manufacturer"])),
+        active_operating_frequency=ActiveOperatingFrequency(
+            _require_min(
+                _dec(float(spec["operatingFrequencyHz"])),
+                _NON_NEGATIVE,
+                where=where,
+                field="OperatingFrequency",
+            )
         ),
-        source_level=_require_in_range(
-            _dec(source_level), *_DECIBELS_RANGE, where=where, field="SourceLevel"
+        source_level=SourceLevel(
+            _require_in_range(
+                _dec(source_level), *_DECIBELS_RANGE, where=where, field="SourceLevel"
+            )
         ),
-        beamwidth=_require_in_range(
-            _dec(float(spec["beamwidthDeg"])), *_DEGREES_RANGE, where=where, field="Beamwidth"
+        beamwidth=Beamwidth(
+            _require_in_range(
+                _dec(float(spec["beamwidthDeg"])), *_DEGREES_RANGE, where=where, field="Beamwidth"
+            )
         ),
-        pulse_length=_require_min(
-            _dec(float(spec["pulseLengthSeconds"])),
-            _NON_NEGATIVE,
-            where=where,
-            field="PulseLength",
+        pulse_length=PulseLength(
+            _require_min(
+                _dec(float(spec["pulseLengthSeconds"])),
+                _NON_NEGATIVE,
+                where=where,
+                field="PulseLength",
+            )
         ),
-        max_range=_require_min(_dec(max_range), _NON_NEGATIVE, where=where, field="MaxRange"),
+        max_range=MaxRange(
+            _require_min(_dec(max_range), _NON_NEGATIVE, where=where, field="MaxRange")
+        ),
     )
 
 
 def _build_passive(ordinal: int, spec: dict) -> PassiveSonar:
     where = f"passive sonar {ordinal}"
     return PassiveSonar(
-        name=str(spec["name"]),
-        manufacturer=str(spec["manufacturer"]),
-        operating_frequency=_require_min(
-            _dec(float(spec["operatingFrequencyHz"])),
-            _NON_NEGATIVE,
-            where=where,
-            field="OperatingFrequency",
+        passive_name=PassiveName(str(spec["name"])),
+        passive_manufacturer=PassiveManufacturer(str(spec["manufacturer"])),
+        passive_operating_frequency=PassiveOperatingFrequency(
+            _require_min(
+                _dec(float(spec["operatingFrequencyHz"])),
+                _NON_NEGATIVE,
+                where=where,
+                field="OperatingFrequency",
+            )
         ),
-        array_gain=_require_in_range(
-            _dec(float(spec["arrayGainDb"])), *_DECIBELS_RANGE, where=where, field="ArrayGain"
+        array_gain=ArrayGain(
+            _require_in_range(
+                _dec(float(spec["arrayGainDb"])), *_DECIBELS_RANGE, where=where, field="ArrayGain"
+            )
         ),
-        detection_threshold=_require_in_range(
-            _dec(float(spec["detectionThresholdDb"])),
-            *_DECIBELS_RANGE,
-            where=where,
-            field="DetectionThreshold",
+        detection_threshold=DetectionThreshold(
+            _require_in_range(
+                _dec(float(spec["detectionThresholdDb"])),
+                *_DECIBELS_RANGE,
+                where=where,
+                field="DetectionThreshold",
+            )
         ),
-        bearing_accuracy=_require_in_range(
-            _dec(float(spec["bearingAccuracyDeg"])),
-            *_DEGREES_RANGE,
-            where=where,
-            field="BearingAccuracy",
+        bearing_accuracy=BearingAccuracy(
+            _require_in_range(
+                _dec(float(spec["bearingAccuracyDeg"])),
+                *_DEGREES_RANGE,
+                where=where,
+                field="BearingAccuracy",
+            )
         ),
     )
 
@@ -218,14 +278,14 @@ def build_platform(data: dict) -> Platform:
     if not bands:
         raise MappingError("calculation produced no bands; nothing to build")
     return Platform(
-        schema_version=str(data.get("schemaVersion", "0.2.0")),
-        name=str(data["name"]),
-        generated_utc=XmlDateTime.from_string(str(data["generatedUtc"])),
+        schema_version=SchemaVersion(str(data.get("schemaVersion", "0.2.0"))),
+        platform_name=PlatformName(str(data["name"])),
+        generated_utc=GeneratedUtc(XmlDateTime.from_string(str(data["generatedUtc"]))),
         characteristics=_build_characteristics(data["characteristics"]),
         radiated_noise=RadiatedNoise(band=bands),
-        sensors=SensorSuite(
-            active=_build_active(data["sensors"]["active"]),
-            passive=[
+        sensors=Sensors(
+            active_sonar=_build_active(data["sensors"]["active"]),
+            passive_sonar=[
                 _build_passive(i, p) for i, p in enumerate(data["sensors"]["passive"], start=1)
             ],
         ),

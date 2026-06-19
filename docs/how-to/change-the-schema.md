@@ -21,12 +21,12 @@ redesign*: models, validation, bindings and the schema docs all regenerate from 
    (ADR 0008). Generation is pinned to the 3.9
    toolchain so the output is byte-reproducible for the drift gate.
 
-3. **Regenerate the schema docs + ERD.**
+3. **Regenerate the schema reference.**
    ```bash
    make gen-schema-docs
    ```
-   Produces the reference pages and the Mermaid ERD from the schema
-   (ADR 0009).
+   Produces the HTML reference from the schema via xs3p
+   (ADR 0011).
 
 4. **Update the builder.**
    `src/acoustic_dataset/build.py` is the **one place** that knows element names — update it
@@ -64,5 +64,5 @@ output that is schema-valid but differs from what a consumer depends on
 ## What you should *not* touch
 
 - Generated models (`src/acoustic_dataset/models/`) — regenerate instead.
-- Generated schema reference/ERD under `reference/schema/` — regenerate instead.
+- Generated HTML schema reference under `reference/schema/` — regenerate instead.
 - The generation code — it's schema-agnostic by design.

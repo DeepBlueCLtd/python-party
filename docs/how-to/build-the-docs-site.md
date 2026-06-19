@@ -44,15 +44,15 @@ erDiagram
 ```
 ````
 
-See the [pipeline ERD](../concepts/pipeline-data-flow.md) and the
-[generated schema ERD](../reference/schema/index.md) for working examples.
+See the [pipeline ERD](../concepts/pipeline-data-flow.md) for a hand-drawn example; the
+[generated schema reference](../reference/schema/index.html) is HTML produced from the XSD.
 
-## Schema reference & ERD are *generated*
+## The schema reference is *generated*
 
-The [schema reference](../reference/schema/index.md) — the entity tables and the Mermaid ERD —
-is produced from the **enriched XSD** by `make gen-schema-docs`, not hand-written, so it can't
-drift from the contract. Regenerate it after any schema change; the CI drift gate fails if the
-committed page is stale.
+The [schema reference](../reference/schema/index.html) — every element, type, facet and
+`xs:documentation` note — is produced from the XSD by the vendored xs3p stylesheet
+(`make gen-schema-docs`), not hand-written, so it can't drift from the contract. Regenerate it
+after any schema change; the CI drift gate fails if the committed page is stale.
 
 ## Linking rules (to keep `--strict` happy)
 

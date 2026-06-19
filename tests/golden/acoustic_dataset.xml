@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Platform xmlns="https://deepblue.example/acoustic-dataset/v0">
+<Platform>
   <SchemaVersion>0.2.0</SchemaVersion>
-  <Name>Reference Platform A</Name>
+  <PlatformName>Reference Platform A</PlatformName>
   <GeneratedUtc>2026-06-14T00:00:00Z</GeneratedUtc>
   <Characteristics>
     <Draft>7.500</Draft>
@@ -10,562 +10,572 @@
     <YearIntroduced>1998</YearIntroduced>
   </Characteristics>
   <RadiatedNoise>
-    <Band index="1">
+    <Band>
+      <BandIndex>1</BandIndex>
       <CentreFrequency>50.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>134.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>134.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>134.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>134.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>137.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>137.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>140.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>140.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>143.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>143.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>145.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>145.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>146.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>146.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>145.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>145.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>143.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>143.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>140.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>140.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>137.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>137.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>134.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>134.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="2">
+    <Band>
+      <BandIndex>2</BandIndex>
       <CentreFrequency>100.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>129.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>129.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>129.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>129.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>132.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>132.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>135.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>135.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>138.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>138.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>140.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>140.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>141.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>141.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>140.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>140.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>138.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>138.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>135.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>135.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>132.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>132.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>129.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>129.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="3">
+    <Band>
+      <BandIndex>3</BandIndex>
       <CentreFrequency>200.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>124.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>124.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>124.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>124.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>127.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>127.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>130.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>130.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>133.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>133.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>135.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>135.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>136.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>136.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>135.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>135.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>133.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>133.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>130.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>130.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>127.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>127.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>124.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>124.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="4">
+    <Band>
+      <BandIndex>4</BandIndex>
       <CentreFrequency>400.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>119.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>119.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>119.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>119.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>122.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>122.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>125.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>125.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>128.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>128.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>130.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>130.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>131.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>131.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>130.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>130.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>128.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>128.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>125.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>125.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>122.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>122.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>119.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>119.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="5">
+    <Band>
+      <BandIndex>5</BandIndex>
       <CentreFrequency>800.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>114.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>114.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>114.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>114.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>117.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>117.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>120.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>120.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>123.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>123.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>125.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>125.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>126.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>126.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>125.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>125.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>123.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>123.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>120.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>120.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>117.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>117.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>114.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>114.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="6">
+    <Band>
+      <BandIndex>6</BandIndex>
       <CentreFrequency>1600.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>109.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>109.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>109.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>109.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>112.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>112.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>115.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>115.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>118.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>118.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>120.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>120.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>121.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>121.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>120.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>120.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>118.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>118.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>115.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>115.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>112.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>112.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>109.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>109.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="7">
+    <Band>
+      <BandIndex>7</BandIndex>
       <CentreFrequency>3200.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>104.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>104.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>104.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>104.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>107.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>107.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>110.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>110.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>113.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>113.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>115.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>115.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>116.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>116.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>115.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>115.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>113.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>113.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>110.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>110.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>107.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>107.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>104.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>104.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="8">
+    <Band>
+      <BandIndex>8</BandIndex>
       <CentreFrequency>6400.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>99.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>99.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>99.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>99.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>102.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>102.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>105.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>105.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>108.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>108.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>110.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>110.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>111.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>111.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>110.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>110.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>108.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>108.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>105.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>105.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>102.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>102.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>99.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>99.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="9">
+    <Band>
+      <BandIndex>9</BandIndex>
       <CentreFrequency>12800.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>94.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>94.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>94.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>94.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>97.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>97.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>100.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>100.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>103.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>103.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>105.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>105.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>106.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>106.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>105.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>105.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>103.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>103.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>100.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>100.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>97.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>97.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>94.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>94.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
-    <Band index="10">
+    <Band>
+      <BandIndex>10</BandIndex>
       <CentreFrequency>25600.000</CentreFrequency>
       <Directional>
         <Sector>
-          <Bearing>0.000</Bearing>
-          <Level>89.000</Level>
+          <SectorBearing>0.000</SectorBearing>
+          <SectorLevel>89.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>30.000</Bearing>
-          <Level>89.804</Level>
+          <SectorBearing>30.000</SectorBearing>
+          <SectorLevel>89.804</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>60.000</Bearing>
-          <Level>92.000</Level>
+          <SectorBearing>60.000</SectorBearing>
+          <SectorLevel>92.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>90.000</Bearing>
-          <Level>95.000</Level>
+          <SectorBearing>90.000</SectorBearing>
+          <SectorLevel>95.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>120.000</Bearing>
-          <Level>98.000</Level>
+          <SectorBearing>120.000</SectorBearing>
+          <SectorLevel>98.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>150.000</Bearing>
-          <Level>100.196</Level>
+          <SectorBearing>150.000</SectorBearing>
+          <SectorLevel>100.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>180.000</Bearing>
-          <Level>101.000</Level>
+          <SectorBearing>180.000</SectorBearing>
+          <SectorLevel>101.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>210.000</Bearing>
-          <Level>100.196</Level>
+          <SectorBearing>210.000</SectorBearing>
+          <SectorLevel>100.196</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>240.000</Bearing>
-          <Level>98.000</Level>
+          <SectorBearing>240.000</SectorBearing>
+          <SectorLevel>98.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>270.000</Bearing>
-          <Level>95.000</Level>
+          <SectorBearing>270.000</SectorBearing>
+          <SectorLevel>95.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>300.000</Bearing>
-          <Level>92.000</Level>
+          <SectorBearing>300.000</SectorBearing>
+          <SectorLevel>92.000</SectorLevel>
         </Sector>
         <Sector>
-          <Bearing>330.000</Bearing>
-          <Level>89.804</Level>
+          <SectorBearing>330.000</SectorBearing>
+          <SectorLevel>89.804</SectorLevel>
         </Sector>
       </Directional>
     </Band>
   </RadiatedNoise>
   <Sensors>
-    <Active>
-      <Name>AS-900 Echo</Name>
-      <Manufacturer>DeepBlue Sonics</Manufacturer>
-      <OperatingFrequency>6000.000</OperatingFrequency>
+    <ActiveSonar>
+      <ActiveName>AS-900 Echo</ActiveName>
+      <ActiveManufacturer>DeepBlue Sonics</ActiveManufacturer>
+      <ActiveOperatingFrequency>6000.000</ActiveOperatingFrequency>
       <SourceLevel>215.000</SourceLevel>
       <Beamwidth>15.000</Beamwidth>
       <PulseLength>0.500</PulseLength>
       <MaxRange>118850.223</MaxRange>
-    </Active>
-    <Passive>
-      <Name>PA-110 Flank Array</Name>
-      <Manufacturer>DeepBlue Sonics</Manufacturer>
-      <OperatingFrequency>1500.000</OperatingFrequency>
+    </ActiveSonar>
+    <PassiveSonar>
+      <PassiveName>PA-110 Flank Array</PassiveName>
+      <PassiveManufacturer>DeepBlue Sonics</PassiveManufacturer>
+      <PassiveOperatingFrequency>1500.000</PassiveOperatingFrequency>
       <ArrayGain>18.000</ArrayGain>
       <DetectionThreshold>10.000</DetectionThreshold>
       <BearingAccuracy>1.500</BearingAccuracy>
-    </Passive>
-    <Passive>
-      <Name>PA-220 Towed Array</Name>
-      <Manufacturer>Marine Acoustics Ltd</Manufacturer>
-      <OperatingFrequency>300.000</OperatingFrequency>
+    </PassiveSonar>
+    <PassiveSonar>
+      <PassiveName>PA-220 Towed Array</PassiveName>
+      <PassiveManufacturer>Marine Acoustics Ltd</PassiveManufacturer>
+      <PassiveOperatingFrequency>300.000</PassiveOperatingFrequency>
       <ArrayGain>22.000</ArrayGain>
       <DetectionThreshold>8.000</DetectionThreshold>
       <BearingAccuracy>2.000</BearingAccuracy>
-    </Passive>
+    </PassiveSonar>
   </Sensors>
 </Platform>
