@@ -1086,22 +1086,28 @@
 </blockquote>
 <p>The schema is the single source of truth, so changing it is a <em>configuration change, not a
 redesign</em>: models, validation, bindings and the schema docs all regenerate from it.</p>
+<p>There are <strong>two</strong> schemas, regenerated together by <code>make generate</code>: <code>schema/acoustic_dataset.xsd</code>
+(the output dataset) and <code>schema/calculation_input.xsd</code> (the calculation parameters). They are
+different shapes — the builder <em>expands</em> the input parameters into the output dataset — so an
+output change usually means touching the output schema, the builder, and possibly the input
+schema if a new parameter is needed.</p>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
-<p><strong>Edit the schema.</strong>
-   Change <code>schema/acoustic_dataset.xsd</code> (the contract). When you add or rename a type/element,
-   put its definition prose in <code>xs:annotation/xs:documentation</code> so it rides through to the
-   generated model docstrings and the schema reference.</p>
+<p><strong>Edit the schema(s).</strong>
+   Change <code>schema/acoustic_dataset.xsd</code> and/or <code>schema/calculation_input.xsd</code> (the contracts).
+   When you add or rename a type/element, put its definition prose in
+   <code>xs:annotation/xs:documentation</code> so it rides through to the generated model docstrings and the
+   schema reference.</p>
 </li>
 <li>
 <p><strong>Regenerate the models.</strong>
    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>generate
 </code></pre></div>
-   Runs <code>xsdata</code> over the schema and rewrites <code>src/acoustic_dataset/models/</code>. <strong>Do not
-   hand-edit</strong> the result — it's a generated artifact
-   (ADR 0008). Generation is pinned to the 3.9
-   toolchain so the output is byte-reproducible for the drift gate.</p>
+   Runs <code>xsdata</code> over both schemas and rewrites <code>src/acoustic_dataset/models/</code> (output) and
+   <code>src/acoustic_dataset/input_models/</code> (input). <strong>Do not hand-edit</strong> the result — it's a
+   generated artifact (ADR 0008). Generation is pinned to the 3.9 toolchain so the output is
+   byte-reproducible for the drift gate.</p>
 </li>
 <li>
 <p><strong>Regenerate the schema reference.</strong>
@@ -1117,8 +1123,8 @@ redesign</em>: models, validation, bindings and the schema docs all regenerate f
 </li>
 <li>
 <p><strong>Update the example and golden file.</strong>
-   Adjust <code>examples/calculation_input.json</code>, then refresh the golden file if the new output is
-   intended:
+   Adjust <code>examples/calculation_input.xml</code> (it must stay valid against
+   <code>schema/calculation_input.xsd</code>), then refresh the golden file if the new output is intended:
    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>pipeline<span class="w">                                                  </span><span class="c1"># writes build/acoustic_dataset.xml</span>
 cp<span class="w"> </span>build/acoustic_dataset.xml<span class="w"> </span>tests/golden/acoustic_dataset.xml
 </code></pre></div>
@@ -1142,7 +1148,8 @@ output that is schema-valid but differs from what a consumer depends on
 (ADR 0004).</p>
 <h2 id="what-you-should-not-touch">What you should <em>not</em> touch<a class="headerlink" href="#what-you-should-not-touch" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Generated models (<code>src/acoustic_dataset/models/</code>) — regenerate instead.</li>
+<li>Generated models (<code>src/acoustic_dataset/models/</code>, <code>src/acoustic_dataset/input_models/</code>) —
+  regenerate instead.</li>
 <li>Generated HTML schema reference under <code>reference/schema/</code> — regenerate instead.</li>
 <li>The generation code — it's schema-agnostic by design.</li>
 </ul>

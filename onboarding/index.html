@@ -1109,6 +1109,10 @@ before the same <code>make verify</code> / <code>make pipeline</code>. Both path
 <td><code>schema/acoustic_dataset.xsd</code> (<a href="../how-to/change-the-schema/">how to change it</a>)</td>
 </tr>
 <tr>
+<td>The input contract (calculation parameters)</td>
+<td><code>schema/calculation_input.xsd</code></td>
+</tr>
+<tr>
 <td>The scientific seams (named, testable calc functions)</td>
 <td><code>src/acoustic_dataset/acoustics/</code></td>
 </tr>
@@ -1118,11 +1122,11 @@ before the same <code>make verify</code> / <code>make pipeline</code>. Both path
 </tr>
 <tr>
 <td>Generated models (never hand-edited — regenerate)</td>
-<td><code>src/acoustic_dataset/models/</code></td>
+<td><code>src/acoustic_dataset/models/</code> (output), <code>src/acoustic_dataset/input_models/</code> (input)</td>
 </tr>
 <tr>
 <td>Example calculation input</td>
-<td><code>examples/calculation_input.json</code></td>
+<td><code>examples/calculation_input.xml</code></td>
 </tr>
 <tr>
 <td>Tests (unit / integration / golden)</td>

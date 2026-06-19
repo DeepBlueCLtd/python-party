@@ -1086,17 +1086,23 @@
 </blockquote>
 <h2 id="the-flow-end-to-end">The flow, end to end<a class="headerlink" href="#the-flow-end-to-end" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
-    Input["Calculation input&lt;br/&gt;(examples/calculation_input.json)"]
-    Build["build.py&lt;br/&gt;(acoustic seams compute &amp;&lt;br/&gt;populate the schema object)"]
+    Input["Calculation input XML&lt;br/&gt;(examples/calculation_input.xml)"]
+    Build["build.py&lt;br/&gt;(parse + validate input, acoustic seams&lt;br/&gt;compute &amp; populate the schema object)"]
     Objects["Schema data object&lt;br/&gt;(Platform, generated from XSD)"]
     XML["Emitted Platform XML"]
     Golden["Golden file"]
     Reference["Known-good reference"]
 
+    Input -. "input gate" .-&gt; Input
     Input --&gt; Build --&gt; Objects --&gt; XML
     Objects -. "tests assert here" .-&gt; Golden
     XML -. "structural gate" .-&gt; XML
     XML -. "migration safety" .-&gt; Reference</code></pre>
+<p>The input is held to its own contract too: <code>examples/calculation_input.xml</code> is a compact set of
+<strong>parameters</strong> validated against <code>schema/calculation_input.xsd</code> (and parsed into a typed
+<code>CalculationInput</code> model, generated from that schema exactly as <code>Platform</code> is generated from the
+output schema). The acoustic seams <em>expand</em> those parameters into the many bands and sectors of
+the output — the input and output schemas are deliberately different shapes.</p>
 <p>The acoustic seams compute the values and the builder populates <strong>one schema data object</strong>
 directly — there is no intermediate domain hierarchy built only to be converted (ADR 0010).
 That object, before serialisation, is the <strong>typed testable boundary</strong>: tests assert on it
