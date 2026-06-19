@@ -52,6 +52,7 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.ruff.lint.per-file-ignores]
 # Generated bindings are artifacts, never hand-edited — do not lint them.
 "src/acoustic_dataset/models/*" = ["ALL"]
+"src/acoustic_dataset/input_models/*" = ["ALL"]
 
 [tool.mypy]
 python_version = "3.9"
@@ -59,8 +60,8 @@ python_version = "3.9"
 # so a bare `mypy` in `make verify` works.
 files = ["src/acoustic_dataset"]
 ignore_missing_imports = true
-# Generated models are excluded from type-checking (they are an artifact).
-exclude = "src/acoustic_dataset/models/"
+# Generated bindings (output + input) are excluded from type-checking (they are artifacts).
+exclude = "src/acoustic_dataset/(models|input_models)/"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

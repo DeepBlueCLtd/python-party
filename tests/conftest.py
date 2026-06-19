@@ -21,7 +21,7 @@ def schema_path() -> Path:
 
 @pytest.fixture(scope="session")
 def input_path() -> Path:
-    return _REPO_ROOT / "examples" / "calculation_input.json"
+    return _REPO_ROOT / "examples" / "calculation_input.xml"
 
 
 @pytest.fixture(scope="session")

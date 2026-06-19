@@ -18,18 +18,21 @@ _PKG_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _PKG_DIR.parent.parent
 
 DEFAULT_SCHEMA = _REPO_ROOT / "schema" / "acoustic_dataset.xsd"
-DEFAULT_INPUT = _REPO_ROOT / "examples" / "calculation_input.json"
+DEFAULT_INPUT_SCHEMA = _REPO_ROOT / "schema" / "calculation_input.xsd"
+DEFAULT_INPUT = _REPO_ROOT / "examples" / "calculation_input.xml"
 DEFAULT_OUT = _REPO_ROOT / "build" / "acoustic_dataset.xml"
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
     from acoustic_dataset import generate
 
-    return generate.main(
-        ["--schema", str(args.schema), "--out", str(args.out)]
-        if args.out
-        else ["--schema", str(args.schema)]
-    )
+    # No --schema -> regenerate every schema/*.xsd; --schema X -> just that one.
+    argv: list[str] = []
+    if args.schema is not None:
+        argv += ["--schema", str(args.schema)]
+        if args.out is not None:
+            argv += ["--out", str(args.out)]
+    return generate.main(argv)
 
 
 def cmd_pipeline(args: argparse.Namespace) -> int:
@@ -136,8 +139,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_gen = sub.add_parser("generate", help="Regenerate typed models from the XSD (xsdata).")
-    p_gen.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
+    p_gen = sub.add_parser("generate", help="Regenerate typed models from schema/*.xsd (xsdata).")
+    p_gen.add_argument("--schema", type=Path, default=None,
+                       help="Regenerate a single XSD (default: all schema/*.xsd).")
     p_gen.add_argument("--out", type=Path, default=None)
     p_gen.set_defaults(func=cmd_generate)
 

@@ -6,9 +6,11 @@ outside a declared band is rejected at build time — never emitted as schema-va
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 import pytest
 
-from acoustic_dataset import acoustics, build, serialize, validate
+from acoustic_dataset import build, serialize, validate
 
 
 def test_golden_passes_both_structural_gates(golden_path, schema_path):
@@ -39,8 +41,8 @@ def test_schema_invalid_document_is_caught(input_path, schema_path):
 
 
 def test_build_rejects_out_of_band_value_before_serialisation(input_path):
-    data = acoustics.load_input(input_path)
+    data = build.load_input(input_path)
     # Force an impossible source level past the schema's decibel band: the guard must fire.
-    data["sensors"]["active"]["sourceLevelDb"] = 9999.0
+    data.sensors.active_sonar.active_source_level_db.value = Decimal("9999")
     with pytest.raises(build.MappingError, match="SourceLevel"):
         build.build_platform(data)

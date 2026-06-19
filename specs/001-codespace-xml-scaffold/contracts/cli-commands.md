@@ -18,14 +18,16 @@ tests and CI depend on; command names and exit-code semantics must remain stable
 ## CLI subcommands (`python -m acoustic_dataset.cli ...`)
 
 ### `generate`
-- **Input**: `--schema schema/acoustic_dataset.xsd` (default), `--out src/acoustic_dataset/models`.
+- **Input**: no args regenerates every `schema/*.xsd` (the output `acoustic_dataset.xsd` →
+  `src/acoustic_dataset/models/` and the input `calculation_input.xsd` →
+  `src/acoustic_dataset/input_models/`); `--schema <xsd> [--out <dir>]` regenerates just one.
 - **Behaviour**: Invoke xsdata generation; write generated dataclasses with a "do not edit" header.
 - **Contract**: Idempotent — re-running on an unchanged schema produces byte-identical output (enables
   the CI drift check `git diff --exit-code`). Malformed/missing schema → exit non-zero with an
   actionable message; never writes partial output.
 
 ### `pipeline`
-- **Input**: `--input examples/calculation_input.json` (default), `--out build/acoustic_dataset.xml`.
+- **Input**: `--input examples/calculation_input.xml` (default), `--out build/acoustic_dataset.xml`.
 - **Behaviour**: acoustics seams → `CalculationResult` → single mapping → populated objects →
   serialise → validate (xmlschema) → round-trip check. Writes artifact only if both structural gates pass.
 - **Contract**: Exit 0 ⇔ artifact written AND schema-valid AND round-trip-equal. A band/type mismatch
