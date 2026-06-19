@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PLACEHOLDER example calculation input (illustrative values, not real platform data).
+  Conforms to schema/calculation_input.xsd. The pipeline expands these parameters into the
+  validated Platform dataset at build/acoustic_dataset.xml.
+-->
+<CalculationInput>
+  <SchemaVersion>0.2.0</SchemaVersion>
+  <Name>Reference Platform A</Name>
+  <GeneratedUtc>2026-06-14T00:00:00Z</GeneratedUtc>
+  <Characteristics>
+    <DraftMetres>7.5</DraftMetres>
+    <LengthMetres>95.0</LengthMetres>
+    <WeightTonnes>2400.0</WeightTonnes>
+    <YearIntroduced>1998</YearIntroduced>
+  </Characteristics>
+  <RadiatedNoise>
+    <BaseFrequencyHz>50.0</BaseFrequencyHz>
+    <BandRatio>2.0</BandRatio>
+    <BandCount>10</BandCount>
+    <BearingStepDeg>30.0</BearingStepDeg>
+    <BaseLevelDb>140.0</BaseLevelDb>
+    <RolloffDbPerOctave>5.0</RolloffDbPerOctave>
+    <Directivity>
+      <PeakBearingDeg>180.0</PeakBearingDeg>
+      <AmplitudeDb>6.0</AmplitudeDb>
+    </Directivity>
+  </RadiatedNoise>
+  <Sensors>
+    <ActiveSonar>
+      <ActiveName>AS-900 Echo</ActiveName>
+      <ActiveManufacturer>DeepBlue Sonics</ActiveManufacturer>
+      <ActiveOperatingFrequencyHz>6000.0</ActiveOperatingFrequencyHz>
+      <ActiveSourceLevelDb>215.0</ActiveSourceLevelDb>
+      <ActiveBeamwidthDeg>15.0</ActiveBeamwidthDeg>
+      <ActivePulseLengthSeconds>0.5</ActivePulseLengthSeconds>
+      <ActiveDetectionThresholdDb>12.0</ActiveDetectionThresholdDb>
+    </ActiveSonar>
+    <PassiveSonar>
+      <PassiveName>PA-110 Flank Array</PassiveName>
+      <PassiveManufacturer>DeepBlue Sonics</PassiveManufacturer>
+      <PassiveOperatingFrequencyHz>1500.0</PassiveOperatingFrequencyHz>
+      <PassiveArrayGainDb>18.0</PassiveArrayGainDb>
+      <PassiveDetectionThresholdDb>10.0</PassiveDetectionThresholdDb>
+      <PassiveBearingAccuracyDeg>1.5</PassiveBearingAccuracyDeg>
+    </PassiveSonar>
+    <PassiveSonar>
+      <PassiveName>PA-220 Towed Array</PassiveName>
+      <PassiveManufacturer>Marine Acoustics Ltd</PassiveManufacturer>
+      <PassiveOperatingFrequencyHz>300.0</PassiveOperatingFrequencyHz>
+      <PassiveArrayGainDb>22.0</PassiveArrayGainDb>
+      <PassiveDetectionThresholdDb>8.0</PassiveDetectionThresholdDb>
+      <PassiveBearingAccuracyDeg>2.0</PassiveBearingAccuracyDeg>
+    </PassiveSonar>
+  </Sensors>
+</CalculationInput>

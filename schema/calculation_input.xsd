@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Acoustic Reference Book — calculation INPUT schema (parameters).
+
+  The companion contract to schema/acoustic_dataset.xsd. Where that schema describes the produced
+  dataset (the expanded, per-band/per-sector signature), this one describes the compact set of
+  *parameters* the pipeline computes from. It deliberately mirrors the same idiom: a no-namespace,
+  XSD 1.1 document in the "salami-slice" style — every element declared globally, complex types
+  built with xs:all, fields as xs:element ref="..." to those globals, documentation on the global
+  declarations, no type inheritance, repetition via maxOccurs on refs inside xs:all.
+
+  The two schemas are NOT the same shape. A handful of high-level parameters here (a base
+  frequency, a band ratio, a band count, a bearing step, a roll-off, a directivity lobe) are
+  expanded by the acoustics seams into the many bands and sectors of the output. Some inputs
+  (e.g. an active sonar's detection threshold) are consumed to *derive* an output figure (its
+  maximum echo range) and never appear verbatim in the output. That asymmetry is the point: the
+  input is the parameter set, the output is the dataset.
+
+  Term/element definitions live here as xs:annotation/xs:documentation and ride through to the
+  generated model docstrings. "How it's computed" lives in the acoustics seams (in code).
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+           elementFormDefault="qualified"
+           vc:minVersion="1.1">
+
+  <xs:annotation>
+    <xs:documentation>
+      Calculation-input schema. A document supplies the parameters for one platform: its physical
+      characteristics, the parameters of its directional radiated-noise model, and the sonar fit
+      (one active sonar and the passive sonars). The named value types carry XSD facets (ranges)
+      so an out-of-range parameter is rejected at the input gate, before any computation runs.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- ===== Named value types: constrained scalars (mirroring the output schema's idiom) ===== -->
+
+  <xs:simpleType name="Decibels">
+    <xs:annotation>
+      <xs:documentation>A level expressed in decibels (dB), bounded to a sane sonar range.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="-200"/>
+      <xs:maxInclusive value="300"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DecibelsPerOctave">
+    <xs:annotation>
+      <xs:documentation>A spectral gradient in decibels shed per octave (doubling of frequency); non-negative.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Metres">
+    <xs:annotation>
+      <xs:documentation>A non-negative distance in metres.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Tonnes">
+    <xs:annotation>
+      <xs:documentation>A non-negative mass/displacement in tonnes (1000 kg).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Seconds">
+    <xs:annotation>
+      <xs:documentation>A non-negative duration in seconds.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Hertz">
+    <xs:annotation>
+      <xs:documentation>A non-negative frequency in hertz (Hz).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Ratio">
+    <xs:annotation>
+      <xs:documentation>A multiplicative ratio strictly greater than zero (e.g. the geometric step between band centres; 2 = octave spacing).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minExclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Degrees">
+    <xs:annotation>
+      <xs:documentation>An angle in degrees, in the closed interval [0, 360] (e.g. a beamwidth).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="360"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StepDegrees">
+    <xs:annotation>
+      <xs:documentation>A bearing sampling step in degrees, in the half-open interval (0, 360]: must divide the circle into one or more sectors.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minExclusive value="0"/>
+      <xs:maxInclusive value="360"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Bearing">
+    <xs:annotation>
+      <xs:documentation>A compass bearing in degrees, in the half-open interval [0, 360): 0 is dead
+      ahead, increasing clockwise.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxExclusive value="360"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Year">
+    <xs:annotation>
+      <xs:documentation>A Gregorian calendar year, constrained to a sane modern range [1900, 2100].</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1900"/>
+      <xs:maxInclusive value="2100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ===== Leaf elements (global, scalar) ===== -->
+
+  <xs:element name="SchemaVersion" type="xs:string">
+    <xs:annotation><xs:documentation>Version of the input schema this document targets.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="Name" type="xs:string">
+    <xs:annotation><xs:documentation>Human-readable name of the platform the parameters describe.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="GeneratedUtc" type="xs:dateTime">
+    <xs:annotation><xs:documentation>UTC timestamp identifying when these input parameters were produced.</xs:documentation></xs:annotation>
+  </xs:element>
+
+  <xs:element name="DraftMetres" type="Metres">
+    <xs:annotation><xs:documentation>Draft (depth of the lowest point below the waterline), in metres.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="LengthMetres" type="Metres">
+    <xs:annotation><xs:documentation>Overall length of the platform, in metres.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="WeightTonnes" type="Tonnes">
+    <xs:annotation><xs:documentation>Displacement (weight) of the platform, in tonnes.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="YearIntroduced" type="Year">
+    <xs:annotation><xs:documentation>Calendar year the platform class entered service.</xs:documentation></xs:annotation>
+  </xs:element>
+
+  <xs:element name="BaseFrequencyHz" type="Hertz">
+    <xs:annotation><xs:documentation>Centre frequency of the first (lowest) radiated-noise band, in hertz.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="BandRatio" type="Ratio">
+    <xs:annotation><xs:documentation>Geometric step between successive band centre frequencies (2 = octave spacing).</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="BandCount" type="xs:positiveInteger">
+    <xs:annotation><xs:documentation>How many frequency bands to synthesise (1-based ladder length).</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="BearingStepDeg" type="StepDegrees">
+    <xs:annotation><xs:documentation>Angular step at which each band is sampled all round the platform, in degrees (30 = twelve sectors).</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="BaseLevelDb" type="Decibels">
+    <xs:annotation><xs:documentation>Radiated noise level at the base frequency, before roll-off and directivity, in decibels.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="RolloffDbPerOctave" type="DecibelsPerOctave">
+    <xs:annotation><xs:documentation>High-frequency spectral roll-off applied per octave above the base frequency, in decibels.</xs:documentation></xs:annotation>
+  </xs:element>
+
+  <xs:element name="PeakBearingDeg" type="Bearing">
+    <xs:annotation><xs:documentation>Bearing at which the directivity lobe peaks, in degrees [0, 360).</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="AmplitudeDb" type="Decibels">
+    <xs:annotation><xs:documentation>Peak-to-mean amplitude of the directivity lobe, in decibels.</xs:documentation></xs:annotation>
+  </xs:element>
+
+  <xs:element name="ActiveName" type="xs:string">
+    <xs:annotation><xs:documentation>Model name of the active sonar.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="ActiveManufacturer" type="xs:string">
+    <xs:annotation><xs:documentation>Manufacturer of the active sonar.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="ActiveOperatingFrequencyHz" type="Hertz">
+    <xs:annotation><xs:documentation>Nominal operating (centre) frequency of the active sonar, in hertz.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="ActiveSourceLevelDb" type="Decibels">
+    <xs:annotation><xs:documentation>Transmit source level of the active sonar, in decibels.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="ActiveBeamwidthDeg" type="Degrees">
+    <xs:annotation><xs:documentation>Transmit/receive beamwidth of the active sonar, in degrees.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="ActivePulseLengthSeconds" type="Seconds">
+    <xs:annotation><xs:documentation>Transmit pulse length of the active sonar, in seconds.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="ActiveDetectionThresholdDb" type="Decibels">
+    <xs:annotation><xs:documentation>Signal-to-noise ratio the active sonar needs to detect an echo, in decibels. Consumed to derive the maximum echo range; not emitted verbatim in the output.</xs:documentation></xs:annotation>
+  </xs:element>
+
+  <xs:element name="PassiveName" type="xs:string">
+    <xs:annotation><xs:documentation>Model name of the passive sonar.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="PassiveManufacturer" type="xs:string">
+    <xs:annotation><xs:documentation>Manufacturer of the passive sonar.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="PassiveOperatingFrequencyHz" type="Hertz">
+    <xs:annotation><xs:documentation>Nominal operating (centre) frequency of the passive sonar, in hertz.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="PassiveArrayGainDb" type="Decibels">
+    <xs:annotation><xs:documentation>Array gain of the passive sonar's receiving array, in decibels.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="PassiveDetectionThresholdDb" type="Decibels">
+    <xs:annotation><xs:documentation>Signal-to-noise ratio the passive sonar needs for detection, in decibels.</xs:documentation></xs:annotation>
+  </xs:element>
+  <xs:element name="PassiveBearingAccuracyDeg" type="Degrees">
+    <xs:annotation><xs:documentation>1-sigma bearing accuracy of the passive sonar, in degrees.</xs:documentation></xs:annotation>
+  </xs:element>
+
+  <!-- ===== Complex entities (global elements; inline xs:all of refs) ===== -->
+
+  <xs:element name="Characteristics">
+    <xs:annotation><xs:documentation>The physical characteristics of the platform (passed through to the output unchanged).</xs:documentation></xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="DraftMetres"/>
+        <xs:element ref="LengthMetres"/>
+        <xs:element ref="WeightTonnes"/>
+        <xs:element ref="YearIntroduced"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Directivity">
+    <xs:annotation><xs:documentation>The directional lobe applied to the radiated-noise field: a single peak bearing and its amplitude.</xs:documentation></xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="PeakBearingDeg"/>
+        <xs:element ref="AmplitudeDb"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="RadiatedNoise">
+    <xs:annotation><xs:documentation>Parameters of the directional radiated-noise model, expanded by the acoustics seams into the output's bands and sectors.</xs:documentation></xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="BaseFrequencyHz"/>
+        <xs:element ref="BandRatio"/>
+        <xs:element ref="BandCount"/>
+        <xs:element ref="BearingStepDeg"/>
+        <xs:element ref="BaseLevelDb"/>
+        <xs:element ref="RolloffDbPerOctave"/>
+        <xs:element ref="Directivity">
+          <xs:annotation><xs:documentation>The directivity lobe applied across all bearings.</xs:documentation></xs:annotation>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ActiveSonar">
+    <xs:annotation><xs:documentation>Parameters of the platform's active sonar. The detection threshold is consumed to derive the output's maximum echo range.</xs:documentation></xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="ActiveName"/>
+        <xs:element ref="ActiveManufacturer"/>
+        <xs:element ref="ActiveOperatingFrequencyHz"/>
+        <xs:element ref="ActiveSourceLevelDb"/>
+        <xs:element ref="ActiveBeamwidthDeg"/>
+        <xs:element ref="ActivePulseLengthSeconds"/>
+        <xs:element ref="ActiveDetectionThresholdDb"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PassiveSonar">
+    <xs:annotation><xs:documentation>Parameters of one passive sonar carried by the platform.</xs:documentation></xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="PassiveName"/>
+        <xs:element ref="PassiveManufacturer"/>
+        <xs:element ref="PassiveOperatingFrequencyHz"/>
+        <xs:element ref="PassiveArrayGainDb"/>
+        <xs:element ref="PassiveDetectionThresholdDb"/>
+        <xs:element ref="PassiveBearingAccuracyDeg"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Sensors">
+    <xs:annotation><xs:documentation>The sonar fit to be described: one active sonar and one or more passive sonars.</xs:documentation></xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="ActiveSonar">
+          <xs:annotation><xs:documentation>The platform's single active sonar.</xs:documentation></xs:annotation>
+        </xs:element>
+        <xs:element ref="PassiveSonar" maxOccurs="unbounded">
+          <xs:annotation><xs:documentation>The platform's passive sonars.</xs:documentation></xs:annotation>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ===== Root: parameters for one platform ===== -->
+
+  <xs:element name="CalculationInput">
+    <xs:annotation><xs:documentation>Root element: the calculation parameters for one platform — its physical characteristics, its radiated-noise model parameters, and its sonar fit. The pipeline expands these into a validated Platform dataset.</xs:documentation></xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="SchemaVersion"/>
+        <xs:element ref="Name"/>
+        <xs:element ref="GeneratedUtc"/>
+        <xs:element ref="Characteristics">
+          <xs:annotation><xs:documentation>The platform's physical characteristics.</xs:documentation></xs:annotation>
+        </xs:element>
+        <xs:element ref="RadiatedNoise">
+          <xs:annotation><xs:documentation>The platform's radiated-noise model parameters.</xs:documentation></xs:annotation>
+        </xs:element>
+        <xs:element ref="Sensors">
+          <xs:annotation><xs:documentation>The platform's sonar fit.</xs:documentation></xs:annotation>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

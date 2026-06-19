@@ -6,18 +6,25 @@
 
 ```mermaid
 flowchart TD
-    Input["Calculation input<br/>(examples/calculation_input.json)"]
-    Build["build.py<br/>(acoustic seams compute &<br/>populate the schema object)"]
+    Input["Calculation input XML<br/>(examples/calculation_input.xml)"]
+    Build["build.py<br/>(parse + validate input, acoustic seams<br/>compute & populate the schema object)"]
     Objects["Schema data object<br/>(Platform, generated from XSD)"]
     XML["Emitted Platform XML"]
     Golden["Golden file"]
     Reference["Known-good reference"]
 
+    Input -. "input gate" .-> Input
     Input --> Build --> Objects --> XML
     Objects -. "tests assert here" .-> Golden
     XML -. "structural gate" .-> XML
     XML -. "migration safety" .-> Reference
 ```
+
+The input is held to its own contract too: `examples/calculation_input.xml` is a compact set of
+**parameters** validated against `schema/calculation_input.xsd` (and parsed into a typed
+`CalculationInput` model, generated from that schema exactly as `Platform` is generated from the
+output schema). The acoustic seams *expand* those parameters into the many bands and sectors of
+the output — the input and output schemas are deliberately different shapes.
 
 The acoustic seams compute the values and the builder populates **one schema data object**
 directly — there is no intermediate domain hierarchy built only to be converted (ADR 0010).

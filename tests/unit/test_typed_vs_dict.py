@@ -10,7 +10,7 @@ from decimal import Decimal
 
 import pytest
 
-from acoustic_dataset import acoustics, build
+from acoustic_dataset import build
 from acoustic_dataset.models.acoustic_dataset import Sector
 
 
@@ -45,8 +45,8 @@ def test_a_stored_field_has_the_schema_declared_type(input_path):
 
 
 def test_out_of_range_value_is_rejected_as_it_is_stored(input_path):
-    data = acoustics.load_input(input_path)
+    data = build.load_input(input_path)
     # The schema bounds Decibels to [-200, 300]; a dict would carry 9999 straight through.
-    data["sensors"]["active"]["sourceLevelDb"] = 9999.0
+    data.sensors.active_sonar.active_source_level_db.value = Decimal("9999")
     with pytest.raises(build.MappingError, match="SourceLevel"):
         build.build_platform(data)

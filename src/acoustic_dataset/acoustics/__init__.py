@@ -19,9 +19,7 @@ directly (see ADR 0010); there is no intermediate domain hierarchy.
 
 from __future__ import annotations
 
-import json
 import math
-from pathlib import Path
 
 # ----- individual seam functions (each independently unit-tested) -----
 
@@ -75,11 +73,3 @@ def bearings(step_deg: float) -> list[float]:
     """
     count = int(round(360.0 / step_deg))
     return [round(step_deg * k, 6) for k in range(count)]
-
-
-# ----- input loading -----
-
-
-def load_input(path: Path) -> dict:
-    """Read and parse a calculation-input JSON file."""
-    return json.loads(Path(path).read_text(encoding="utf-8"))

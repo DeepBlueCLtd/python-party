@@ -14,7 +14,7 @@ typed, and documented by the contract, so values never have to live in a loosely
 ```python
 from acoustic_dataset import build
 
-input_path = "examples/calculation_input.json"
+input_path = "examples/calculation_input.xml"
 
 # Build the schema's data object directly from the input:
 platform = build.build_platform_from_file(input_path)
@@ -91,13 +91,15 @@ schema object, and it also enforces the schema's numeric **ranges** at that poin
 does not meet the schema is rejected before serialisation:
 
 ```python
-from acoustic_dataset import acoustics, build
+from decimal import Decimal
 
-data = acoustics.load_input("examples/calculation_input.json")
+from acoustic_dataset import build
+
+data = build.load_input("examples/calculation_input.xml")
 
 # Decibels are bounded to [-200, 300]. Force an impossible
 # source level into the input, then build the schema object:
-data["sensors"]["active"]["sourceLevelDb"] = 9999.0
+data.sensors.active_sonar.active_source_level_db.value = Decimal("9999")
 build.build_platform(data)
 #   -> MappingError: rejected as it is built,
 #      not left for a later stage
