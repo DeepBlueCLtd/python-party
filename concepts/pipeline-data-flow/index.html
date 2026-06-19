@@ -1103,11 +1103,11 @@ That object, before serialisation, is the <strong>typed testable boundary</stron
 directly, or diff the serialised XML against a golden file. No separate intermediate (no CSV,
 no pickle) is needed to get testability; that whole chain was removed (ADR 0002).</p>
 <h2 id="the-entities-as-an-er-diagram">The entities as an ER diagram<a class="headerlink" href="#the-entities-as-an-er-diagram" title="Permanent link">&para;</a></h2>
-<p>This is the kind of <strong>Mermaid ERD</strong> the docs render — here drawn by hand for the data-flow story
-(it deliberately includes pipeline entities like the golden and reference files). The
-<strong><a href="../../reference/schema/">schema reference</a></strong> ERD, by contrast, is produced
-<strong>automatically from the schema</strong> by <code>make gen-schema-docs</code>
-(ADR 0009).</p>
+<p>This <strong>Mermaid ERD</strong> is drawn by hand for the data-flow story (it deliberately includes pipeline
+entities like the golden and reference files). The
+<strong><a href="../../reference/schema/">schema reference</a></strong>, by contrast, is produced
+<strong>automatically from the schema</strong> (as HTML) by <code>make gen-schema-docs</code>
+(ADR 0011).</p>
 <pre class="mermaid"><code>erDiagram
     CALCULATION_INPUT ||--|| PLATFORM : "built into (via acoustic seams)"
     PLATFORM ||--|| CHARACTERISTICS : describes

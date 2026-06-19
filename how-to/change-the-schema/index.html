@@ -1104,11 +1104,11 @@ redesign</em>: models, validation, bindings and the schema docs all regenerate f
    toolchain so the output is byte-reproducible for the drift gate.</p>
 </li>
 <li>
-<p><strong>Regenerate the schema docs + ERD.</strong>
+<p><strong>Regenerate the schema reference.</strong>
    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>gen-schema-docs
 </code></pre></div>
-   Produces the reference pages and the Mermaid ERD from the schema
-   (ADR 0009).</p>
+   Produces the HTML reference from the schema via xs3p
+   (ADR 0011).</p>
 </li>
 <li>
 <p><strong>Update the builder.</strong>
@@ -1143,7 +1143,7 @@ output that is schema-valid but differs from what a consumer depends on
 <h2 id="what-you-should-not-touch">What you should <em>not</em> touch<a class="headerlink" href="#what-you-should-not-touch" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Generated models (<code>src/acoustic_dataset/models/</code>) — regenerate instead.</li>
-<li>Generated schema reference/ERD under <code>reference/schema/</code> — regenerate instead.</li>
+<li>Generated HTML schema reference under <code>reference/schema/</code> — regenerate instead.</li>
 <li>The generation code — it's schema-agnostic by design.</li>
 </ul>
 

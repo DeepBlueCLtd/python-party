@@ -1140,7 +1140,7 @@ thing as a file a consumer already depends on. The <code>compare</code> command 
 </tr>
 <tr>
 <td>Namespace <strong>prefix</strong></td>
-<td>default <code>xmlns=…</code> vs <code>ds:</code> prefix (same URI)</td>
+<td>the same URI under a prefix vs the default namespace (the contract itself is no-namespace)</td>
 </tr>
 <tr>
 <td>Comments</td>
@@ -1149,7 +1149,7 @@ thing as a file a consumer already depends on. The <code>compare</code> command 
 </tbody>
 </table>
 <p>Anything that changes the <strong>data</strong> — an element value, a missing or extra element, a different
-structure — is reported as a difference. For instance, a radiated-noise <code>Level</code> of <code>134.000</code>
+structure — is reported as a difference. For instance, a radiated-noise <code>SectorLevel</code> of <code>134.000</code>
 that becomes <code>144.000</code> is still inside the schema's decibel band (so it stays schema-valid) but
 is surfaced as a one-line diff.</p>
 <div class="admonition note">

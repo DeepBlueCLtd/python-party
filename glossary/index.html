@@ -1107,9 +1107,9 @@ catch <em>schema-valid-but-different</em> output during migration.</p>
 <p><strong>Schema-valid-but-different</strong> — the dangerous failure mode: output that passes XSD
 validation yet differs from what a consumer depended on. Caught by the migration-safety
 comparison, not by validation alone.</p>
-<p><strong>ERD (Entity-Relationship Diagram)</strong> — a diagram of entities and how they relate. We
-render these with <strong>Mermaid</strong> and generate them from the enriched XSD so they cannot drift
-from the contract. See the <a href="../reference/schema/">generated schema reference</a>.</p>
+<p><strong>ERD (Entity-Relationship Diagram)</strong> — a diagram of entities and how they relate. We draw
+these by hand with <strong>Mermaid</strong> in the concept pages. The entity/type structure of the contract
+itself is in the <a href="../reference/schema/">generated schema reference</a> (HTML, from the XSD).</p>
 <h2 id="tooling">Tooling<a class="headerlink" href="#tooling" title="Permanent link">&para;</a></h2>
 <p><strong>xsdata</strong> — generates typed Python dataclasses from an XSD and binds objects ↔ XML.
 See ADR 0001.</p>

@@ -602,10 +602,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#schema-reference-erd-are-generated" class="md-nav__link">
+  <a href="#the-schema-reference-is-generated" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Schema reference &amp; ERD are generated
+        The schema reference is generated
       
     </span>
   </a>
@@ -1108,10 +1108,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#schema-reference-erd-are-generated" class="md-nav__link">
+  <a href="#the-schema-reference-is-generated" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Schema reference &amp; ERD are generated
+        The schema reference is generated
       
     </span>
   </a>
@@ -1179,13 +1179,13 @@ gitignored.</p>
 <span class="s">    A ||--o{ B : has</span>
 <span class="sb">```</span>
 </code></pre></div>
-<p>See the <a href="../../concepts/pipeline-data-flow/">pipeline ERD</a> and the
-<a href="../../reference/schema/">generated schema ERD</a> for working examples.</p>
-<h2 id="schema-reference-erd-are-generated">Schema reference &amp; ERD are <em>generated</em><a class="headerlink" href="#schema-reference-erd-are-generated" title="Permanent link">&para;</a></h2>
-<p>The <a href="../../reference/schema/">schema reference</a> — the entity tables and the Mermaid ERD —
-is produced from the <strong>enriched XSD</strong> by <code>make gen-schema-docs</code>, not hand-written, so it can't
-drift from the contract. Regenerate it after any schema change; the CI drift gate fails if the
-committed page is stale.</p>
+<p>See the <a href="../../concepts/pipeline-data-flow/">pipeline ERD</a> for a hand-drawn example; the
+<a href="../../reference/schema/">generated schema reference</a> is HTML produced from the XSD.</p>
+<h2 id="the-schema-reference-is-generated">The schema reference is <em>generated</em><a class="headerlink" href="#the-schema-reference-is-generated" title="Permanent link">&para;</a></h2>
+<p>The <a href="../../reference/schema/">schema reference</a> — every element, type, facet and
+<code>xs:documentation</code> note — is produced from the XSD by the vendored xs3p stylesheet
+(<code>make gen-schema-docs</code>), not hand-written, so it can't drift from the contract. Regenerate it
+after any schema change; the CI drift gate fails if the committed page is stale.</p>
 <h2 id="linking-rules-to-keep-strict-happy">Linking rules (to keep <code>--strict</code> happy)<a class="headerlink" href="#linking-rules-to-keep-strict-happy" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Link between docs pages with <strong>relative paths</strong> to the <code>.md</code> file
