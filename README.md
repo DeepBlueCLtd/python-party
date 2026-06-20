@@ -56,10 +56,28 @@ explains why "schema-valid" and "correct" are two different checks. The code liv
 `src/acoustic_dataset/validate.py` and `compare.py`, dispatched from
 [`cli.py`](src/acoustic_dataset/cli.py).
 
-### Adventure 2 — Explore a typed Python data class in the REPL
+### Adventure 2 — Explore a typed Python data class
 
 The pipeline never carries data in a loose `dict`; it builds **one typed object that
-meets the schema**. Feel the difference yourself:
+meets the schema**. Feel the difference yourself.
+
+**First, experience editor autocomplete.** Open
+[`examples/explore_platform.py`](examples/explore_platform.py) in VS Code (the Codespace
+ships Pylance). Find the `# platform.` line, delete the `#`, put your cursor right after the
+dot, and type: VS Code pops up the object's *declared* attributes (`radiated_noise`,
+`sensors`, …) — statically, before the code has even run. Keep drilling
+(`platform.radiated_noise.band[0].`) and it completes all the way down. That instant,
+schema-shaped autocomplete is the real payoff of declared fields. Run the file any time with:
+
+```bash
+python examples/explore_platform.py
+```
+
+> If autocomplete doesn't appear, give Pylance a moment to index, and make sure VS Code's
+> Python interpreter is set to the Codespace's 3.9 (bottom-right status bar / *Python: Select
+> Interpreter*).
+
+**Then poke at it in the REPL:**
 
 ```bash
 python
@@ -75,9 +93,13 @@ python
 >>> Sector(bering=1, level=2)        # a typo is a TypeError, not a silent new key
 ```
 
-Tab-completion works on every attribute because the fields are *declared*. Read
-[`docs/concepts/typed-vs-dicts.md`](docs/concepts/typed-vs-dicts.md) for what this buys
-you over a dictionary, then look at how the builder rejects out-of-range values in
+The REPL can also complete attributes, but that's a separate `readline`/`rlcompleter`
+feature that introspects the live object at runtime — not the static, declared-field
+completion you saw in the editor. If `<TAB>` doesn't complete, enable it for the session
+with `import readline, rlcompleter; readline.parse_and_bind("tab: complete")`.
+
+Read [`docs/concepts/typed-vs-dicts.md`](docs/concepts/typed-vs-dicts.md) for what declared
+fields buy you over a dictionary, then look at how the builder rejects out-of-range values in
 `src/acoustic_dataset/build.py`.
 
 ### Adventure 3 — Reverse-engineer the data classes from the schema
