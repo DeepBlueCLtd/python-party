@@ -75,9 +75,15 @@ python
 >>> Sector(bering=1, level=2)        # a typo is a TypeError, not a silent new key
 ```
 
-Tab-completion works on every attribute because the fields are *declared*. Read
-[`docs/concepts/typed-vs-dicts.md`](docs/concepts/typed-vs-dicts.md) for what this buys
-you over a dictionary, then look at how the builder rejects out-of-range values in
+The real payoff of *declared* fields is in your **editor**: type `platform.` in a `.py`
+file and VS Code (Pylance) offers every attribute, statically, before the code even runs —
+that's what the declarations buy you. (In the bare `python` REPL you may also get attribute
+completion, but it's a separate `readline`/`rlcompleter` feature that introspects the live
+object at runtime; if `<TAB>` doesn't complete, enable it for the session with
+`import readline, rlcompleter; readline.parse_and_bind("tab: complete")`.)
+
+Read [`docs/concepts/typed-vs-dicts.md`](docs/concepts/typed-vs-dicts.md) for what declared
+fields buy you over a dictionary, then look at how the builder rejects out-of-range values in
 `src/acoustic_dataset/build.py`.
 
 ### Adventure 3 — Reverse-engineer the data classes from the schema
