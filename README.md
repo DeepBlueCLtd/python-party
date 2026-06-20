@@ -63,9 +63,10 @@ meets the schema**. Feel the difference yourself.
 
 **First, experience editor autocomplete.** Open
 [`examples/explore_platform.py`](examples/explore_platform.py) in VS Code (the Codespace
-ships Pylance). Find the `# platform.` line, delete the `#`, put your cursor right after the
-dot, and type: VS Code pops up the object's *declared* attributes (`radiated_noise`,
-`sensors`, …) — statically, before the code has even run. Keep drilling
+ships Pylance). Find the `# platform.radiated_noise.` line, delete the `#`, put your cursor
+right after the dot, and type: VS Code pops up the object's *declared* attributes
+(`band`, …) — statically, before the code has even run. Try `platform.` too for the
+top-level attributes (`radiated_noise`, `sensors`, …). Keep drilling
 (`platform.radiated_noise.band[0].`) and it completes all the way down. That instant,
 schema-shaped autocomplete is the real payoff of declared fields. Run the file any time with:
 

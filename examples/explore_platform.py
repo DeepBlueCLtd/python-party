@@ -12,10 +12,15 @@ from acoustic_dataset import build
 # its type from the function's return annotation — no need to run anything first.
 platform = build.build_platform_from_file("examples/calculation_input.xml")
 
+# `radiated_noise` is Optional on the schema (it may be absent), so the type checker treats
+# it as possibly-None. The pipeline's gates guarantee it is populated here; this assert tells
+# Pylance the same thing — after it, `.band` is a clean, fully-typed access (no squiggle).
+assert platform.radiated_noise is not None
+
 # TODO: put your cursor at the end of the next line, after the dot, and type.
-# VS Code should pop up the declared attributes (radiated_noise, sensors, ...).
+# VS Code should pop up the declared attributes (band, ...).
 # Keep drilling — `platform.radiated_noise.band[0].` completes too, all the way down.
-# platform.
+# platform.radiated_noise.
 
 # A couple of fully-typed accesses to confirm it ran (delete or extend these freely):
 print("type:", type(platform).__name__)
