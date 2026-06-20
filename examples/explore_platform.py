@@ -6,11 +6,14 @@ It is safe to edit freely; nothing else imports it. Run it any time with:
     python examples/explore_platform.py
 """
 
+from pathlib import Path
+
 from acoustic_dataset import build
 
-# `platform` is a fully-typed `Platform` built from the example input. Pylance knows
-# its type from the function's return annotation — no need to run anything first.
-platform = build.build_platform_from_file("examples/calculation_input.xml")
+# `platform` is a fully-typed `Platform` built from the example input. The builder takes a
+# `Path`, so wrap the filename in `Path(...)` rather than passing a bare string. Pylance knows
+# the result's type from the function's return annotation — no need to run anything first.
+platform = build.build_platform_from_file(Path("examples/calculation_input.xml"))
 
 # `radiated_noise` is Optional on the schema (it may be absent), so the type checker treats
 # it as possibly-None. The pipeline's gates guarantee it is populated here; this assert tells

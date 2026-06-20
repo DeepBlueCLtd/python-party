@@ -51,6 +51,27 @@ acoustic validate --xml build/acoustic_dataset.xml
 acoustic compare build/acoustic_dataset.xml examples/reference/trial_known_good.xml
 ```
 
+**Now make it your own.** `examples/calculation_input.xml` is your sandbox — edit a value
+and re-run to watch the validated output change. Bump `<BandCount>10` to `20`, or
+`<BaseLevelDb>140.0` to `155.0`, then:
+
+```bash
+acoustic pipeline
+```
+
+The band count in the message and the generated XML move with your edit. This is the
+tightest loop in the project: input XML in, validated dataset out.
+
+**Then break it on purpose** to watch the gates earn their keep. Set `<BandCount>` to a
+negative number, or put text where a number belongs, and re-run:
+
+```
+error: build rejected a value before serialisation: ... schema: value must be positive
+```
+
+The pipeline rejects it, prints the reason, exits non-zero, and **does not** write a stale
+artifact. (Restore the file afterward — `git checkout examples/calculation_input.xml`.)
+
 **Now read why:** [`docs/concepts/two-verification-gates.md`](docs/concepts/two-verification-gates.md)
 explains why "schema-valid" and "correct" are two different checks. The code lives in
 `src/acoustic_dataset/validate.py` and `compare.py`, dispatched from
@@ -85,11 +106,12 @@ python
 ```
 
 ```python
->>> from acoustic_dataset import build
+>>> from acoustic_dataset import build, serialize
 >>> platform = build.build_platform_from_file("examples/calculation_input.xml")
 >>> type(platform).__name__
 'Platform'
 >>> platform.radiated_noise.band[0].centre_frequency      # a Decimal, not a string
+>>> print(serialize.to_xml(platform)[:500])               # the same object, as XML
 >>> from acoustic_dataset.models.acoustic_dataset import Sector
 >>> Sector(bering=1, level=2)        # a typo is a TypeError, not a silent new key
 ```
@@ -149,6 +171,38 @@ make docs-serve                              # browse at http://localhost:8000
 ```
 
 In a Codespace, when the port-forward notification appears, click **Open in Browser**.
+
+### Adventure 5 — Point it at the real (private) schema
+
+Everything above runs against the **placeholder** schema committed in `schema/`. The real,
+proprietary XSD and corpus are meant to live under `private/` — a directory that is **entirely
+gitignored** (see `.gitignore`) so it never reaches git, CI, or the internet.
+
+One constraint shapes the workflow: `src/acoustic_dataset/models/` is **committed** (the
+placeholder-generated models that CI drift-checks), so you must not regenerate over it from a
+real schema — an accidental commit would leak that structure. Generate real models into
+`private/` instead. The same CLI takes explicit paths, so once the real material is in place
+(real XSD in `private/schema/`, inputs in `private/examples/`, known-good XML in
+`private/reference/`):
+
+```bash
+# Generate typed models from the real XSD into the gitignored output dir
+acoustic generate --schema private/schema/<real>.xsd --out private/models
+
+# Structural gate (XSD + round-trip) on a real file against the real schema
+acoustic validate --xml private/examples/<real>.xml --schema private/schema/<real>.xsd
+
+# Migration-safety diff: generated vs known-good reference
+acoustic compare private/<generated>.xml private/reference/<known_good>.xml
+```
+
+**Caveat — the full `pipeline` command.** `acoustic pipeline` imports
+`acoustic_dataset.models` (the *committed* package), so it always builds against the
+placeholder-derived bindings even when you pass `--schema private/...`. Running the
+*end-to-end* pipeline on real-generated models would mean repointing that import at
+`private/models/` — a deliberate change that touches committed code, so raise it for review
+first. With the real schema you can use `generate`, `validate`, and `compare` against
+`private/` paths immediately; full `pipeline` needs that reviewed change.
 
 ### Where to go next
 
